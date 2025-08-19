@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "69735136717",
+    "project_id": "i-smile-kids25-rwp86f",
+    "storage_bucket": "i-smile-kids25-rwp86f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:69735136717:android:90315f39eec97b66271884",
+        "android_client_info": {
+          "package_name": "com.example.i_smile_kids_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjw5KEwuA_WNXXKm18DNTPURbpkdp7E9Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
