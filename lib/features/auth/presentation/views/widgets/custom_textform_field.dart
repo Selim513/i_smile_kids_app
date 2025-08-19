@@ -10,16 +10,18 @@ class CustomTextFormField extends StatefulWidget {
     this.controller,
     this.keyboardType,
     this.obscureText = false,
-    required this.hintText,
+    // required this.hintText,
     required this.prefixIcon,
+    required this.title,
   });
 
   final String? Function(String? value)? validator;
   final TextEditingController? controller;
   final TextInputType? keyboardType;
   final bool obscureText;
-  final String hintText;
+  // final String hintText;
   final IconData prefixIcon;
+  final String title;
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
@@ -44,6 +46,13 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       obscureText: _isObscure,
 
       decoration: InputDecoration(
+        labelText: widget.title,
+        labelStyle: FontManger.meduimFontBlack14.copyWith(
+          color: ColorManager.greyColor,
+        ),
+        floatingLabelStyle: FontManger.meduimFontBlack14.copyWith(
+          color: ColorManager.secondary,
+        ),
         suffixIcon: widget.obscureText
             ? IconButton(
                 onPressed: () {
@@ -58,8 +67,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               )
             : null,
         prefixIcon: Icon(widget.prefixIcon, color: Colors.grey),
-        hintText: widget.hintText,
-        hintStyle: FontManger.textFomrHintFont14,
+        // hintText: widget.hintText,
+        // hintStyle: FontManger.textFomrHintFont14,
         fillColor: ColorManager.textDark.withValues(alpha: 0.1),
         filled: true,
         border: customOutLineBorders(),

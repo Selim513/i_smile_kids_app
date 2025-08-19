@@ -1,5 +1,5 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:i_smile_kids_app/core/helper/asset_helper.dart';
@@ -8,14 +8,21 @@ import 'package:i_smile_kids_app/core/helper/navigator_helper.dart';
 import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_elevated_button.dart';
+import 'package:i_smile_kids_app/core/widgets/custom_snack_bar.dart';
+import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_cubit.dart';
+import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_state.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/create_account_view.dart';
+import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/custom_redirect_naviagor_message.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/custom_textform_field.dart';
+import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/social_auth_button.dart';
+import 'package:i_smile_kids_app/features/home/presentation/views/home_view.dart';
 
 class LoginViewBody extends StatelessWidget {
   const LoginViewBody({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var cubit = context.read<AuthCubit>();
     return Padding(
       padding: EdgeInsetsGeometry.symmetric(horizontal: 15.w),
       child: CustomScrollView(
@@ -28,96 +35,91 @@ class LoginViewBody extends StatelessWidget {
               children: [
                 Column(
                   spacing: 30.h,
-                  children: [
-                    AssetHelper.imageAsset(name: 'logo'),
-                    Text(
-                      'Login',
-                      style: FontManger.blackBoldFont18.copyWith(
-                        color: ColorManager.primary,
-                        fontSize: 40.sp,
-                      ),
-                    ),
-                  ],
+                  children: [AssetHelper.imageAsset(name: 'logo')],
                 ),
-                Form(
-                  child: Column(
-                    spacing: 15.h,
-                    children: [
-                      CustomTextFormField(
-                        controller: TextEditingController(),
-                        validator: (value) => checkEmailValidator(value),
-                        hintText: 'Email Address',
-                        prefixIcon: Icons.email_outlined,
-                      ),
-                      CustomTextFormField(
-                        controller: TextEditingController(),
-                        validator: (value) => checkPasswordValidator(value),
-                        hintText: 'Password',
-                        prefixIcon: Icons.lock,
-                        obscureText: true,
-                      ),
+                BlocConsumer<AuthCubit, AuthCubitState>(
+                  listener: (context, state) {
+                    if (state is AuthCubitLoginSuccess) {
+                      CustomSnackBar.successSnackBar(
+                        state.succMessage,
+                        context,
+                      );
+                      NavigatorHelper.pushReplaceMent(
+                        context,
+                        screen: HomeView(),
+                      );
+                    } else if (state is AuthCubitLoginFailure) {
+                      CustomSnackBar.errorSnackBar(state.errMessage, context);
+                    }
+                  },
+                  builder: (context, state) {
+                    return Form(
+                      key: cubit.loginGlobalKey,
+                      child: Column(
+                        spacing: 15.h,
+                        children: [
+                          CustomTextFormField(
+                            title: 'Email',
+                            controller: cubit.loginEmailController,
+                            validator: (value) => checkEmailValidator(value),
+                            prefixIcon: Icons.email_outlined,
+                          ),
+                          CustomTextFormField(
+                            title: 'Password',
+                            controller: cubit.loginPasswordController,
+                            validator: (value) => checkPasswordValidator(value),
+                            prefixIcon: Icons.lock,
+                            obscureText: true,
+                          ),
 
-                      Gap(30.h),
-                      CustomEleveatedButton(
-                        onPress: () {
-                          NavigatorHelper.push(
-                            context,
-                            screen: CreateAccountView(),
-                          );
-                        },
-                        child: Text('Login', style: FontManger.whiteBoldFont18),
+                          Gap(30.h),
+                          CustomEleveatedButton(
+                            onPress: () {
+                              cubit.login();
+
+                              if (cubit.loginGlobalKey.currentState!
+                                      .validate() &&
+                                  state is AuthCubitLoginSuccess) {
+                                NavigatorHelper.push(
+                                  context,
+                                  screen: CreateAccountView(),
+                                );
+                              }
+                            },
+                            child: Text(
+                              'Login',
+                              style: FontManger.whiteBoldFont18,
+                            ),
+                          ),
+                          SocialAuthButton(
+                            title: 'Login with Google',
+                            logo: 'google',
+                            onPress: () {},
+                          ),
+                          SocialAuthButton(
+                            textColor: ColorManager.textDark,
+                            bgColor: Colors.white,
+                            title: 'Login with Apple',
+                            logo: 'apple',
+                            onPress: () {},
+                          ),
+                          Gap(20.h),
+                          CustomAuthRedirectText(
+                            isLogin: true,
+                            onTap: () => NavigatorHelper.pushReplaceMent(
+                              context,
+                              screen: CreateAccountView(),
+                            ),
+                          ),
+                        ],
                       ),
-                      Gap(20.h),
-                      CustomAuthRedirectText(
-                        isLogin: true,
-                        onTap: () => NavigatorHelper.push(
-                          context,
-                          screen: CreateAccountView(),
-                        ),
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ],
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class CustomAuthRedirectText extends StatelessWidget {
-  const CustomAuthRedirectText({super.key, this.onTap, required this.isLogin});
-  final bool isLogin;
-  final void Function()? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: RichText(
-        text: TextSpan(
-          style: FontManger.blackBoldFont18.copyWith(
-            fontSize: 15.sp,
-            fontWeight: FontWeight.normal,
-          ),
-          children: [
-            TextSpan(
-              text: isLogin
-                  ? 'Dont have an account '
-                  : 'Already Have an account? ',
-            ),
-            TextSpan(
-              text: isLogin ? 'Join' : 'Login',
-              style: FontManger.blackBoldFont18.copyWith(
-                decoration: TextDecoration.underline,
-                decorationColor: Colors.black,
-                decorationThickness: 1.5,
-              ),
-              recognizer: TapGestureRecognizer()..onTap = onTap,
-            ),
-          ],
-        ),
       ),
     );
   }

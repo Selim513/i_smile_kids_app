@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 abstract class AssetHelper {
   //-images assets helper
@@ -20,8 +21,8 @@ abstract class AssetHelper {
     return AssetImage('assets/images/$name.png');
   }
 
-  // //-svg assets helper
-  // static SvgPicture svgAssets({required String name, double? height}) {
-  //   return SvgPicture.asset('assets/icons/$name.svg', height: height);
-  // }
+  //-svg assets helper
+  static SvgPicture svgAssets({required String name, double? height}) {
+    return SvgPicture.asset('assets/icons/$name.svg', height: height);
+  }
 }

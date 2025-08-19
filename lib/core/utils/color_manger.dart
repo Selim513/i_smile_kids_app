@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 abstract class ColorManager {
   // Main brand colors
-  static const Color primary = Color(0xFF31C3BD); // Teal
-  static const Color secondary = Color(0xFFFFB703); // Amber
+  static const Color primary = Color(0xff2BC4EE); // Teal
+  static const Color secondary = Color(0xff1C2E42); // Amber
   static const Color accent = Color(0xFF8A5CF6); // Purple
-  static const Color greyColor = Color(0xffCCCCCC); // Purple
+  static const Color lightGreyColor = Color(0xffCCCCCC); // Purple
+  static const Color greyColor = Color(0xff808080); // Purple
 
   // Status colors
   static const Color success = Color(0xFF22C55E); // Green

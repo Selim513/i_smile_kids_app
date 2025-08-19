@@ -13,7 +13,11 @@ class AuthViewBody extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          AssetHelper.imageAsset(name: 'logo'),
+          AssetHelper.imageAsset(
+            name: 'logo',
+            height: 300.h,
+            boxFit: BoxFit.cover,
+          ),
           AuthButtonsWidget(),
         ],
       ),

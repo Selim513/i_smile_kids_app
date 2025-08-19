@@ -6,9 +6,10 @@ abstract class CustomSnackBar {
   static void errorSnackBar(String message, context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
+        behavior: SnackBarBehavior.floating,
         content: Text(
           message,
-          style: FontManger.textFomrHintFont14 .copyWith(color: Colors.white),
+          style: FontManger.textFomrHintFont14.copyWith(color: Colors.white),
           textAlign: TextAlign.center,
         ),
         backgroundColor: Colors.red,
@@ -19,6 +20,8 @@ abstract class CustomSnackBar {
   static void successSnackBar(String message, context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
+        behavior: SnackBarBehavior.floating,
+
         content: Text(
           message,
           style: FontManger.textFomrHintFont14.copyWith(color: Colors.white),
@@ -32,6 +35,8 @@ abstract class CustomSnackBar {
   static void confrimEmailSnackBar(String message, context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
+        behavior: SnackBarBehavior.floating,
+
         content: Text(
           message,
           style: FontManger.textFomrHintFont14.copyWith(color: Colors.white),

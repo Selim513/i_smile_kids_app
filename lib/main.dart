@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,18 +7,23 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:i_smile_kids_app/core/services/service_locator.dart';
 import 'package:i_smile_kids_app/features/auth/data/repo/auht_repo_impl.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_cubit.dart';
-import 'package:i_smile_kids_app/features/auth/presentation/views/auth_view.dart';
+import 'package:i_smile_kids_app/features/auth/presentation/views/login_view.dart';
 import 'package:i_smile_kids_app/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   serviceLocatorSetup();
-  runApp(const MyApp());
+  runApp(
+    DevicePreview(
+      builder: (context) => const IsmileKids(),
+      isToolbarVisible: true,
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class IsmileKids extends StatelessWidget {
+  const IsmileKids({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +36,7 @@ class MyApp extends StatelessWidget {
             fontFamily: GoogleFonts.inter().fontFamily,
             scaffoldBackgroundColor: Colors.white,
           ),
-          home: AuthView(),
+          home: LoginView(),
         ),
       ),
     );
