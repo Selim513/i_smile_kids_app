@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/widgets.dart';
 import 'package:i_smile_kids_app/core/errors/auth_failure.dart';
 import 'package:i_smile_kids_app/core/errors/create_account_error_handle.dart';
 import 'package:i_smile_kids_app/core/errors/firbease_auth_exceptions.dart';
@@ -45,6 +46,21 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(handleFirebaseAuthException(e));
     } on Exception catch (e) {
       return Left(UnknownFailure(' Failed to create account: ${e.toString()}'));
+    }
+  }
+
+  @override
+  Future<Either<AuthFailure, User>> signInWithGoogle() async {
+    try {
+      final user = await remoteDataSource.signInWithGoogle();
+      return Right(user);
+    } on FirebaseAuthException catch (e) {
+      return Left(handleFirebaseAuthException(e));
+    } on Exception catch (e) {
+      debugPrint('------------Google--${e.toString()}');
+      return Left(
+        UnknownFailure('There is an error occured while sigin with google'),
+      );
     }
   }
 

@@ -29,6 +29,20 @@ class AuthCubitCreateAccountFailure extends AuthCubitState {
 
   AuthCubitCreateAccountFailure({required this.errMessage});
 }
+
+//-Signin with google
+class AuthCubitGoogleSigninSuccess extends AuthCubitState {
+  final String succMessage;
+
+  AuthCubitGoogleSigninSuccess({required this.succMessage});
+}
+
+class AuthCubitGoogleSigninFailure extends AuthCubitState {
+  final String errMessage;
+
+  AuthCubitGoogleSigninFailure({required this.errMessage});
+}
+
 //-image
 class AuthCubitPickImageSuccess extends AuthCubitState {
   final String imagePath;

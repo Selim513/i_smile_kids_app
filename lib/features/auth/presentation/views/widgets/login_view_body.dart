@@ -48,6 +48,18 @@ class LoginViewBody extends StatelessWidget {
                         context,
                         screen: HomeView(),
                       );
+                    } else if (state is AuthCubitGoogleSigninSuccess) {
+                      CustomSnackBar.successSnackBar(
+                        state.succMessage,
+                        context,
+                      );
+                      NavigatorHelper.pushReplaceMent(
+                        context,
+                        screen: HomeView(),
+                      );
+                    } else if (state is AuthCubitGoogleSigninFailure) {
+                      print('--------${state.errMessage}');
+                      CustomSnackBar.errorSnackBar(state.errMessage, context);
                     } else if (state is AuthCubitLoginFailure) {
                       CustomSnackBar.errorSnackBar(state.errMessage, context);
                     }
@@ -86,6 +98,13 @@ class LoginViewBody extends StatelessWidget {
                                 );
                               }
                             },
+                            // child: state is AuthCubiLoading
+                            //     ? Center(
+                            //         child: CircularProgressIndicator(
+                            //           color: Colors.white,
+                            //         ),
+                            //       )
+                            // :
                             child: Text(
                               'Login',
                               style: FontManger.whiteBoldFont18,
@@ -94,7 +113,9 @@ class LoginViewBody extends StatelessWidget {
                           SocialAuthButton(
                             title: 'Login with Google',
                             logo: 'google',
-                            onPress: () {},
+                            onPress: () {
+                              cubit.signinWithGoogle();
+                            },
                           ),
                           SocialAuthButton(
                             textColor: ColorManager.textDark,

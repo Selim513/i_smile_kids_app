@@ -1,12 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:i_smile_kids_app/core/services/upload_image_helper.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:i_smile_kids_app/core/services/save_user_data_to_firestore.dart';
 import 'package:i_smile_kids_app/core/services/service_locator.dart';
+import 'package:i_smile_kids_app/core/services/upload_image_helper.dart';
 import 'package:i_smile_kids_app/features/auth/data/models/create_account_model.dart';
 
 abstract class AuthRemoteDataSource {
   Future<User> login({required String email, required String password});
   Future<User> createAccount({required CreateAccountModel account});
+  Future<User> signInWithGoogle();
 
   Future<void> logout();
   Future<User?> getCurrentUser();
@@ -69,19 +71,69 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       // Save additional user data to Firestore
       await saveUserDataToFirestore(
-        age:account.age ,
+        signinMethod: 'Email Address',
+        age: account.age,
         uid: user.uid,
         name: account.name,
         email: account.email,
         nationality: account.nationality,
         emirateOfResidency: account.emirateOfResidency,
         photoURL: photoURL,
-
       );
 
       // Reload user to get updated data
       await user.reload();
       return firebaseAuth.currentUser!;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<User> signInWithGoogle() async {
+    final googleSignIn = GoogleSignIn.instance;
+
+    try {
+      // googleSignIn.initialize();
+      await googleSignIn.initialize(
+        serverClientId:
+            '69735136717-pak3o49r3dcsuq137ibkb09hv455rcr5.apps.googleusercontent.com',
+      );
+      final GoogleSignInAccount googleUser = await googleSignIn.authenticate();
+
+      if (googleUser.authentication.idToken == null) {
+        throw FirebaseAuthException(
+          code: 'sign-in-cancelled',
+          message: 'Google sign-in was cancelled by the user.',
+        );
+      }
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken,
+      );
+      final userCredential = await FirebaseAuth.instance.signInWithCredential(
+        credential,
+      );
+      if (userCredential.user == null) {
+        throw FirebaseAuthException(
+          code: 'sign_in_failed',
+          message: 'Failed to singin with Google.',
+        );
+      }
+      final user = userCredential.user!;
+      if (userCredential.additionalUserInfo?.isNewUser == true) {
+        await saveUserDataToFirestore(
+          age: '',
+          uid: user.uid,
+          name: user.displayName ?? '',
+          email: user.email ?? '',
+          nationality: '',
+          emirateOfResidency: '',
+          photoURL: user.photoURL,
+          signinMethod: 'google',
+        );
+      }
+      return user;
     } catch (e) {
       rethrow;
     }
@@ -104,9 +156,4 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       rethrow;
     }
   }
-
-  // @override
-  // Stream<User?> get authStateChanges {
-  //   return firebaseAuth.authStateChanges();
-  // }
 }

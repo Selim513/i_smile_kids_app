@@ -11,6 +11,8 @@ abstract class AuthRepository {
   Future<Either<AuthFailure, User>> createAccount({
     required CreateAccountModel account
   });
+    Future<Either<AuthFailure, User>> signInWithGoogle();
+
 
   Future<Either<AuthFailure, Unit>> logout();
 

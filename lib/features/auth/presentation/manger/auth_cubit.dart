@@ -65,6 +65,16 @@ class AuthCubit extends Cubit<AuthCubitState> {
     );
   }
 
+  void signinWithGoogle() async {
+    emit(AuthCubiLoading());
+    final result = await authRepo.signInWithGoogle();
+    result.fold(
+      (failure) =>
+          emit(AuthCubitGoogleSigninFailure(errMessage: failure.message)),
+      (success) => emit(AuthCubitGoogleSigninSuccess(succMessage: 'Welcome')),
+    );
+  }
+
   Future<void> pickImage(ImageSource source) async {
     try {
       final pickedFile = await _picker.pickImage(

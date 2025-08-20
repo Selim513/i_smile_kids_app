@@ -7,6 +7,7 @@ Future<void> saveUserDataToFirestore({
   required String nationality,
   required String emirateOfResidency,
   required String age,
+  required String signinMethod,
   String? photoURL,
 }) async {
   try {
