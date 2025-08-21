@@ -7,7 +7,7 @@ Future<void> saveUserDataToFirestore({
   required String nationality,
   required String emirateOfResidency,
   required String age,
-  required String signinMethod,
+  String? signinMethod,
   String? photoURL,
 }) async {
   try {
@@ -25,4 +25,23 @@ Future<void> saveUserDataToFirestore({
   } catch (e) {
     throw Exception('Failed to store data ${e.toString()}');
   }
+}
+
+Future<void> updateUserDetails({
+  required String uid,
+  // required String name,
+  required String nationality,
+  required String emirateOfResidency,
+  required String age,
+  // String? photoURL,
+}) async {
+  FirebaseFirestore.instance.collection('users').doc(uid).update({
+    'uid': uid,
+    // 'name': name,
+    'age': age,
+    'nationality': nationality,
+    'emirateOfResidency': emirateOfResidency,
+    // 'photoURL': photoURL,
+    'updatedAt': FieldValue.serverTimestamp(),
+  });
 }

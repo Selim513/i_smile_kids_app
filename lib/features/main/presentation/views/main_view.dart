@@ -1,0 +1,70 @@
+import 'package:flutter/material.dart';
+import 'package:i_smile_kids_app/features/home/presentation/views/home_view.dart';
+import 'package:i_smile_kids_app/features/prfoile/presentation/views/profile_views.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+
+class MainView extends StatefulWidget {
+  const MainView({super.key});
+
+  @override
+  State<MainView> createState() => _MainViewState();
+}
+
+class _MainViewState extends State<MainView> {
+  final PersistentTabController _controller = PersistentTabController(
+    initialIndex: 0,
+  );
+
+  List<Widget> _buildScreens() {
+    return [HomeView(), ProfileViews()];
+  }
+
+  List<PersistentBottomNavBarItem> _navBarsItems() {
+    return [
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.home),
+        title: ("Home"),
+        activeColorPrimary: Colors.green,
+        inactiveColorPrimary: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.person),
+        title: ("Profile"),
+        activeColorPrimary: Colors.green,
+        inactiveColorPrimary: Colors.grey,
+      ),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PersistentTabView(
+      context,
+      controller: _controller,
+      screens: _buildScreens(),
+      items: _navBarsItems(),
+      // confineInSafeArea: true,
+      backgroundColor: Colors.white,
+      handleAndroidBackButtonPress: true,
+      resizeToAvoidBottomInset: true,
+      stateManagement: true,
+      // hideNavigationBarWhenKeyboardShows: true,
+      decoration: NavBarDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        colorBehindNavBar: Colors.white,
+      ),
+      // popAllScreensOnTapOfSelectedTab: true,
+      // popActionScreens: PopActionScreensType.all,
+      // itemAnimationProperties: const ItemAnimationProperties(
+      //   duration: Duration(milliseconds: 200),
+      //   curve: Curves.ease,
+      // ),
+      // screenTransitionAnimation: const ScreenTransitionAnimation(
+      //   animateTabTransition: true,
+      //   curve: Curves.ease,
+      //   duration: Duration(milliseconds: 200),
+      // ),
+      navBarStyle: NavBarStyle.style9, // فيه ستايلات كتير جرّبهم
+    );
+  }
+}

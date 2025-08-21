@@ -4,16 +4,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:i_smile_kids_app/core/helper/auth_validator.dart';
 import 'package:i_smile_kids_app/core/helper/navigator_helper.dart';
+import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_drop_down_field.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_elevated_button.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_snack_bar.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_cubit.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_state.dart';
+import 'package:i_smile_kids_app/features/auth/presentation/views/complete_auth_view.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/create_account_view.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/login_view.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/custom_redirect_naviagor_message.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/custom_textform_field.dart';
+import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/social_auth_button.dart';
+import 'package:i_smile_kids_app/features/home/presentation/views/home_view.dart';
 
 class CreateAccountFormFieldSection extends StatelessWidget {
   const CreateAccountFormFieldSection({super.key, required this.cubit});
@@ -32,6 +36,28 @@ class CreateAccountFormFieldSection extends StatelessWidget {
               CustomSnackBar.errorSnackBar(state.errMessage, context);
             } else if (state is AuthCubitCreateAccountSuccess) {
               CustomSnackBar.successSnackBar(state.succMessage, context);
+            } else if (state is AuthCubitGoogleSigninSuccess) {
+              // when Google sign-in success -> check profile completeness then navigate
+              () async {
+                CustomSnackBar.successSnackBar(state.succMessage, context);
+
+                final cubit = context.read<AuthCubit>();
+                final isComplete = await cubit.isProfileComplete();
+
+                if (isComplete) {
+                  // user already completed profile -> go to Home
+                  NavigatorHelper.pushReplaceMent(context, screen: HomeView());
+                } else {
+                  // new user or incomplete -> go to complete profile page
+                  NavigatorHelper.pushReplaceMent(
+                    context,
+                    screen: CompleteAuthView(cubit: cubit),
+                  );
+                }
+              }();
+            } else if (state is AuthCubitGoogleSigninFailure) {
+              print('--------${state.errMessage}');
+              CustomSnackBar.errorSnackBar(state.errMessage, context);
             }
           },
           builder: (context, state) {
@@ -96,6 +122,20 @@ class CreateAccountFormFieldSection extends StatelessWidget {
                       'Create Account',
                       style: FontManger.whiteBoldFont18,
                     ),
+                  ),
+                  SocialAuthButton(
+                    title: 'Continue with Google',
+                    logo: 'google',
+                    onPress: () {
+                      cubit.signinWithGoogle();
+                    },
+                  ),
+                  SocialAuthButton(
+                    textColor: ColorManager.textDark,
+                    bgColor: Colors.white,
+                    title: 'Continue with Apple',
+                    logo: 'apple',
+                    onPress: () {},
                   ),
 
                   CustomAuthRedirectText(

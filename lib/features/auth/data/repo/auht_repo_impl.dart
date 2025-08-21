@@ -88,6 +88,42 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+  @override
+  Future<void> updateUserData({
+    required String uid,
+    required String name,
+    required String age,
+    required String nationality,
+    required String emirateOfResidency,
+    String? photoURL,
+  }) async {
+    return await remoteDataSource.updateUserData(
+      uid: uid,
+      name: name,
+      age: age,
+      nationality: nationality,
+      emirateOfResidency: emirateOfResidency,
+      photoURL: photoURL,
+    );
+  }
+
+  @override
+  Future<Either<AuthFailure, Unit>> sendPasswordResetEmail({
+    required String email,
+  }) async {
+    try {
+      await remoteDataSource.sendPasswordResetEmail(email: email);
+      return const Right(unit);
+    } on FirebaseAuthException catch (e) {
+      debugPrint('-------------------------------------aa');
+      return Left(handleFirebaseAuthException(e));
+    } catch (e) {
+      debugPrint('-------------------------------------ssss');
+
+      return Left(UnknownFailure('Unexpected error: ${e.toString()}'));
+    }
+  }
+
   // @override
   // Stream<User?> get authStateChanges {
   //   return remoteDataSource.authStateChanges;

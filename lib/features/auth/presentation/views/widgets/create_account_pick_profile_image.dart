@@ -1,29 +1,4 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 
-// class CreateAccountPickProfileImage extends StatelessWidget {
-//   const CreateAccountPickProfileImage({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return CircleAvatar(
-//       radius: 50.r,
-//       backgroundColor: const Color.fromRGBO(229, 231, 235, 1),
-//       child: Column(
-//         spacing: 5.h,
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           Icon(Icons.add, color: Colors.grey),
-//           Text(
-//             'Add photo',
-//             style: FontManger.regularFontBlack12.copyWith(color: Colors.grey),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -93,7 +68,7 @@ class CreateAccountPickProfileImage extends StatelessWidget {
                       height: 100.h,
                       fit: BoxFit.cover, // بيظبط الصورة جوه الدايرة
                     ),
-                  ),
+                  ) ,
           ),
         );
       },

@@ -9,6 +9,16 @@ abstract class AuthRemoteDataSource {
   Future<User> login({required String email, required String password});
   Future<User> createAccount({required CreateAccountModel account});
   Future<User> signInWithGoogle();
+  Future<void> sendPasswordResetEmail({required String email});
+
+  Future<void> updateUserData({
+    required String uid,
+    required String name,
+    required String age,
+    required String nationality,
+    required String emirateOfResidency,
+    String? photoURL,
+  });
 
   Future<void> logout();
   Future<User?> getCurrentUser();
@@ -96,8 +106,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       // googleSignIn.initialize();
       await googleSignIn.initialize(
-        serverClientId:
-            '69735136717-pak3o49r3dcsuq137ibkb09hv455rcr5.apps.googleusercontent.com',
+        clientId:
+            '69735136717-hqpib3aedst13af06kpsq5aapgvgfe6q.apps.googleusercontent.com',
+        // serverClientId:
+        //     '69735136717-pak3o49r3dcsuq137ibkb09hv455rcr5.apps.googleusercontent.com',
       );
       final GoogleSignInAccount googleUser = await googleSignIn.authenticate();
 
@@ -152,6 +164,62 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<User?> getCurrentUser() async {
     try {
       return firebaseAuth.currentUser;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> sendPasswordResetEmail({required String email}) async {
+    try {
+      await firebaseAuth.sendPasswordResetEmail(email: email.trim());
+    } on FirebaseAuthException {
+      rethrow; // repo سيتعامل مع الـ FirebaseAuthException
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateUserData({
+    required String uid,
+    required String name,
+    required String age,
+    required String nationality,
+    required String emirateOfResidency,
+    String? photoURL,
+  }) async {
+    try {
+      final user = firebaseAuth.currentUser;
+
+      if (user == null) {
+        throw FirebaseAuthException(
+          code: 'no-current-user',
+          message: 'No user is currently signed in.',
+        );
+      }
+
+      // تحديث الـ displayName
+      if (name.isNotEmpty) {
+        await user.updateDisplayName(name);
+      }
+
+      // تحديث الصورة لو اتغيرت
+      if (photoURL != null && photoURL.isNotEmpty) {
+        await user.updatePhotoURL(photoURL);
+      }
+
+      // حفظ البيانات المحدثة في Firestore
+      await updateUserDetails(
+        uid: uid,
+        // name: name,
+        age: age,
+        nationality: nationality,
+        emirateOfResidency: emirateOfResidency,
+        // photoURL: photoURL ?? user.photoURL,
+      );
+
+      await user.reload();
     } catch (e) {
       rethrow;
     }

@@ -11,6 +11,7 @@ import 'package:i_smile_kids_app/core/widgets/custom_elevated_button.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_snack_bar.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_cubit.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_state.dart';
+import 'package:i_smile_kids_app/features/auth/presentation/views/complete_auth_view.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/create_account_view.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/custom_redirect_naviagor_message.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/custom_textform_field.dart';
@@ -49,16 +50,28 @@ class LoginViewBody extends StatelessWidget {
                         screen: HomeView(),
                       );
                     } else if (state is AuthCubitGoogleSigninSuccess) {
+                      // show toast then check profile completeness and navigate accordingly
                       CustomSnackBar.successSnackBar(
                         state.succMessage,
                         context,
                       );
-                      NavigatorHelper.pushReplaceMent(
-                        context,
-                        screen: HomeView(),
-                      );
+
+                      // run async check without making listener async
+                      () async {
+                        final bool isComplete = await cubit.isProfileComplete();
+                        if (isComplete) {
+                          NavigatorHelper.pushReplaceMent(
+                            context,
+                            screen: HomeView(),
+                          );
+                        } else {
+                          NavigatorHelper.pushReplaceMent(
+                            context,
+                            screen: CompleteAuthView(cubit: cubit),
+                          );
+                        }
+                      }();
                     } else if (state is AuthCubitGoogleSigninFailure) {
-                      print('--------${state.errMessage}');
                       CustomSnackBar.errorSnackBar(state.errMessage, context);
                     } else if (state is AuthCubitLoginFailure) {
                       CustomSnackBar.errorSnackBar(state.errMessage, context);
@@ -83,7 +96,7 @@ class LoginViewBody extends StatelessWidget {
                             prefixIcon: Icons.lock,
                             obscureText: true,
                           ),
-
+                          ForgetPassword(cubit: cubit),
                           Gap(30.h),
                           CustomEleveatedButton(
                             onPress: () {

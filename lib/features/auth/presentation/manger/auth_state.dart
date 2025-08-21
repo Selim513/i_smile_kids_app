@@ -43,6 +43,30 @@ class AuthCubitGoogleSigninFailure extends AuthCubitState {
   AuthCubitGoogleSigninFailure({required this.errMessage});
 }
 
+//-Update user states
+class AuthCubitUpdateUserFailure extends AuthCubitState {
+  final String errMessage;
+
+  AuthCubitUpdateUserFailure({required this.errMessage});
+}
+
+class AuthCubitUpdateUserSuccess extends AuthCubitState {
+  final String succMessage;
+
+  AuthCubitUpdateUserSuccess({required this.succMessage});
+}
+
+//-Reset Password
+class AuthCubitPasswordResetSuccess extends AuthCubitState {
+  final String message;
+  AuthCubitPasswordResetSuccess(this.message);
+}
+
+class AuthCubitPasswordResetFailure extends AuthCubitState {
+  final String errMessage;
+  AuthCubitPasswordResetFailure(this.errMessage);
+}
+
 //-image
 class AuthCubitPickImageSuccess extends AuthCubitState {
   final String imagePath;

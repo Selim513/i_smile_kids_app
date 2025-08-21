@@ -10,7 +10,7 @@ class CustomPrimaryContainer extends StatelessWidget {
     this.padding,
     this.width,
     this.borderColor,
-    this.borderWidth,
+    this.borderWidth, this.boxShadow,
   });
   final Widget widgets;
   final Color? bgColor;
@@ -18,6 +18,7 @@ class CustomPrimaryContainer extends StatelessWidget {
   final Color? borderColor;
   final EdgeInsetsGeometry? padding;
   final double? borderWidth;
+  final List<BoxShadow>? boxShadow;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,6 +27,7 @@ class CustomPrimaryContainer extends StatelessWidget {
           padding ?? EdgeInsets.symmetric(vertical: 20.h, horizontal: 22.w),
 
       decoration: BoxDecoration(
+        boxShadow:boxShadow ,
         color: bgColor ?? Colors.white,
         borderRadius: BorderRadius.circular(15),
         border: Border.all(

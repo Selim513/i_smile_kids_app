@@ -32,6 +32,31 @@ abstract class CustomSnackBar {
     );
   }
 
+  static void brushingTimerEnd(context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 5),
+        shape: ContinuousRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(25),
+        ),
+        behavior: SnackBarBehavior.floating,
+        dismissDirection: DismissDirection.horizontal,
+        content: Column(
+          children: [
+            Text('Well Done Ahmed !', style: FontManger.whiteBoldFont18),
+            Text(
+              'You earned +1 point 🎉',
+              style: FontManger.meduimFontBlack14.copyWith(
+                color: ColorManager.secondary,
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: ColorManager.success,
+      ),
+    );
+  }
+
   static void confrimEmailSnackBar(String message, context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

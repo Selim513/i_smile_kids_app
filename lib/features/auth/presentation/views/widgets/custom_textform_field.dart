@@ -11,8 +11,9 @@ class CustomTextFormField extends StatefulWidget {
     this.keyboardType,
     this.obscureText = false,
     // required this.hintText,
-    required this.prefixIcon,
+    this.prefixIcon,
     required this.title,
+    this.maxLines, this.readOnly,
   });
 
   final String? Function(String? value)? validator;
@@ -20,8 +21,10 @@ class CustomTextFormField extends StatefulWidget {
   final TextInputType? keyboardType;
   final bool obscureText;
   // final String hintText;
-  final IconData prefixIcon;
+  final IconData? prefixIcon;
   final String title;
+  final int? maxLines;
+  final bool? readOnly;
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
@@ -39,6 +42,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      readOnly: widget.readOnly ?? false,
+      maxLines: widget.maxLines ?? 1,
       cursorColor: ColorManager.textDark,
       validator: widget.validator,
       controller: widget.controller,

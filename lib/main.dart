@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:i_smile_kids_app/core/services/service_locator.dart';
 import 'package:i_smile_kids_app/features/auth/data/repo/auht_repo_impl.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_cubit.dart';
-import 'package:i_smile_kids_app/features/auth/presentation/views/login_view.dart';
+import 'package:i_smile_kids_app/features/main/presentation/views/main_view.dart';
 import 'package:i_smile_kids_app/firebase_options.dart';
 
 void main() async {
@@ -36,7 +36,7 @@ class IsmileKids extends StatelessWidget {
             fontFamily: GoogleFonts.inter().fontFamily,
             scaffoldBackgroundColor: Colors.white,
           ),
-          home: LoginView(),
+          home: MainView(),
         ),
       ),
     );
