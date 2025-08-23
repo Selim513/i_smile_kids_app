@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:i_smile_kids_app/core/helper/firebase_helper.dart';
+import 'package:i_smile_kids_app/core/services/firebase_firestore_data_helper.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_elevated_button.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_primary_appbar.dart';
@@ -24,6 +26,30 @@ class _BookAppointmentViewTestState extends State<BookAppointmentViewTest> {
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _problemController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String? name;
+  String? age;
+  Future<void> _loadUserData() async {
+    try {
+      final uid = FirebaseHelper.user!.uid;
+      var userData = await fetchUserDataFromFirestore(uid);
+
+      if (userData != null) {
+        setState(() {
+          name = userData.name;
+          age = userData.age;
+        });
+      }
+    } catch (e) {
+      print("Error loading user data: $e");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -67,8 +93,8 @@ class _BookAppointmentViewTestState extends State<BookAppointmentViewTest> {
                   AppointmentHeaderDatePickedTest(),
                   AvailableTimeSectionTest(),
                   PatientDetailsTest(
-                    nameController: _nameController,
-                    ageController: _ageController,
+                    name: name ?? "",
+                    age: age ?? "",
                     problemController: _problemController,
                   ),
                   BlocBuilder<AppointmentCubit, AppointmentState>(
@@ -81,11 +107,8 @@ class _BookAppointmentViewTestState extends State<BookAppointmentViewTest> {
                                   context
                                       .read<AppointmentCubit>()
                                       .bookAppointment(
-                                        patientName: _nameController.text
-                                            .trim(),
-                                        patientAge: int.parse(
-                                          _ageController.text.trim(),
-                                        ),
+                                        patientName: name ?? '',
+                                        patientAge: age ?? '',
                                         problem: _problemController.text.trim(),
                                       );
                                 }

@@ -1,4 +1,3 @@
-
 import 'package:i_smile_kids_app/features/appointment/data/models/appointment_model.dart';
 import 'package:i_smile_kids_app/features/appointment/data/models/time_slot_model.dart';
 

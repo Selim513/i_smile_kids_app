@@ -6,7 +6,7 @@ class AppointmentModel {
   final String doctorId;
   final String patientUid; // إضافة uid المستخدم للـ security
   final String patientName;
-  final int patientAge;
+  final String patientAge;
   final String problem;
   final DateTime appointmentDate;
   final String timeSlot;
@@ -78,7 +78,7 @@ class AppointmentModel {
     String? doctorId,
     String? patientUid,
     String? patientName,
-    int? patientAge,
+    String? patientAge,
     String? problem,
     DateTime? appointmentDate,
     String? timeSlot,

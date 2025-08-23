@@ -4,15 +4,15 @@ import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/custom_textform_field.dart';
 
 class PatientDetailsTest extends StatelessWidget {
-  final TextEditingController nameController;
-  final TextEditingController ageController;
+  final String age;
+  final String name;
   final TextEditingController problemController;
-  
+
   const PatientDetailsTest({
     super.key,
-    required this.nameController,
-    required this.ageController,
     required this.problemController,
+    required this.age,
+    required this.name,
   });
 
   @override
@@ -23,31 +23,15 @@ class PatientDetailsTest extends StatelessWidget {
       children: [
         Text('Patient Details', style: FontManger.blackBoldFont18),
         CustomTextFormField(
-          controller: nameController,
+          readOnly: true,
+
           prefixIcon: Icons.person,
-          title: 'Full name',
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter patient name';
-            }
-            return null;
-          },
+          title: name,
         ),
         CustomTextFormField(
-          controller: ageController,
           prefixIcon: Icons.cake_rounded,
-          title: 'Age',
+          title: age,
           keyboardType: TextInputType.number,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter patient age';
-            }
-            final age = int.tryParse(value);
-            if (age == null || age <= 0) {
-              return 'Please enter a valid age';
-            }
-            return null;
-          },
         ),
         CustomTextFormField(
           controller: problemController,

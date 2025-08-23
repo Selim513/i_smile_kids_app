@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:i_smile_kids_app/core/helper/firebase_helper.dart';
 import 'package:i_smile_kids_app/core/models/user_models.dart';
+import 'package:i_smile_kids_app/features/appointment/data/models/appointment_model.dart';
 
 Future<void> saveUserDataToFirestore({
   required String uid,
@@ -48,10 +49,7 @@ Future<void> updateUserDetails({
   });
 }
 
-Future<void> updateProfileImag({
-  required String uid,
-  String? photoURL,
-}) async {
+Future<void> updateProfileImag({required String uid, String? photoURL}) async {
   FirebaseFirestore.instance.collection('users').doc(uid).update({
     'uid': uid,
     'photoURL': photoURL,
@@ -92,5 +90,23 @@ Future<UserModel?> fetchUserDataFromFirestore(String uid) async {
     }
   } catch (e) {
     throw Exception('Failed to fetch user data: ${e.toString()}');
+  }
+}
+
+//-fetch user appointment
+Future<AppointmentModel?> fetchAppointmentData(String appointmentId) async {
+  try {
+    DocumentSnapshot doc = await FirebaseFirestore.instance
+        .collection('appointments')
+        .doc(appointmentId)
+        .get();
+
+    if (doc.exists && doc.data() != null) {
+      return AppointmentModel.fromJson(doc.data() as Map<String, dynamic>);
+    } else {
+      return null;
+    }
+  } catch (e) {
+    throw Exception('Failed to fetch appointment data: ${e.toString()}');
   }
 }
