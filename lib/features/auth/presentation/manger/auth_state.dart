@@ -2,8 +2,9 @@ abstract class AuthCubitState {}
 
 class AuthCubitInitial extends AuthCubitState {}
 
-class AuthCubiLoading extends AuthCubitState {}
 //-Login sate
+
+class AuthCubitLoginLoading extends AuthCubitState {}
 
 class AuthCubitLoginSuccess extends AuthCubitState {
   final String succMessage;
@@ -18,6 +19,8 @@ class AuthCubitLoginFailure extends AuthCubitState {
 }
 
 //- Create account state
+class AuthCubitCreateAccountLoading extends AuthCubitState {}
+
 class AuthCubitCreateAccountSuccess extends AuthCubitState {
   final String succMessage;
 
@@ -31,6 +34,8 @@ class AuthCubitCreateAccountFailure extends AuthCubitState {
 }
 
 //-Signin with google
+class AuthCubitGoogleSigninLoading extends AuthCubitState {}
+
 class AuthCubitGoogleSigninSuccess extends AuthCubitState {
   final String succMessage;
 
@@ -50,6 +55,8 @@ class AuthCubitUpdateUserFailure extends AuthCubitState {
   AuthCubitUpdateUserFailure({required this.errMessage});
 }
 
+class AuthCubitUpdateUserDataLoading extends AuthCubitState {}
+
 class AuthCubitUpdateUserSuccess extends AuthCubitState {
   final String succMessage;
 
@@ -57,6 +64,8 @@ class AuthCubitUpdateUserSuccess extends AuthCubitState {
 }
 
 //-Reset Password
+class AuthCubitResetPassowrdLoading extends AuthCubitState {}
+
 class AuthCubitPasswordResetSuccess extends AuthCubitState {
   final String message;
   AuthCubitPasswordResetSuccess(this.message);
@@ -65,15 +74,4 @@ class AuthCubitPasswordResetSuccess extends AuthCubitState {
 class AuthCubitPasswordResetFailure extends AuthCubitState {
   final String errMessage;
   AuthCubitPasswordResetFailure(this.errMessage);
-}
-
-//-image
-class AuthCubitPickImageSuccess extends AuthCubitState {
-  final String imagePath;
-  AuthCubitPickImageSuccess(this.imagePath);
-}
-
-class AuthCubitPickImageFailure extends AuthCubitState {
-  final String errMessage;
-  AuthCubitPickImageFailure(this.errMessage);
 }

@@ -12,18 +12,18 @@ abstract class AuthRepository {
     required CreateAccountModel account,
   });
   Future<void> updateUserData({
-     required String uid,
+    required String uid,
     required String name,
     required String age,
     required String nationality,
     required String emirateOfResidency,
-    String? photoURL,
 
+    // File? photoURL,
   });
   Future<Either<AuthFailure, User>> signInWithGoogle();
-  Future<Either<AuthFailure, Unit>> sendPasswordResetEmail({required String email});
-
-
+  Future<Either<AuthFailure, Unit>> sendPasswordResetEmail({
+    required String email,
+  });
 
   Future<Either<AuthFailure, Unit>> logout();
 

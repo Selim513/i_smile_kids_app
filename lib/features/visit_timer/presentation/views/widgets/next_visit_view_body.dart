@@ -10,42 +10,45 @@ class NextVisitTimeViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsetsGeometry.all(20.r),
-      child: CustomPrimaryContainer(
-        widgets: Column(
-          spacing: 10,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 200.w,
-              height: 150.h,
-              child: AssetHelper.imageAsset(name: 'boy1'),
-            ),
-            Text('Hello Ahmed', style: FontManger.balsamiqSansFontBold20),
-            Text(
-              'Tuesday, October 26',
-              textAlign: TextAlign.center,
-              style: FontManger.balsamiqSansFontBold20.copyWith(
-                fontSize: 50.sp,
-                color: ColorManager.warning,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsetsGeometry.all(20.r),
+        child: CustomPrimaryContainer(
+          widgets: Column(
+            spacing: 10,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 200.w,
+                height: 150.h,
+                child: AssetHelper.imageAsset(name: 'boy1'),
               ),
-            ),
-            Text(
-              '10:30 AM',
-              textAlign: TextAlign.center,
-              style: FontManger.balsamiqSansFontBold20.copyWith(
-                fontSize: 50.sp,
-                color: ColorManager.warning,
+              Text('Hello Ahmed', style: FontManger.balsamiqSansFontBold20),
+              Text(
+                'Tuesday, October 26',
+                textAlign: TextAlign.center,
+                style: FontManger.balsamiqSansFontBold20.copyWith(
+                  fontSize: 50.sp,
+                  color: ColorManager.warning,
+                ),
               ),
-            ),
-            Text(
-              'We can\'t wait to see your bright smile!',
-              style: FontManger.meduimFontBlack14.copyWith(
-                color: ColorManager.success,
+              Text(
+                '10:30 AM',
+                textAlign: TextAlign.center,
+                style: FontManger.balsamiqSansFontBold20.copyWith(
+                  fontSize: 50.sp,
+                  color: ColorManager.warning,
+                ),
               ),
-            ),
-          ],
+              Text(
+                'We can\'t wait to see your bright smile!',
+                textAlign: TextAlign.center,
+                style: FontManger.meduimFontBlack14.copyWith(
+                  color: ColorManager.success,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

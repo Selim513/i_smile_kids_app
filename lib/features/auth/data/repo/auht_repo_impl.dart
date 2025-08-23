@@ -95,7 +95,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required String age,
     required String nationality,
     required String emirateOfResidency,
-    String? photoURL,
+    // File? photoURL,
   }) async {
     return await remoteDataSource.updateUserData(
       uid: uid,
@@ -103,7 +103,7 @@ class AuthRepositoryImpl implements AuthRepository {
       age: age,
       nationality: nationality,
       emirateOfResidency: emirateOfResidency,
-      photoURL: photoURL,
+      // pickedImage: photoURL,
     );
   }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:i_smile_kids_app/features/home/presentation/views/home_view.dart';
-import 'package:i_smile_kids_app/features/prfoile/presentation/views/profile_views.dart';
+import 'package:i_smile_kids_app/features/profile/presentation/views/profile_views.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 class MainView extends StatefulWidget {
@@ -11,9 +11,21 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-  final PersistentTabController _controller = PersistentTabController(
+  late PersistentTabController _controller = PersistentTabController(
     initialIndex: 0,
   );
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = PersistentTabController(initialIndex: 0);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose(); // مهم جداً!
+    super.dispose();
+  }
 
   List<Widget> _buildScreens() {
     return [HomeView(), ProfileViews()];

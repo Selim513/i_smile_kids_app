@@ -10,8 +10,7 @@ import 'package:i_smile_kids_app/core/widgets/custom_elevated_button.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_snack_bar.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_cubit.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_state.dart';
-import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/create_account_pick_profile_image.dart';
-import 'package:i_smile_kids_app/features/home/presentation/views/home_view.dart';
+import 'package:i_smile_kids_app/features/main/presentation/views/main_view.dart';
 
 class CompleteAuthView extends StatelessWidget {
   const CompleteAuthView({super.key, required this.cubit});
@@ -29,7 +28,7 @@ class CompleteAuthView extends StatelessWidget {
               listener: (context, state) {
                 if (state is AuthCubitUpdateUserSuccess) {
                   CustomSnackBar.successSnackBar('Your all done !', context);
-                  NavigatorHelper.pushReplaceMent(context, screen: HomeView());
+                  NavigatorHelper.pushReplaceMent(context, screen: MainView());
                 } else if (state is AuthCubitUpdateUserFailure) {
                   print('-------${state.errMessage}');
                   CustomSnackBar.errorSnackBar(state.errMessage, context);
@@ -41,7 +40,7 @@ class CompleteAuthView extends StatelessWidget {
                   child: Column(
                     spacing: 15.h,
                     children: [
-                      CreateAccountPickProfileImage(),
+                      // CreateAccountPickProfileImage(),
                       Gap(30.h),
                       ChildAgeDropDownFormField(
                         controller: cubit.agrController,

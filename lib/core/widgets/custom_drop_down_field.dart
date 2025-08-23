@@ -7,8 +7,15 @@ import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 
 class CustomNationalityTextFormField extends StatelessWidget {
   final TextEditingController controller;
+  final String? labelText;
+  final String? hintText;
 
-  const CustomNationalityTextFormField({super.key, required this.controller});
+  const CustomNationalityTextFormField({
+    super.key,
+    required this.controller,
+    this.labelText,
+    this.hintText,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +30,10 @@ class CustomNationalityTextFormField extends StatelessWidget {
       readOnly: true,
       controller: controller,
       decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: FontManger.textFomrHintFont14,
         prefixIcon: Icon(Icons.language, color: ColorManager.greyColor),
-        labelText: 'Nationality',
+        labelText: labelText ?? 'Nationality',
         labelStyle: FontManger.meduimFontBlack14.copyWith(
           color: ColorManager.greyColor,
         ),
@@ -49,10 +58,14 @@ class CustomNationalityTextFormField extends StatelessWidget {
 
 class CustomEmirateOfResidencyDropDownTextFormField extends StatelessWidget {
   final TextEditingController controller;
+  final String? labelText;
+  final String? hintText;
 
   const CustomEmirateOfResidencyDropDownTextFormField({
     super.key,
     required this.controller,
+    this.labelText,
+    this.hintText,
   });
   static final List<String> emirates = [
     'Abu Dhabi',
@@ -78,8 +91,10 @@ class CustomEmirateOfResidencyDropDownTextFormField extends StatelessWidget {
         controller.text = value ?? '';
       },
       decoration: InputDecoration(
+        hintText: hintText ?? 'Emirate of Residency',
+        hintStyle: FontManger.textFomrHintFont14,
         prefixIcon: Icon(Icons.home, color: ColorManager.greyColor),
-        labelText: 'Emirate of Residency',
+        labelText: labelText,
         labelStyle: FontManger.meduimFontBlack14.copyWith(
           color: ColorManager.greyColor,
         ),
@@ -105,8 +120,15 @@ class CustomEmirateOfResidencyDropDownTextFormField extends StatelessWidget {
 
 class ChildAgeDropDownFormField extends StatelessWidget {
   final TextEditingController controller;
+  final String? labelText;
+  final String? hintText;
 
-  const ChildAgeDropDownFormField({super.key, required this.controller});
+  const ChildAgeDropDownFormField({
+    super.key,
+    required this.controller,
+    this.labelText,
+    this.hintText,
+  });
   static final List<String> ages = List<String>.generate(
     16,
     (i) => (i + 3).toString(),
@@ -126,8 +148,11 @@ class ChildAgeDropDownFormField extends StatelessWidget {
         controller.text = value ?? '';
       },
       decoration: InputDecoration(
+        
+        hintText: hintText,
+        hintStyle: FontManger.textFomrHintFont14,
         prefixIcon: Icon(Icons.cake_rounded, color: ColorManager.greyColor),
-        labelText: 'Age',
+        labelText: labelText ?? 'Age',
         labelStyle: FontManger.meduimFontBlack14.copyWith(
           color: ColorManager.greyColor,
         ),

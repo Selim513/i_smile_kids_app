@@ -39,7 +39,7 @@ class DoctorProfileHeader extends StatelessWidget {
                   color: ColorManager.success.withValues(alpha: 0.5),
                   spreadRadius: 2,
                   blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
+                  offset: Offset(0, 3),
                 ),
               ],
               shape: BoxShape.circle,

@@ -18,11 +18,11 @@ class BrushingTimerView extends StatefulWidget {
 }
 
 class _BrushingTimerViewState extends State<BrushingTimerView> {
-  int _seconds = 120; // دقيقتين = 120 ثانية
+  int _seconds = 10; // دقيقتين = 10 ثانية
   Timer? _timer;
   final bool isRunning = false;
 
-  final int _initialSeconds = 120;
+  final int _initialSeconds = 10;
   void pauseTimer() {
     _timer?.cancel();
   }

@@ -10,9 +10,9 @@ class CustomTextFormField extends StatefulWidget {
     this.controller,
     this.keyboardType,
     this.obscureText = false,
-    // required this.hintText,
+     this.hintText,
     this.prefixIcon,
-    required this.title,
+     this.title,
     this.maxLines, this.readOnly,
   });
 
@@ -20,9 +20,9 @@ class CustomTextFormField extends StatefulWidget {
   final TextEditingController? controller;
   final TextInputType? keyboardType;
   final bool obscureText;
-  // final String hintText;
+  final String? hintText;
   final IconData? prefixIcon;
-  final String title;
+  final String? title;
   final int? maxLines;
   final bool? readOnly;
 
@@ -42,6 +42,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      
       readOnly: widget.readOnly ?? false,
       maxLines: widget.maxLines ?? 1,
       cursorColor: ColorManager.textDark,
@@ -72,8 +73,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               )
             : null,
         prefixIcon: Icon(widget.prefixIcon, color: Colors.grey),
-        // hintText: widget.hintText,
-        // hintStyle: FontManger.textFomrHintFont14,
+        hintText: widget.hintText,
+        hintStyle: FontManger.textFomrHintFont14,
         fillColor: ColorManager.textDark.withValues(alpha: 0.1),
         filled: true,
         border: customOutLineBorders(),

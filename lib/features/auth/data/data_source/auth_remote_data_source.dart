@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:i_smile_kids_app/core/services/save_user_data_to_firestore.dart';
+import 'package:i_smile_kids_app/core/services/firebase_firestore_data_helper.dart';
 import 'package:i_smile_kids_app/core/services/service_locator.dart';
-import 'package:i_smile_kids_app/core/services/upload_image_helper.dart';
 import 'package:i_smile_kids_app/features/auth/data/models/create_account_model.dart';
 
 abstract class AuthRemoteDataSource {
@@ -17,7 +16,7 @@ abstract class AuthRemoteDataSource {
     required String age,
     required String nationality,
     required String emirateOfResidency,
-    String? photoURL,
+    // File? pickedImage,
   });
 
   Future<void> logout();
@@ -66,20 +65,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
 
       final user = credential.user!;
-      String? photoURL;
 
-      // Upload profile image if provided
-      if (account.profileImage != null) {
-        photoURL = await uploadProfileImage(user.uid, account.profileImage!);
-      }
-
-      // Update user profile
       await user.updateDisplayName(account.name);
-      if (photoURL != null) {
-        await user.updatePhotoURL(photoURL);
-      }
 
-      // Save additional user data to Firestore
       await saveUserDataToFirestore(
         signinMethod: 'Email Address',
         age: account.age,
@@ -88,7 +76,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         email: account.email,
         nationality: account.nationality,
         emirateOfResidency: account.emirateOfResidency,
-        photoURL: photoURL,
       );
 
       // Reload user to get updated data
@@ -187,7 +174,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String age,
     required String nationality,
     required String emirateOfResidency,
-    String? photoURL,
   }) async {
     try {
       final user = firebaseAuth.currentUser;
@@ -204,19 +190,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         await user.updateDisplayName(name);
       }
 
-      // تحديث الصورة لو اتغيرت
-      if (photoURL != null && photoURL.isNotEmpty) {
-        await user.updatePhotoURL(photoURL);
-      }
-
       // حفظ البيانات المحدثة في Firestore
       await updateUserDetails(
         uid: uid,
-        // name: name,
         age: age,
         nationality: nationality,
         emirateOfResidency: emirateOfResidency,
-        // photoURL: photoURL ?? user.photoURL,
       );
 
       await user.reload();

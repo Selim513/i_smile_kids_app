@@ -11,10 +11,11 @@ class DoctorsProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomPrimaryAppbar(),
+      // appBar: CustomPrimaryAppbar(),
       body: CustomScrollView(
         // spacing: 15.h,
         slivers: [
+          SliverToBoxAdapter(child: CustomSecondaryAppbar()),
           SliverToBoxAdapter(child: DoctorProfileHeader()),
           SliverToBoxAdapter(child: Gap(20.h)),
           SliverToBoxAdapter(child: DoctorProfileBody()),

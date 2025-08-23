@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:i_smile_kids_app/core/helper/navigator_helper.dart';
-import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/features/home/data/models/categories_model.dart';
 
@@ -20,7 +19,7 @@ class HomeCategoriesGridView extends StatelessWidget {
       itemBuilder: (context, index) {
         var category = categorieList[index];
         return Padding(
-          padding: EdgeInsetsGeometry.all(5.r),
+          padding: EdgeInsetsGeometry.all(10.r),
           child: GestureDetector(
             onTap: () => NavigatorHelper.push(
               context,
@@ -28,7 +27,7 @@ class HomeCategoriesGridView extends StatelessWidget {
             ),
             child: Container(
               decoration: BoxDecoration(
-                color: ColorManager.primary,
+                color: categorieList[index].bgColor,
                 borderRadius: BorderRadius.circular(15.r),
               ),
               child: Column(
@@ -38,7 +37,7 @@ class HomeCategoriesGridView extends StatelessWidget {
                   Icon(category.icon, color: Colors.white),
                   Text(
                     category.title,
-                    style: FontManger.whiteBoldFont18,
+                    style: FontManger.whiteBoldFont18.copyWith(fontSize: 16.sp),
                     textAlign: TextAlign.center,
                   ),
                 ],

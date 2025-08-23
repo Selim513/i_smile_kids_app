@@ -17,7 +17,7 @@ import 'package:i_smile_kids_app/features/auth/presentation/views/login_view.dar
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/custom_redirect_naviagor_message.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/custom_textform_field.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/social_auth_button.dart';
-import 'package:i_smile_kids_app/features/home/presentation/views/home_view.dart';
+import 'package:i_smile_kids_app/features/main/presentation/views/main_view.dart';
 
 class CreateAccountFormFieldSection extends StatelessWidget {
   const CreateAccountFormFieldSection({super.key, required this.cubit});
@@ -36,6 +36,7 @@ class CreateAccountFormFieldSection extends StatelessWidget {
               CustomSnackBar.errorSnackBar(state.errMessage, context);
             } else if (state is AuthCubitCreateAccountSuccess) {
               CustomSnackBar.successSnackBar(state.succMessage, context);
+              NavigatorHelper.pushReplaceMent(context, screen: LoginView());
             } else if (state is AuthCubitGoogleSigninSuccess) {
               // when Google sign-in success -> check profile completeness then navigate
               () async {
@@ -46,7 +47,7 @@ class CreateAccountFormFieldSection extends StatelessWidget {
 
                 if (isComplete) {
                   // user already completed profile -> go to Home
-                  NavigatorHelper.pushReplaceMent(context, screen: HomeView());
+                  NavigatorHelper.pushReplaceMent(context, screen: MainView());
                 } else {
                   // new user or incomplete -> go to complete profile page
                   NavigatorHelper.pushReplaceMent(
@@ -118,18 +119,30 @@ class CreateAccountFormFieldSection extends StatelessWidget {
                         );
                       }
                     },
-                    child: Text(
-                      'Create Account',
-                      style: FontManger.whiteBoldFont18,
-                    ),
+                    child: state is AuthCubitCreateAccountLoading
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              color: ColorManager.textLight,
+                            ),
+                          )
+                        : Text(
+                            'Create Account',
+                            style: FontManger.whiteBoldFont18,
+                          ),
                   ),
-                  SocialAuthButton(
-                    title: 'Continue with Google',
-                    logo: 'google',
-                    onPress: () {
-                      cubit.signinWithGoogle();
-                    },
-                  ),
+                  state is AuthCubitGoogleSigninLoading
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            color: ColorManager.textLight,
+                          ),
+                        )
+                      : SocialAuthButton(
+                          title: 'Continue with Google',
+                          logo: 'google',
+                          onPress: () {
+                            cubit.signinWithGoogle();
+                          },
+                        ),
                   SocialAuthButton(
                     textColor: ColorManager.textDark,
                     bgColor: Colors.white,

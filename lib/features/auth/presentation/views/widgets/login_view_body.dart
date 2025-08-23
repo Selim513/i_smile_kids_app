@@ -16,7 +16,7 @@ import 'package:i_smile_kids_app/features/auth/presentation/views/create_account
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/custom_redirect_naviagor_message.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/custom_textform_field.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/social_auth_button.dart';
-import 'package:i_smile_kids_app/features/home/presentation/views/home_view.dart';
+import 'package:i_smile_kids_app/features/main/presentation/views/main_view.dart';
 
 class LoginViewBody extends StatelessWidget {
   const LoginViewBody({super.key});
@@ -47,7 +47,7 @@ class LoginViewBody extends StatelessWidget {
                       );
                       NavigatorHelper.pushReplaceMent(
                         context,
-                        screen: HomeView(),
+                        screen: MainView(),
                       );
                     } else if (state is AuthCubitGoogleSigninSuccess) {
                       // show toast then check profile completeness and navigate accordingly
@@ -59,16 +59,18 @@ class LoginViewBody extends StatelessWidget {
                       // run async check without making listener async
                       () async {
                         final bool isComplete = await cubit.isProfileComplete();
-                        if (isComplete) {
-                          NavigatorHelper.pushReplaceMent(
-                            context,
-                            screen: HomeView(),
-                          );
-                        } else {
-                          NavigatorHelper.pushReplaceMent(
-                            context,
-                            screen: CompleteAuthView(cubit: cubit),
-                          );
+                        if (context.mounted) {
+                          if (isComplete) {
+                            NavigatorHelper.pushReplaceMent(
+                              context,
+                              screen: MainView(),
+                            );
+                          } else {
+                            NavigatorHelper.pushReplaceMent(
+                              context,
+                              screen: CompleteAuthView(cubit: cubit),
+                            );
+                          }
                         }
                       }();
                     } else if (state is AuthCubitGoogleSigninFailure) {
@@ -118,18 +120,30 @@ class LoginViewBody extends StatelessWidget {
                             //         ),
                             //       )
                             // :
-                            child: Text(
-                              'Login',
-                              style: FontManger.whiteBoldFont18,
-                            ),
+                            child: state is AuthCubitLoginLoading
+                                ? Center(
+                                    child: CircularProgressIndicator(
+                                      color: ColorManager.textLight,
+                                    ),
+                                  )
+                                : Text(
+                                    'Login',
+                                    style: FontManger.whiteBoldFont18,
+                                  ),
                           ),
-                          SocialAuthButton(
-                            title: 'Login with Google',
-                            logo: 'google',
-                            onPress: () {
-                              cubit.signinWithGoogle();
-                            },
-                          ),
+                          state is AuthCubitGoogleSigninLoading
+                              ? Center(
+                                  child: CircularProgressIndicator(
+                                    color: ColorManager.textLight,
+                                  ),
+                                )
+                              : SocialAuthButton(
+                                  title: 'Login with Google',
+                                  logo: 'google',
+                                  onPress: () {
+                                    cubit.signinWithGoogle();
+                                  },
+                                ),
                           SocialAuthButton(
                             textColor: ColorManager.textDark,
                             bgColor: Colors.white,
@@ -137,7 +151,6 @@ class LoginViewBody extends StatelessWidget {
                             logo: 'apple',
                             onPress: () {},
                           ),
-                          Gap(20.h),
                           CustomAuthRedirectText(
                             isLogin: true,
                             onTap: () => NavigatorHelper.pushReplaceMent(

@@ -11,17 +11,19 @@ class HomeViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.all(15.r),
-        child: Column(
-          spacing: 10.h,
-          children: [
-            HomeAppBar(),
-            Gap(5.h),
-            HomeViewHeader(),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(15.r),
+          child: Column(
+            spacing: 10.h,
+            children: [
+              HomeAppBar(),
+              Gap(5.h),
+              HomeViewHeader(),
 
-            HomeCategoriesGridView(),
-          ],
+              HomeCategoriesGridView(),
+            ],
+          ),
         ),
       ),
     );
