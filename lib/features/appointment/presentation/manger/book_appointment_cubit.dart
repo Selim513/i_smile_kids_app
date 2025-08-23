@@ -1,8 +1,10 @@
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:i_smile_kids_app/features/appointment_test/data/models/appointment_model.dart';
-import 'package:i_smile_kids_app/features/appointment_test/data/models/time_slot_model.dart';
-import 'package:i_smile_kids_app/features/appointment_test/data/repo/appointment_repo_impl.dart';
-import 'package:i_smile_kids_app/features/appointment_test/presentation/manger/book_appointment_state.dart';
+import 'package:i_smile_kids_app/features/appointment/data/models/appointment_model.dart';
+import 'package:i_smile_kids_app/features/appointment/data/models/time_slot_model.dart';
+import 'package:i_smile_kids_app/features/appointment/data/repo/appointment_repo_impl.dart';
+import 'package:i_smile_kids_app/features/appointment/presentation/manger/book_appointment_state.dart';
 
 class AppointmentCubit extends Cubit<AppointmentState> {
   final AppointmentRepositoryImpl appointmentrepo;
@@ -10,30 +12,36 @@ class AppointmentCubit extends Cubit<AppointmentState> {
   AppointmentCubit(this.appointmentrepo) : super(AppointmentInitial());
 
   String? selectedTimeSlot;
-
   DateTime selectedDate = DateTime.now();
   List<TimeSlotModel> availableTimeSlots = [];
 
   void selectDate(DateTime date) {
     selectedDate = date;
+    // إعادة تعيين الوقت المحدد عند تغيير التاريخ
+    selectedTimeSlot = null;
+    
+    // emit state لإخفاء التوقيت المحدد في الـ UI
+    emit(DateSelected(date));
+    
     getAvailableTimeSlots();
   }
 
   void selectTimeSlot(String timeSlot) {
     selectedTimeSlot = timeSlot;
-    emit(TimeSlotSelected(timeSlot));
+    emit(TimeSlotSelected(timeSlot, availableTimeSlots));
   }
 
   Future<void> getAvailableTimeSlots() async {
     emit(LoadingTimeSlots());
     try {
-      // هنا تحط doctorId من المكان اللي بتجيبه منه
-      const String doctorId = 'doctor_1'; // استبدل ده بالـ doctor ID الحقيقي
+      const String doctorId = 'doctor_1';
 
       availableTimeSlots = await appointmentrepo.getAvailableTimeSlots(
         doctorId,
         selectedDate,
       );
+      
+      // التأكد من إرسال الـ timeSlots مع الـ state
       emit(TimeSlotsLoaded(availableTimeSlots));
     } catch (e) {
       emit(AppointmentError(e.toString()));
@@ -52,12 +60,13 @@ class AppointmentCubit extends Cubit<AppointmentState> {
 
     emit(BookingAppointment());
     try {
-      const String doctorId = 'doctor_1'; // استبدل ده بالـ doctor ID الحقيقي
+      const String doctorId = 'doctor_1';
 
       final success = await appointmentrepo.bookAppointment(
         AppointmentModel(
-          id: '1',
+          id: '', // خلي الـ repository يولد الـ ID
           doctorId: doctorId,
+          patientUid: FirebaseAuth.instance.currentUser?.uid ?? '',
           patientName: patientName,
           patientAge: patientAge,
           problem: problem,
@@ -70,6 +79,8 @@ class AppointmentCubit extends Cubit<AppointmentState> {
 
       if (success) {
         emit(AppointmentBooked());
+        // إعادة تعيين التوقيت المحدد بعد الحجز
+        selectedTimeSlot = null;
         // تحديث المواعيد المتاحة بعد الحجز
         getAvailableTimeSlots();
       } else {
@@ -78,5 +89,11 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     } catch (e) {
       emit(AppointmentError(e.toString()));
     }
+  }
+
+  // إضافة method لإعادة تعيين الحالة
+  void resetSelection() {
+    selectedTimeSlot = null;
+    emit(AppointmentInitial());
   }
 }

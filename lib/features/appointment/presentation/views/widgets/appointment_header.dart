@@ -1,21 +1,30 @@
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
-import 'package:intl/intl.dart';
+import 'package:i_smile_kids_app/features/appointment/presentation/manger/book_appointment_cubit.dart';
 
-class AppointmentHeaderDatePicked extends StatefulWidget {
-  const AppointmentHeaderDatePicked({super.key});
+class AppointmentHeaderDatePickedTest extends StatefulWidget {
+  const AppointmentHeaderDatePickedTest({super.key});
 
   @override
-  State<AppointmentHeaderDatePicked> createState() =>
-      _AppointmentHeaderDatePickedState();
+  State<AppointmentHeaderDatePickedTest> createState() =>
+      _AppointmentHeaderDatePickedTestState();
 }
 
-class _AppointmentHeaderDatePickedState
-    extends State<AppointmentHeaderDatePicked> {
-  var selectedValue = DateFormat.yMMMd().format(DateTime.now()).toString();
+class _AppointmentHeaderDatePickedTestState
+    extends State<AppointmentHeaderDatePickedTest> {
+  @override
+  void initState() {
+    super.initState();
+    // تحميل المواعيد المتاحة عند فتح الصفحة
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AppointmentCubit>().getAvailableTimeSlots();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,11 +40,7 @@ class _AppointmentHeaderDatePickedState
         monthTextStyle: FontManger.regularFontBlack12,
         dayTextStyle: FontManger.regularFontBlack12,
         onDateChange: (date) {
-          //  New date selected
-          setState(() {
-            selectedValue = date.toString();
-            // print(_selectedValue);
-          });
+          context.read<AppointmentCubit>().selectDate(date);
         },
       ),
     );

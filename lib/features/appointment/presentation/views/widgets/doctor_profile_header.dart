@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:i_smile_kids_app/core/helper/asset_helper.dart';
 import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
-import 'package:i_smile_kids_app/features/appointment/presentation/views/widgets/custom_dovtor_profile_achivements_container.dart';
+import 'package:i_smile_kids_app/features/appointment/presentation/views/widgets/custom_doctor_profile_achivements_container.dart';
 
 class DoctorProfileHeader extends StatelessWidget {
   const DoctorProfileHeader({super.key});

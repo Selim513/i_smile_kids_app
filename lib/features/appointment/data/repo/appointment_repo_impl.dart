@@ -1,7 +1,8 @@
-import 'package:i_smile_kids_app/features/appointment_test/data/data_source/appointment_data_source.dart';
-import 'package:i_smile_kids_app/features/appointment_test/data/models/appointment_model.dart';
-import 'package:i_smile_kids_app/features/appointment_test/data/models/time_slot_model.dart';
-import 'package:i_smile_kids_app/features/appointment_test/data/repo/appontment_repo.dart';
+
+import 'package:i_smile_kids_app/features/appointment/data/data_source/appointment_data_source.dart';
+import 'package:i_smile_kids_app/features/appointment/data/models/appointment_model.dart';
+import 'package:i_smile_kids_app/features/appointment/data/models/time_slot_model.dart';
+import 'package:i_smile_kids_app/features/appointment/data/repo/appontment_repo.dart';
 
 class AppointmentRepositoryImpl implements AppointmentRepository {
   final AppointmentRemoteDataSource _remoteDataSource;
@@ -35,5 +36,15 @@ class AppointmentRepositoryImpl implements AppointmentRepository {
     DateTime date,
   ) {
     return _remoteDataSource.getDoctorAppointments(doctorId, date);
+  }
+
+  @override
+  Future<List<AppointmentModel>> getUserAppointments() {
+    return _remoteDataSource.getUserAppointments();
+  }
+
+  @override
+  Future<bool> cancelAppointment(String appointmentId) {
+    return _remoteDataSource.cancelAppointment(appointmentId);
   }
 }

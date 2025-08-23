@@ -1,9 +1,12 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:i_smile_kids_app/features/appointment_test/data/models/appointment_model.dart';
-import 'package:i_smile_kids_app/features/appointment_test/data/models/time_slot_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:i_smile_kids_app/features/appointment/data/models/appointment_model.dart';
+import 'package:i_smile_kids_app/features/appointment/data/models/time_slot_model.dart';
 
 class AppointmentRemoteDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<List<TimeSlotModel>> getAvailableTimeSlots(
     String doctorId,
@@ -38,35 +41,41 @@ class AppointmentRemoteDataSource {
 
   Future<bool> bookAppointment(AppointmentModel appointment) async {
     try {
-      // بدء transaction لضمان الحجز الآمن
       return await _firestore.runTransaction((transaction) async {
-        // التحقق من توفر الموعد أولاً
-        final timeSlotQuery = await _firestore
-            .collection('time_slots')
-            .where('doctorId', isEqualTo: appointment.doctorId)
-            .where(
-              'date',
-              isEqualTo: Timestamp.fromDate(appointment.appointmentDate),
-            )
-            .where('time', isEqualTo: appointment.timeSlot)
-            .where('isAvailable', isEqualTo: true)
-            .get();
+        // البحث عن الموعد المتاح بناءً على deterministic ID المستخدم في initialization
+        final dayOnly = DateTime(
+          appointment.appointmentDate.year,
+          appointment.appointmentDate.month,
+          appointment.appointmentDate.day,
+        );
 
-        if (timeSlotQuery.docs.isEmpty) {
+        final timeParts = appointment.timeSlot.split(':');
+        final hour = int.parse(timeParts[0]);
+        final minute = int.parse(timeParts[1]);
+
+        final docId =
+            '${appointment.doctorId}_${dayOnly.year}${dayOnly.month.toString().padLeft(2, '0')}${dayOnly.day.toString().padLeft(2, '0')}_${hour.toString().padLeft(2, '0')}${minute.toString().padLeft(2, '0')}';
+
+        final timeSlotRef = _firestore.collection('time_slots').doc(docId);
+        final timeSlotDoc = await transaction.get(timeSlotRef);
+
+        if (!timeSlotDoc.exists || timeSlotDoc.data()?['isAvailable'] != true) {
           throw Exception('Time slot is no longer available');
         }
 
-        final timeSlotDoc = timeSlotQuery.docs.first;
-
         // إنشاء الحجز
         final appointmentRef = _firestore.collection('appointments').doc();
-        transaction.set(
-          appointmentRef,
-          appointment.toJson()..['id'] = appointmentRef.id,
-        );
+        final appointmentData = appointment.toJson();
+        appointmentData['id'] = appointmentRef.id;
+
+        // ✅ أضفنا الـ timestamps هنا بدل ما يكونوا في الموديل
+        appointmentData['createdAt'] = FieldValue.serverTimestamp();
+        appointmentData['updatedAt'] = FieldValue.serverTimestamp();
+
+        transaction.set(appointmentRef, appointmentData);
 
         // تحديث حالة الموعد إلى غير متاح
-        transaction.update(timeSlotDoc.reference, {'isAvailable': false});
+        transaction.update(timeSlotRef, {'isAvailable': false});
 
         return true;
       });
@@ -113,6 +122,96 @@ class AppointmentRemoteDataSource {
     }
   }
 
+  // جلب مواعيد المستخدم الحالي
+  Future<List<AppointmentModel>> getUserAppointments() async {
+    try {
+      final userId = _auth.currentUser?.uid;
+      if (userId == null) throw Exception('User not authenticated');
+
+      final QuerySnapshot querySnapshot = await _firestore
+          .collection('appointments')
+          .where('patientUid', isEqualTo: userId)
+          .orderBy('appointmentDate', descending: false)
+          .get();
+
+      return querySnapshot.docs
+          .map(
+            (doc) =>
+                AppointmentModel.fromJson(doc.data() as Map<String, dynamic>),
+          )
+          .toList();
+    } catch (e) {
+      throw Exception('Failed to get user appointments: $e');
+    }
+  }
+
+  // إلغاء موعد المستخدم
+  Future<bool> cancelAppointment(String appointmentId) async {
+    try {
+      final userId = _auth.currentUser?.uid;
+      if (userId == null) throw Exception('User not authenticated');
+
+      return await _firestore.runTransaction((transaction) async {
+        // جلب الموعد للتأكد من الملكية
+        final appointmentRef = _firestore
+            .collection('appointments')
+            .doc(appointmentId);
+        final appointmentDoc = await transaction.get(appointmentRef);
+
+        if (!appointmentDoc.exists) {
+          throw Exception('Appointment not found');
+        }
+
+        final appointmentData = appointmentDoc.data() as Map<String, dynamic>;
+
+        // التأكد من أن المستخدم يملك الموعد
+        if (appointmentData['patientUid'] != userId) {
+          throw Exception('Unauthorized to cancel this appointment');
+        }
+
+        // التأكد من أن الموعد قابل للإلغاء
+        if (!['pending', 'confirmed'].contains(appointmentData['status'])) {
+          throw Exception('Cannot cancel this appointment');
+        }
+
+        // إلغاء الموعد
+        transaction.update(appointmentRef, {
+          'status': 'cancelled',
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+
+        // إرجاع الـ time slot للمتاح
+        final doctorId = appointmentData['doctorId'];
+        final appointmentDate =
+            (appointmentData['appointmentDate'] as Timestamp).toDate();
+        final timeSlot = appointmentData['timeSlot'];
+
+        // إنشاء الـ time slot ID
+        final dayOnly = DateTime(
+          appointmentDate.year,
+          appointmentDate.month,
+          appointmentDate.day,
+        );
+        final timeParts = timeSlot.split(':');
+        final hour = int.parse(timeParts[0]);
+        final minute = int.parse(timeParts[1]);
+
+        final timeSlotDocId =
+            '${doctorId}_${dayOnly.year}${dayOnly.month.toString().padLeft(2, '0')}${dayOnly.day.toString().padLeft(2, '0')}_${hour.toString().padLeft(2, '0')}${minute.toString().padLeft(2, '0')}';
+
+        final timeSlotRef = _firestore
+            .collection('time_slots')
+            .doc(timeSlotDocId);
+        transaction.update(timeSlotRef, {'isAvailable': true});
+
+        return true;
+      });
+    } catch (e) {
+      print('Error cancelling appointment: $e');
+      return false;
+    }
+  }
+
   // إضافة مواعيد افتراضية للدكتور (يتم تشغيلها مرة واحدة)
   Future<void> initializeDoctorTimeSlots(String doctorId) async {
     final timeSlots = [
@@ -146,7 +245,7 @@ class AppointmentRemoteDataSource {
         final hour = int.tryParse(parts[0]) ?? 0;
         final minute = int.tryParse(parts[1]) ?? 0;
 
-        // slot DateTime کامل (اليوم + الوقت)
+        // slot DateTime كامل (اليوم + الوقت)
         final slotDateTime = DateTime(
           dayOnly.year,
           dayOnly.month,
@@ -175,14 +274,8 @@ class AppointmentRemoteDataSource {
 
         if (opCount >= maxBatch) {
           await batch.commit();
-          // reset batch
           opCount = 0;
-          // new batch
-          // ignore: invalid_use_of_protected_member
-          // (بس في cloud_firestore الحالي: بعمل batch = _firestore.batch();)
-          // علشان Dart analyzer: نعمل الطريقة السليمة:
-          // create new batch:
-          // batch = _firestore.batch(); // لو batch var غير final
+          // إنشاء batch جديد
         }
       }
     }

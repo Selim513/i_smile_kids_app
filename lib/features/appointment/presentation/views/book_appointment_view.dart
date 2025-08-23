@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_elevated_button.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_primary_appbar.dart';
-import 'package:i_smile_kids_app/features/appointment_test/presentation/manger/book_appointment_cubit.dart';
-import 'package:i_smile_kids_app/features/appointment_test/presentation/views/appointment_header_test.dart';
-import 'package:i_smile_kids_app/features/appointment_test/presentation/views/available_time_section_test.dart';
-import 'package:i_smile_kids_app/features/appointment_test/presentation/views/update_details_test.dart';
+import 'package:i_smile_kids_app/features/appointment/presentation/manger/book_appointment_cubit.dart';
+import 'package:i_smile_kids_app/features/appointment/presentation/views/widgets/appointment_header.dart';
+import 'package:i_smile_kids_app/features/appointment/presentation/views/widgets/available_time_section.dart';
+import 'package:i_smile_kids_app/features/appointment/presentation/views/widgets/patient_details_section.dart';
 
 import '../manger/book_appointment_state.dart';
 
