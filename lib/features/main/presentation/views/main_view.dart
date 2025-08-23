@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:i_smile_kids_app/core/utils/color_manger.dart';
+import 'package:i_smile_kids_app/features/dental_care_tips/presentation/views/dental_care_tips_view.dart';
 import 'package:i_smile_kids_app/features/home/presentation/views/home_view.dart';
 import 'package:i_smile_kids_app/features/profile/presentation/views/profile_views.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
@@ -28,7 +30,7 @@ class _MainViewState extends State<MainView> {
   }
 
   List<Widget> _buildScreens() {
-    return [HomeView(), ProfileViews()];
+    return [HomeView(), DentalCareTipsView(), ProfileViews()];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -36,13 +38,19 @@ class _MainViewState extends State<MainView> {
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.home),
         title: ("Home"),
-        activeColorPrimary: Colors.green,
+        activeColorPrimary: ColorManager.primary,
+        inactiveColorPrimary: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.tips_and_updates),
+        title: ("Dental Tips"),
+        activeColorPrimary: ColorManager.warning,
         inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.person),
         title: ("Profile"),
-        activeColorPrimary: Colors.green,
+        activeColorPrimary: Colors.blue,
         inactiveColorPrimary: Colors.grey,
       ),
     ];

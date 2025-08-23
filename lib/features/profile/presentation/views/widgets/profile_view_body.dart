@@ -35,39 +35,32 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsetsGeometry.all(15.w),
-      child: Expanded(
-        child: Column(
-          spacing: 20.h,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ProfileHeaderSection(imareUrl: imareUrl, name: name, email: email),
-            ProfileUserPersonalDetailsSection(),
-            CustomEleveatedButton(
-              bgColor: ColorManager.error,
-              onPress: () async {
-                FirebaseHelper.userAuth.signOut().then((value) {
-                  if (context.mounted) {
-                    Navigator.of(
-                      context,
-                      rootNavigator: true,
-                    ).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                        builder: (context) => const SplashView(),
-                      ),
-                      (Route<dynamic> route) => false,
-                    );
-                  }
-                });
-              },
-              child: Text(
-                'Logout',
-                style: FontManger.whiteBoldFont18.copyWith(
-                  color: ColorManager.textLight,
-                ),
+      child: Column(
+        spacing: 20.h,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ProfileHeaderSection(imareUrl: imareUrl, name: name, email: email),
+          ProfileUserPersonalDetailsSection(),
+          CustomEleveatedButton(
+            bgColor: ColorManager.error,
+            onPress: () async {
+              FirebaseHelper.userAuth.signOut().then((value) {
+                if (context.mounted) {
+                  Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => const SplashView()),
+                    (Route<dynamic> route) => false,
+                  );
+                }
+              });
+            },
+            child: Text(
+              'Logout',
+              style: FontManger.whiteBoldFont18.copyWith(
+                color: ColorManager.textLight,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
