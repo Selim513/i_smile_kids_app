@@ -13,17 +13,14 @@ import 'package:i_smile_kids_app/features/appointment/presentation/views/widgets
 
 import '../manger/book_appointment_state.dart';
 
-class BookAppointmentViewTest extends StatefulWidget {
-  const BookAppointmentViewTest({super.key});
+class BookAppointmentView extends StatefulWidget {
+  const BookAppointmentView({super.key});
 
   @override
-  State<BookAppointmentViewTest> createState() =>
-      _BookAppointmentViewTestState();
+  State<BookAppointmentView> createState() => _BookAppointmentViewState();
 }
 
-class _BookAppointmentViewTestState extends State<BookAppointmentViewTest> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _ageController = TextEditingController();
+class _BookAppointmentViewState extends State<BookAppointmentView> {
   final TextEditingController _problemController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? name;
@@ -52,15 +49,15 @@ class _BookAppointmentViewTestState extends State<BookAppointmentViewTest> {
 
   @override
   void dispose() {
-    _nameController.dispose();
-    _ageController.dispose();
     _problemController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: CustomPrimaryAppbar(title: 'Appointment'),
       body: BlocListener<AppointmentCubit, AppointmentState>(
         listener: (context, state) {
@@ -83,48 +80,57 @@ class _BookAppointmentViewTestState extends State<BookAppointmentViewTest> {
         },
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 20.h,
-                children: [
-                  AppointmentHeaderDatePickedTest(),
-                  AvailableTimeSectionTest(),
-                  PatientDetailsTest(
-                    name: name ?? "",
-                    age: age ?? "",
-                    problemController: _problemController,
+          child: CustomScrollView(
+            // reverse: true,
+            slivers: [
+              SliverToBoxAdapter(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 20.h,
+                    children: [
+                      AppointmentHeaderDatePickedTest(),
+                      AvailableTimeSectionTest(),
+                      PatientDetailsTest(
+                        name: name ?? "",
+                        age: age ?? "",
+                        problemController: _problemController,
+                      ),
+                      BlocBuilder<AppointmentCubit, AppointmentState>(
+                        builder: (context, state) {
+                          return CustomEleveatedButton(
+                            onPress: state is BookingAppointment
+                                ? () {}
+                                : () {
+                                    if (_formKey.currentState!.validate()) {
+                                      context
+                                          .read<AppointmentCubit>()
+                                          .bookAppointment(
+                                            patientName: name ?? '',
+                                            patientAge: age ?? '',
+                                            problem: _problemController.text
+                                                .trim(),
+                                          );
+                                    }
+                                  },
+                            child: state is BookingAppointment
+                                ? CircularProgressIndicator(color: Colors.white)
+                                : Text(
+                                    'Book Appointment now',
+                                    style: FontManger.whiteBoldFont18,
+                                  ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                  BlocBuilder<AppointmentCubit, AppointmentState>(
-                    builder: (context, state) {
-                      return CustomEleveatedButton(
-                        onPress: state is BookingAppointment
-                            ? () {}
-                            : () {
-                                if (_formKey.currentState!.validate()) {
-                                  context
-                                      .read<AppointmentCubit>()
-                                      .bookAppointment(
-                                        patientName: name ?? '',
-                                        patientAge: age ?? '',
-                                        problem: _problemController.text.trim(),
-                                      );
-                                }
-                              },
-                        child: state is BookingAppointment
-                            ? CircularProgressIndicator(color: Colors.white)
-                            : Text(
-                                'Book Appointment now',
-                                style: FontManger.whiteBoldFont18,
-                              ),
-                      );
-                    },
-                  ),
-                ],
+                ),
               ),
-            ),
+              SliverPadding(
+                padding: EdgeInsets.only(bottom: keyboardHeight + 20.h),
+              ),
+            ],
           ),
         ),
       ),

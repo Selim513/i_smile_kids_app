@@ -26,6 +26,7 @@ class HomeCategoriesGridView extends StatelessWidget {
               screen: categorieList[index].view!,
             ),
             child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 5.w),
               decoration: BoxDecoration(
                 color: categorieList[index].bgColor,
                 borderRadius: BorderRadius.circular(15.r),

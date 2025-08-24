@@ -68,6 +68,7 @@ class _MainViewState extends State<MainView> {
       handleAndroidBackButtonPress: true,
       resizeToAvoidBottomInset: true,
       stateManagement: true,
+      hideNavigationBarWhenKeyboardAppears: true,
       // hideNavigationBarWhenKeyboardShows: true,
       decoration: NavBarDecoration(
         borderRadius: BorderRadius.circular(10.0),

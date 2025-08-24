@@ -3,13 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:i_smile_kids_app/core/helper/asset_helper.dart';
+import 'package:i_smile_kids_app/core/helper/navigator_helper.dart';
 import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_elevated_button.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_primary_container.dart';
+import 'package:i_smile_kids_app/features/appointment/presentation/views/doctors_view.dart';
 import 'package:i_smile_kids_app/features/visit_timer/presentation/manger/fetch_next_visit_details_cubit.dart';
 import 'package:i_smile_kids_app/features/visit_timer/presentation/manger/fetch_next_visit_details_state.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 class NextVisitTimeViewBody extends StatefulWidget {
   const NextVisitTimeViewBody({super.key});
@@ -106,20 +109,34 @@ class _NextVisitTimeViewBodyState extends State<NextVisitTimeViewBody> {
                 } else if (state is FetchNextVisitDetailsFailure) {
                   print('---------${state.errMessage}');
                   return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 30.h,
+                    // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         state.errMessage,
                         textAlign: TextAlign.center,
                         style: FontManger.primaryFontColorRoboto25.copyWith(
-                          color: ColorManager.error,
+                          color: ColorManager.secondary,
                         ),
                       ),
+                      Lottie.asset('assets/json/no_appointment.json'),
+
                       Text(
                         'We can\'t wait to see your bright smile!',
                         textAlign: TextAlign.center,
 
                         style: FontManger.subTitleTextBold14,
+                      ),
+
+                      CustomEleveatedButton(
+                        bgColor: ColorManager.primary,
+                        onPress: () {
+                          NavigatorHelper.push(context, screen: DoctorsVeiw());
+                        },
+                        child: Text(
+                          'Book Now',
+                          style: FontManger.whiteBoldFont18,
+                        ),
                       ),
                     ],
                   );

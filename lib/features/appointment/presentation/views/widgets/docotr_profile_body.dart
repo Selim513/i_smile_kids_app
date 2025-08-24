@@ -5,13 +5,13 @@ import 'package:gap/gap.dart';
 import 'package:i_smile_kids_app/core/helper/navigator_helper.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_elevated_button.dart';
-import 'package:i_smile_kids_app/features/appointment/presentation/views/widgets/doctor_profile_about_doctor_section.dart';
-import 'package:i_smile_kids_app/features/appointment/presentation/views/widgets/doctor_profile_communication_section.dart';
-import 'package:i_smile_kids_app/features/appointment/presentation/views/widgets/doctor_profile_working_time_section.dart';
 import 'package:i_smile_kids_app/features/appointment/data/data_source/appointment_data_source.dart';
 import 'package:i_smile_kids_app/features/appointment/data/repo/appointment_repo_impl.dart';
 import 'package:i_smile_kids_app/features/appointment/presentation/manger/book_appointment_cubit.dart';
 import 'package:i_smile_kids_app/features/appointment/presentation/views/book_appointment_view.dart';
+import 'package:i_smile_kids_app/features/appointment/presentation/views/widgets/doctor_profile_about_doctor_section.dart';
+import 'package:i_smile_kids_app/features/appointment/presentation/views/widgets/doctor_profile_communication_section.dart';
+import 'package:i_smile_kids_app/features/appointment/presentation/views/widgets/doctor_profile_working_time_section.dart';
 
 class DoctorProfileBody extends StatelessWidget {
   const DoctorProfileBody({super.key});
@@ -38,7 +38,7 @@ class DoctorProfileBody extends StatelessWidget {
                   create: (context) => AppointmentCubit(
                     AppointmentRepositoryImpl(AppointmentRemoteDataSource()),
                   ),
-                  child: BookAppointmentViewTest(),
+                  child: BookAppointmentView(),
                 ),
               ),
               child: Text(

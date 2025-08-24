@@ -65,28 +65,3 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
     );
   }
 }
-
-
-                      // CustomTextFormField(
-                      //   controller: cubit.nameController,
-                      //   // readOnly: true,
-                      //   hintText: userData?.name,
-                      // ),
-                      // ChildAgeDropDownFormField(
-                      //   labelText: userData?.age,
-                      //   controller: cubit.ageController,
-                      // ),
-                      // CustomNationalityTextFormField(
-                      //   hintText: userData?.nationality,
-                      //   controller: cubit.nationalityController,
-                      // ),
-                      // CustomEmirateOfResidencyDropDownTextFormField(
-                      //   hintText: userData?.emirateOfResidency,
-                      //   controller: cubit.emirateController,
-                      // ),
-            // CustomEleveatedButton(
-            //   onPress: () {
-            //     cubit.updateProfileData();
-            //   },
-            //   child: Text('Save Changes', style: FontManger.whiteBoldFont18),
-            // ),
