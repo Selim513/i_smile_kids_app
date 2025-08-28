@@ -9,8 +9,8 @@ import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_elevated_button.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_primary_container.dart';
 import 'package:i_smile_kids_app/features/appointment/presentation/views/doctors_view.dart';
-import 'package:i_smile_kids_app/features/visit_timer/presentation/manger/fetch_next_visit_details_cubit.dart';
-import 'package:i_smile_kids_app/features/visit_timer/presentation/manger/fetch_next_visit_details_state.dart';
+import 'package:i_smile_kids_app/features/visit_time/presentation/manger/fetch_next_visit_details_cubit.dart';
+import 'package:i_smile_kids_app/features/visit_time/presentation/manger/fetch_next_visit_details_state.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
@@ -101,13 +101,12 @@ class _NextVisitTimeViewBodyState extends State<NextVisitTimeViewBody> {
                         },
                         child: Text(
                           'Canncle',
-                          style: FontManger.whiteBoldFont18,
+                          style: FontManger.whiteBoldFont20,
                         ),
                       ),
                     ],
                   );
                 } else if (state is FetchNextVisitDetailsFailure) {
-                  print('---------${state.errMessage}');
                   return Column(
                     spacing: 30.h,
                     // mainAxisAlignment: MainAxisAlignment.center,
@@ -131,11 +130,11 @@ class _NextVisitTimeViewBodyState extends State<NextVisitTimeViewBody> {
                       CustomEleveatedButton(
                         bgColor: ColorManager.primary,
                         onPress: () {
-                          NavigatorHelper.push(context, screen: DoctorsVeiw());
+                          NavigatorHelper.push(context, screen: const DoctorsVeiw());
                         },
                         child: Text(
                           'Book Now',
-                          style: FontManger.whiteBoldFont18,
+                          style: FontManger.whiteBoldFont20,
                         ),
                       ),
                     ],
@@ -151,7 +150,7 @@ class _NextVisitTimeViewBodyState extends State<NextVisitTimeViewBody> {
                     ),
                   );
                 } else {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
               },
             ),

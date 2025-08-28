@@ -16,9 +16,9 @@ class AuthButtonsWidget extends StatelessWidget {
       children: [
         CustomEleveatedButton(
           onPress: () {
-            NavigatorHelper.pushReplaceMent(context, screen: LoginView());
+            NavigatorHelper.pushReplaceMent(context, screen: const LoginView());
           },
-          child: Text('Login', style: FontManger.whiteBoldFont18),
+          child: Text('Login', style: FontManger.whiteBoldFont20),
         ),
         CustomEleveatedButton(
           borderColor: Colors.grey,
@@ -27,7 +27,7 @@ class AuthButtonsWidget extends StatelessWidget {
           onPress: () {
             NavigatorHelper.pushReplaceMent(
               context,
-              screen: CreateAccountView(),
+              screen: const CreateAccountView(),
             );
           },
           child: Text('Create account', style: FontManger.blackBoldFont18),

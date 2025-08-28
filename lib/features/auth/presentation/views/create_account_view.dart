@@ -14,7 +14,7 @@ class CreateAccountView extends StatelessWidget {
     return BlocProvider(
       create: (context) => AuthCubit(getIt.get<AuthRepositoryImpl>()),
 
-      child: Scaffold(
+      child: const Scaffold(
         appBar: CustomAuthAppbar(title: 'Create Account'),
         body: CreateAccountViewBody(),
       ),

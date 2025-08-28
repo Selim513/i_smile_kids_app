@@ -6,16 +6,16 @@ import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/features/appointment/presentation/manger/book_appointment_cubit.dart';
 
-class AppointmentHeaderDatePickedTest extends StatefulWidget {
-  const AppointmentHeaderDatePickedTest({super.key});
+class AppointmentHeaderDatePicked extends StatefulWidget {
+  const AppointmentHeaderDatePicked({super.key});
 
   @override
-  State<AppointmentHeaderDatePickedTest> createState() =>
-      _AppointmentHeaderDatePickedTestState();
+  State<AppointmentHeaderDatePicked> createState() =>
+      _AppointmentHeaderDatePickedState();
 }
 
-class _AppointmentHeaderDatePickedTestState
-    extends State<AppointmentHeaderDatePickedTest> {
+class _AppointmentHeaderDatePickedState
+    extends State<AppointmentHeaderDatePicked> {
   @override
   void initState() {
     super.initState();
@@ -35,7 +35,6 @@ class _AppointmentHeaderDatePickedTestState
         daysCount: 30,
         initialSelectedDate: DateTime.now(),
         selectionColor: ColorManager.primary,
-        selectedTextColor: Colors.white,
         dateTextStyle: FontManger.regularFontBlack12,
         monthTextStyle: FontManger.regularFontBlack12,
         dayTextStyle: FontManger.regularFontBlack12,

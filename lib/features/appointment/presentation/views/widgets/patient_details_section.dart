@@ -3,16 +3,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/custom_textform_field.dart';
 
-class PatientDetailsTest extends StatelessWidget {
+class PatientDetails extends StatelessWidget {
   final String age;
   final String name;
   final TextEditingController problemController;
-
-  const PatientDetailsTest({
+  final void Function(String)? onChanged;
+  const PatientDetails({
     super.key,
     required this.problemController,
     required this.age,
     required this.name,
+    this.onChanged,
   });
 
   @override
@@ -34,6 +35,7 @@ class PatientDetailsTest extends StatelessWidget {
           keyboardType: TextInputType.number,
         ),
         CustomTextFormField(
+          onChanged: onChanged,
           controller: problemController,
           maxLines: 5,
           title: 'Write your problem',

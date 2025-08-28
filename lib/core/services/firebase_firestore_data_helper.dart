@@ -12,6 +12,7 @@ Future<void> saveUserDataToFirestore({
   required String age,
   String? signinMethod,
   String? photoURL,
+  int? point,
 }) async {
   try {
     await FirebaseFirestore.instance.collection('users').doc(uid).set({
@@ -21,6 +22,7 @@ Future<void> saveUserDataToFirestore({
       'email': email,
       'nationality': nationality,
       'emirateOfResidency': emirateOfResidency,
+      'points': point,
       // 'photoURL': photoURL,
       'createdAt': FieldValue.serverTimestamp(),
       'updatedAt': FieldValue.serverTimestamp(),

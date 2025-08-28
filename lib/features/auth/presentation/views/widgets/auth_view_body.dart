@@ -18,7 +18,7 @@ class AuthViewBody extends StatelessWidget {
             height: 300.h,
             boxFit: BoxFit.cover,
           ),
-          AuthButtonsWidget(),
+          const AuthButtonsWidget(),
         ],
       ),
     );

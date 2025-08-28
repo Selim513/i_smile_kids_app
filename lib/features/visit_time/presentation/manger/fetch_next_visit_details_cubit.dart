@@ -94,8 +94,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:i_smile_kids_app/core/helper/firebase_helper.dart';
-import 'package:i_smile_kids_app/features/visit_timer/data/models/patient_next_visit_model.dart';
-import 'package:i_smile_kids_app/features/visit_timer/presentation/manger/fetch_next_visit_details_state.dart';
+import 'package:i_smile_kids_app/features/visit_time/data/models/patient_next_visit_model.dart';
+import 'package:i_smile_kids_app/features/visit_time/presentation/manger/fetch_next_visit_details_state.dart';
 
 class FetchNextVisitDetailsCubit
     extends Cubit<FetchNextVisitDetailsCubitState> {
@@ -200,7 +200,6 @@ class FetchNextVisitDetailsCubit
         return true;
       });
     } catch (e) {
-      print('Error cancelling appointment: $e');
       return false;
     }
   }

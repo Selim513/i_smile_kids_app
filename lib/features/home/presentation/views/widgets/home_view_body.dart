@@ -17,11 +17,11 @@ class HomeViewBody extends StatelessWidget {
           child: Column(
             spacing: 10.h,
             children: [
-              HomeAppBar(),
+              const HomeAppBar(),
               Gap(5.h),
-              HomeViewHeader(),
+              const HomeViewHeader(),
 
-              HomeCategoriesGridView(),
+              const HomeCategoriesGridView(),
             ],
           ),
         ),

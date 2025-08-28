@@ -11,7 +11,8 @@ class SocialAuthButton extends StatelessWidget {
     required this.title,
     required this.onPress,
     required this.logo,
-    this.bgColor, this.textColor,
+    this.bgColor,
+    this.textColor,
   });
   final String title;
   final String logo;
@@ -34,7 +35,8 @@ class SocialAuthButton extends StatelessWidget {
           ),
           Text(
             title,
-            style: FontManger.whiteBoldFont18.copyWith(
+            style: FontManger.whiteBoldFont20.copyWith(
+              fontSize: 18.sp,
               color: textColor ?? ColorManager.background,
             ),
           ),

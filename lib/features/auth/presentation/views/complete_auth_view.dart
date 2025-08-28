@@ -7,30 +7,35 @@ import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_auth_appbar.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_drop_down_field.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_elevated_button.dart';
+import 'package:i_smile_kids_app/core/widgets/custom_logo_container.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_snack_bar.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_cubit.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_state.dart';
 import 'package:i_smile_kids_app/features/main/presentation/views/main_view.dart';
 
 class CompleteAuthView extends StatelessWidget {
-  const CompleteAuthView({super.key, required this.cubit});
-  final AuthCubit cubit;
+  const CompleteAuthView({super.key});
+
   @override
   Widget build(BuildContext context) {
+    var cubit = context.read<AuthCubit>();
     return Scaffold(
-      appBar: CustomAuthAppbar(title: 'Complete Profile'),
+      appBar: const CustomAuthAppbar(title: 'Complete Profile'),
       body: Padding(
-        padding: EdgeInsetsGeometry.all(15.r),
+        padding: EdgeInsets.all(15.r),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            CustomLogoContainer(height: 100.h),
             BlocConsumer<AuthCubit, AuthCubitState>(
               listener: (context, state) {
                 if (state is AuthCubitUpdateUserSuccess) {
                   CustomSnackBar.successSnackBar('Your all done !', context);
-                  NavigatorHelper.pushReplaceMent(context, screen: MainView());
+                  NavigatorHelper.pushReplaceMent(
+                    context,
+                    screen: const MainView(),
+                  );
                 } else if (state is AuthCubitUpdateUserFailure) {
-                  print('-------${state.errMessage}');
                   CustomSnackBar.errorSnackBar(state.errMessage, context);
                 }
               },
@@ -42,6 +47,7 @@ class CompleteAuthView extends StatelessWidget {
                     children: [
                       // CreateAccountPickProfileImage(),
                       Gap(30.h),
+
                       ChildAgeDropDownFormField(
                         controller: cubit.agrController,
                       ),
@@ -61,7 +67,7 @@ class CompleteAuthView extends StatelessWidget {
                         },
                         child: Text(
                           'Continue',
-                          style: FontManger.whiteBoldFont18,
+                          style: FontManger.whiteBoldFont20,
                         ),
                       ),
                     ],

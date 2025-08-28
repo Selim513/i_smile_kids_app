@@ -17,7 +17,7 @@ class ProfileViews extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: ColorManager.secondary,
         centerTitle: true,
-        title: Text('Profile', style: FontManger.whiteBoldFont18),
+        title: Text('Profile', style: FontManger.whiteBoldFont20),
       ),
       body: MultiBlocProvider(
         providers: [
@@ -31,7 +31,7 @@ class ProfileViews extends StatelessWidget {
           ),
         ],
 
-        child: ProfileViewBody(),
+        child: const ProfileViewBody(),
       ),
     );
   }

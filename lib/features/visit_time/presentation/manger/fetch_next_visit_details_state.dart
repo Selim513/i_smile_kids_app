@@ -1,4 +1,4 @@
-import 'package:i_smile_kids_app/features/visit_timer/data/models/patient_next_visit_model.dart';
+import 'package:i_smile_kids_app/features/visit_time/data/models/patient_next_visit_model.dart';
 
 class FetchNextVisitDetailsCubitState {}
 

@@ -15,7 +15,7 @@ abstract class FontManger {
     fontWeight: FontWeight.bold,
     color: ColorManager.textDark,
   );
-  static TextStyle whiteBoldFont18 = TextStyle(
+  static TextStyle whiteBoldFont20 = TextStyle(
     fontSize: 20.sp,
     fontWeight: FontWeight.bold,
     color: ColorManager.textLight,
@@ -41,13 +41,13 @@ abstract class FontManger {
   );
   static TextStyle subTitleTextBold14 = TextStyle(
     fontSize: 14.sp,
-    color: Color(0xff6B779A),
+    color: const Color(0xff6B779A),
     fontWeight: FontWeight.bold,
   );
   static TextStyle balsamiqSansFontBold20 = TextStyle(
     fontSize: 20.sp,
-    fontFamily:  GoogleFonts.balsamiqSans().fontFamily,
-    color: Color(0xff6B779A),
+    fontFamily: GoogleFonts.balsamiqSans().fontFamily,
+    color: const Color(0xff6B779A),
     fontWeight: FontWeight.bold,
   );
 }

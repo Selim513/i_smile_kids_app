@@ -5,10 +5,12 @@ import 'package:gap/gap.dart';
 import 'package:i_smile_kids_app/core/helper/asset_helper.dart';
 import 'package:i_smile_kids_app/core/helper/auth_validator.dart';
 import 'package:i_smile_kids_app/core/helper/navigator_helper.dart';
+import 'package:i_smile_kids_app/core/services/service_locator.dart';
 import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_elevated_button.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_snack_bar.dart';
+import 'package:i_smile_kids_app/features/auth/data/repo/auht_repo_impl.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_cubit.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_state.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/complete_auth_view.dart';
@@ -31,7 +33,6 @@ class LoginViewBody extends StatelessWidget {
           SliverFillRemaining(
             hasScrollBody: false,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Column(
@@ -47,11 +48,11 @@ class LoginViewBody extends StatelessWidget {
                       );
                       NavigatorHelper.pushReplaceMent(
                         context,
-                        screen: MainView(),
+                        screen: const MainView(),
                       );
                     } else if (state is AuthCubitGoogleSigninSuccess) {
                       // show toast then check profile completeness and navigate accordingly
-                      CustomSnackBar.successSnackBar(
+                      CustomSnackBar.confrimEmailSnackBar(
                         state.succMessage,
                         context,
                       );
@@ -63,12 +64,16 @@ class LoginViewBody extends StatelessWidget {
                           if (isComplete) {
                             NavigatorHelper.pushReplaceMent(
                               context,
-                              screen: MainView(),
+                              screen: const MainView(),
                             );
                           } else {
                             NavigatorHelper.pushReplaceMent(
                               context,
-                              screen: CompleteAuthView(cubit: cubit),
+                              screen: BlocProvider(
+                                create: (context) =>
+                                    AuthCubit(getIt.get<AuthRepositoryImpl>()),
+                                child: const CompleteAuthView(),
+                              ),
                             );
                           }
                         }
@@ -109,7 +114,7 @@ class LoginViewBody extends StatelessWidget {
                                   state is AuthCubitLoginSuccess) {
                                 NavigatorHelper.push(
                                   context,
-                                  screen: CreateAccountView(),
+                                  screen: const CreateAccountView(),
                                 );
                               }
                             },
@@ -121,18 +126,18 @@ class LoginViewBody extends StatelessWidget {
                             //       )
                             // :
                             child: state is AuthCubitLoginLoading
-                                ? Center(
+                                ? const Center(
                                     child: CircularProgressIndicator(
                                       color: ColorManager.textLight,
                                     ),
                                   )
                                 : Text(
                                     'Login',
-                                    style: FontManger.whiteBoldFont18,
+                                    style: FontManger.whiteBoldFont20,
                                   ),
                           ),
                           state is AuthCubitGoogleSigninLoading
-                              ? Center(
+                              ? const Center(
                                   child: CircularProgressIndicator(
                                     color: ColorManager.textLight,
                                   ),
@@ -155,9 +160,10 @@ class LoginViewBody extends StatelessWidget {
                             isLogin: true,
                             onTap: () => NavigatorHelper.pushReplaceMent(
                               context,
-                              screen: CreateAccountView(),
+                              screen: const CreateAccountView(),
                             ),
                           ),
+                          Gap(10.h),
                         ],
                       ),
                     );

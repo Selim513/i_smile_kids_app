@@ -58,7 +58,7 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(handleFirebaseAuthException(e));
     } on Exception catch (e) {
       debugPrint('------------Google--${e.toString()}');
-      return Left(
+      return const Left(
         UnknownFailure('There is an error occured while sigin with google'),
       );
     }

@@ -65,6 +65,6 @@ AuthFailure handleFirebaseAuthException(FirebaseAuthException e) {
         'This email is already in use. Please log in instead.',
       );
     default:
-      return ServerFailure('Something went wrong: Please try again.');
+      return const ServerFailure('Something went wrong: Please try again.');
   }
 }

@@ -15,7 +15,7 @@ class CustomProfilePersonalDetailsRow extends StatelessWidget {
     return Row(
       children: [
         Text(title, style: FontManger.textFomrHintFont14),
-        Spacer(),
+        const Spacer(),
         Text(value, style: FontManger.meduimFontBlack14),
       ],
     );

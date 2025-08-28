@@ -10,22 +10,26 @@ class DoctorsViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsetsGeometry.symmetric(vertical: 15.h, horizontal: 10.w),
+      padding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 0.w),
       child: Column(
         children: [
           Expanded(
             child: GridView.builder(
               itemCount: 5,
+
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
+                crossAxisSpacing: 5.w,
+                mainAxisSpacing: 5.h,
+                childAspectRatio: 0.9,
               ),
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () => NavigatorHelper.push(
                     context,
-                    screen: DoctorsProfileView(),
+                    screen: const DoctorsProfileView(),
                   ),
-                  child: DoctorsGridViewContainer(),
+                  child: const DoctorsGridViewContainer(),
                 );
               },
             ),

@@ -80,7 +80,8 @@ class AppointmentRemoteDataSource {
         return true;
       });
     } catch (e) {
-      print('Error booking appointment: $e');
+      
+
       return false;
     }
   }
@@ -95,7 +96,7 @@ class AppointmentRemoteDataSource {
       });
       return true;
     } catch (e) {
-      print('Error updating time slot availability: $e');
+     
       return false;
     }
   }
@@ -207,7 +208,6 @@ class AppointmentRemoteDataSource {
         return true;
       });
     } catch (e) {
-      print('Error cancelling appointment: $e');
       return false;
     }
   }

@@ -25,6 +25,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? name;
   String? age;
+
   Future<void> _loadUserData() async {
     try {
       final uid = FirebaseHelper.user!.uid;
@@ -37,7 +38,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
         });
       }
     } catch (e) {
-      print("Error loading user data: $e");
+      throw 'There is an error please try again later';
     }
   }
 
@@ -55,10 +56,11 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
 
   @override
   Widget build(BuildContext context) {
-    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    // final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: CustomPrimaryAppbar(title: 'Appointment'),
+      // resizeToAvoidBottomInset: true,
+      // extendBody: false,
+      appBar: const CustomPrimaryAppbar(title: 'Appointment'),
       body: BlocListener<AppointmentCubit, AppointmentState>(
         listener: (context, state) {
           if (state is AppointmentError) {
@@ -70,7 +72,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
             );
           } else if (state is AppointmentBooked) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+              const SnackBar(
                 content: Text('Appointment booked successfully!'),
                 backgroundColor: Colors.green,
               ),
@@ -79,7 +81,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
           }
         },
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+          padding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 10.w),
           child: CustomScrollView(
             // reverse: true,
             slivers: [
@@ -90,9 +92,9 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 20.h,
                     children: [
-                      AppointmentHeaderDatePickedTest(),
-                      AvailableTimeSectionTest(),
-                      PatientDetailsTest(
+                      const AppointmentHeaderDatePicked(),
+                      const AvailableTimeSection(),
+                      PatientDetails(
                         name: name ?? "",
                         age: age ?? "",
                         problemController: _problemController,
@@ -115,10 +117,12 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                                     }
                                   },
                             child: state is BookingAppointment
-                                ? CircularProgressIndicator(color: Colors.white)
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
                                 : Text(
                                     'Book Appointment now',
-                                    style: FontManger.whiteBoldFont18,
+                                    style: FontManger.whiteBoldFont20,
                                   ),
                           );
                         },
@@ -128,7 +132,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                 ),
               ),
               SliverPadding(
-                padding: EdgeInsets.only(bottom: keyboardHeight + 20.h),
+                padding: EdgeInsetsGeometry.symmetric(vertical: 10.h),
               ),
             ],
           ),

@@ -35,16 +35,16 @@ class ProfileImage extends StatelessWidget {
                   child: Wrap(
                     children: [
                       ListTile(
-                        leading: Icon(Icons.photo_library),
-                        title: Text("Gallery"),
+                        leading: const Icon(Icons.photo_library),
+                        title: const Text("Gallery"),
                         onTap: () {
                           cubit.pickImage(ImageSource.gallery);
                           Navigator.pop(context);
                         },
                       ),
                       ListTile(
-                        leading: Icon(Icons.camera_alt),
-                        title: Text("Camera"),
+                        leading: const Icon(Icons.camera_alt),
+                        title: const Text("Camera"),
                         onTap: () {
                           cubit.pickImage(ImageSource.camera);
                           Navigator.pop(context);
@@ -57,7 +57,7 @@ class ProfileImage extends StatelessWidget {
             );
           },
           child: state is PickImageLoading
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(
                     color: ColorManager.secondary,
                   ),
@@ -82,7 +82,7 @@ class ProfileImage extends StatelessWidget {
                             height: 100.h,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
-                              return Icon(
+                              return const Icon(
                                 Icons.person,
                                 size: 50,
                                 color: Colors.grey,
@@ -93,7 +93,7 @@ class ProfileImage extends StatelessWidget {
                       : Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.add, color: Colors.grey),
+                            const Icon(Icons.add, color: Colors.grey),
                             Text(
                               'Add photo',
                               style: FontManger.regularFontBlack12.copyWith(

@@ -24,7 +24,6 @@ class KidsVoucherCard extends StatelessWidget {
       widgets: CouponCard(
         height: 200.h,
         borderRadius: 20,
-        curveAxis: Axis.horizontal,
         backgroundColor: Colors.white,
         firstChild: Container(
           decoration: BoxDecoration(

@@ -74,7 +74,7 @@ class AuthCubit extends Cubit<AuthCubitState> {
     result.fold(
       (failure) =>
           emit(AuthCubitGoogleSigninFailure(errMessage: failure.message)),
-      (success) => emit(AuthCubitGoogleSigninSuccess(succMessage: 'Welcome')),
+      (success) => emit(AuthCubitGoogleSigninSuccess(succMessage: 'Welcome Back')),
     );
   }
 
@@ -126,22 +126,7 @@ class AuthCubit extends Cubit<AuthCubitState> {
     }
   }
 
-  // Future<void> pickImage(ImageSource source) async {
-  //   try {
-  //     final pickedFile = await _picker.pickImage(
-  //       source: source,
-  //       imageQuality: 75,
-  //     );
-  //     if (pickedFile != null) {
-  //       pickedImage = File(pickedFile.path);
-  //       emit(AuthCubitPickImageSuccess(pickedFile.path));
-  //     } else {
-  //       emit(AuthCubitPickImageFailure("No image selected"));
-  //     }
-  //   } catch (e) {
-  //     emit(AuthCubitPickImageFailure(e.toString()));
-  //   }
-  // }
+ 
 
   Future<bool> isProfileComplete() async {
     try {

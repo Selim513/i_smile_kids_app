@@ -17,7 +17,7 @@ class DoctorProfileCommunicationSection extends StatelessWidget {
         Text('Communication', style: FontManger.blackBoldFont18),
         Column(
           spacing: 10.h,
-          children: [
+          children: const [
             CustomDoctorComunicatonWidgets(
               icon: FontAwesomeIcons.envelope,
               subTitle: 'drahmedzayed@gmail.com',

@@ -14,13 +14,13 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   late PersistentTabController _controller = PersistentTabController(
-    initialIndex: 0,
+    
   );
 
   @override
   void initState() {
     super.initState();
-    _controller = PersistentTabController(initialIndex: 0);
+    _controller = PersistentTabController();
   }
 
   @override
@@ -30,7 +30,7 @@ class _MainViewState extends State<MainView> {
   }
 
   List<Widget> _buildScreens() {
-    return [HomeView(), DentalCareTipsView(), ProfileViews()];
+    return [const HomeView(), const DentalCareTipsView(), const ProfileViews()];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -42,13 +42,13 @@ class _MainViewState extends State<MainView> {
         inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.tips_and_updates),
+        icon: const Icon(Icons.tips_and_updates),
         title: ("Dental Tips"),
         activeColorPrimary: ColorManager.warning,
         inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.person),
+        icon: const Icon(Icons.person),
         title: ("Profile"),
         activeColorPrimary: Colors.blue,
         inactiveColorPrimary: Colors.grey,
@@ -63,16 +63,12 @@ class _MainViewState extends State<MainView> {
       controller: _controller,
       screens: _buildScreens(),
       items: _navBarsItems(),
-      // confineInSafeArea: true,
-      backgroundColor: Colors.white,
-      handleAndroidBackButtonPress: true,
       resizeToAvoidBottomInset: true,
-      stateManagement: true,
-      hideNavigationBarWhenKeyboardAppears: true,
       // hideNavigationBarWhenKeyboardShows: true,
       decoration: NavBarDecoration(
         borderRadius: BorderRadius.circular(10.0),
         colorBehindNavBar: Colors.white,
+      
       ),
       // popAllScreensOnTapOfSelectedTab: true,
       // popActionScreens: PopActionScreensType.all,

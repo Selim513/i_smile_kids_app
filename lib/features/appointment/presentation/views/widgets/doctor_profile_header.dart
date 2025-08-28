@@ -18,10 +18,10 @@ class DoctorProfileHeader extends StatelessWidget {
           bottomLeft: Radius.circular(20.r),
           bottomRight: Radius.circular(20.r),
         ),
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           begin: Alignment(0.00, 0.00),
           end: Alignment(0.00, 1.00),
-          colors: [Colors.white, const Color(0xFFFCFAFA)],
+          colors: [Colors.white, Color(0xFFFCFAFA)],
         ),
       ),
       child: Column(
@@ -39,7 +39,7 @@ class DoctorProfileHeader extends StatelessWidget {
                   color: ColorManager.success.withValues(alpha: 0.5),
                   spreadRadius: 2,
                   blurRadius: 7,
-                  offset: Offset(0, 3),
+                  offset: const Offset(0, 3),
                 ),
               ],
               shape: BoxShape.circle,
@@ -57,7 +57,7 @@ class DoctorProfileHeader extends StatelessWidget {
               Text('Genral Dentist', style: FontManger.subTitleTextBold14),
             ],
           ),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               CustomDoctorProfileAchivementsContainer(

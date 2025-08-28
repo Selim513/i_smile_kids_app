@@ -17,6 +17,20 @@ abstract class CustomSnackBar {
     );
   }
 
+  static void completedBrushingTime(String message, context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          message,
+          style: FontManger.textFomrHintFont14.copyWith(color: Colors.white),
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: ColorManager.warning,
+      ),
+    );
+  }
+
   static void successSnackBar(String message, context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -43,9 +57,9 @@ abstract class CustomSnackBar {
         dismissDirection: DismissDirection.horizontal,
         content: Column(
           children: [
-            Text('Well Done Ahmed !', style: FontManger.whiteBoldFont18),
+            Text('Well Done Ahmed !', style: FontManger.whiteBoldFont20),
             Text(
-              'You earned +1 point 🎉',
+              'You earned +100 point 🎉',
               style: FontManger.meduimFontBlack14.copyWith(
                 color: ColorManager.secondary,
               ),

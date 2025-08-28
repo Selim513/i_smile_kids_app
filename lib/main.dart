@@ -1,9 +1,9 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:i_smile_kids_app/core/helper/navigator_helper.dart';
 import 'package:i_smile_kids_app/core/observer/cubit_observer.dart';
 import 'package:i_smile_kids_app/core/services/service_locator.dart';
 import 'package:i_smile_kids_app/features/splash/presentation/splash_view.dart';
@@ -13,15 +13,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   serviceLocatorSetup();
- 
+
   Bloc.observer = SimpleBlocObserver();
 
-  runApp(
-    DevicePreview(
-      builder: (context) => const IsmileKids(),
-      isToolbarVisible: true,
-    ),
-  );
+  runApp(const IsmileKids());
 }
 
 class IsmileKids extends StatelessWidget {
@@ -37,7 +32,7 @@ class IsmileKids extends StatelessWidget {
           fontFamily: GoogleFonts.inter().fontFamily,
           scaffoldBackgroundColor: Colors.white,
         ),
-        home: SplashView(),
+        home: const SplashView(),
       ),
     );
   }

@@ -44,7 +44,7 @@ class ProfileUserPersonalDetailsSection extends StatelessWidget {
             ],
           );
         } else if (state is FetchProfileDataLoading) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (state is FetchProfileDataFailure) {
           return Center(
             child: Text(

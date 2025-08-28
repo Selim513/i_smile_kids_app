@@ -22,7 +22,7 @@ class CustomDoctorProfileAchivementsContainer extends StatelessWidget {
       decoration: ShapeDecoration(
         color: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(21)),
-        shadows: [
+        shadows: const [
           BoxShadow(
             color: Color(0x0C6A769A),
             blurRadius: 25,

@@ -15,13 +15,13 @@ class CustomPrimaryAppbar extends StatelessWidget
       title: Text(title ?? "", style: FontManger.blackBoldFont18),
       leading: IconButton(
         onPressed: () => Navigator.pop(context),
-        icon: Icon(Icons.arrow_back_ios),
+        icon: const Icon(Icons.arrow_back_ios),
       ),
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class CustomSecondaryAppbar extends StatelessWidget {
@@ -36,7 +36,7 @@ class CustomSecondaryAppbar extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: Icon(Icons.arrow_back_ios),
+            icon: const Icon(Icons.arrow_back_ios),
           ),
           Text(title ?? "", style: FontManger.blackBoldFont18),
         ],

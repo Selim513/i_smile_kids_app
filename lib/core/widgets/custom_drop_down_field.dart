@@ -21,8 +21,9 @@ class CustomNationalityTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       onTap: () => showCountryPicker(
+        moveAlongWithKeyboard: true,
+        useSafeArea: true,
         context: context,
-        showPhoneCode: false,
         onSelect: (Country country) {
           controller.text = country.name;
         },
@@ -32,7 +33,7 @@ class CustomNationalityTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: FontManger.textFomrHintFont14,
-        prefixIcon: Icon(Icons.language, color: ColorManager.greyColor),
+        prefixIcon: const Icon(Icons.language, color: ColorManager.greyColor),
         labelText: labelText ?? 'Nationality',
         labelStyle: FontManger.meduimFontBlack14.copyWith(
           color: ColorManager.greyColor,
@@ -93,7 +94,7 @@ class CustomEmirateOfResidencyDropDownTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText ?? 'Emirate of Residency',
         hintStyle: FontManger.textFomrHintFont14,
-        prefixIcon: Icon(Icons.home, color: ColorManager.greyColor),
+        prefixIcon: const Icon(Icons.home, color: ColorManager.greyColor),
         labelText: labelText,
         labelStyle: FontManger.meduimFontBlack14.copyWith(
           color: ColorManager.greyColor,
@@ -148,10 +149,12 @@ class ChildAgeDropDownFormField extends StatelessWidget {
         controller.text = value ?? '';
       },
       decoration: InputDecoration(
-        
         hintText: hintText,
         hintStyle: FontManger.textFomrHintFont14,
-        prefixIcon: Icon(Icons.cake_rounded, color: ColorManager.greyColor),
+        prefixIcon: const Icon(
+          Icons.cake_rounded,
+          color: ColorManager.greyColor,
+        ),
         labelText: labelText ?? 'Age',
         labelStyle: FontManger.meduimFontBlack14.copyWith(
           color: ColorManager.greyColor,

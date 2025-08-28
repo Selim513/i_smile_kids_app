@@ -12,7 +12,7 @@
     Widget build(BuildContext context) {
       return BlocProvider(
         create: (context) => AuthCubit(getIt.get<AuthRepositoryImpl>()),
-        child: Scaffold(body: AuthViewBody()),
+        child: const Scaffold(body: AuthViewBody()),
       );
     }
   }

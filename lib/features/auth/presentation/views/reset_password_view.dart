@@ -16,7 +16,7 @@ class ResetPasswordView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAuthAppbar(title: 'Reset password'),
+      appBar: const CustomAuthAppbar(title: 'Reset password'),
 
       body: Padding(
         padding: EdgeInsetsGeometry.all(20.r),
@@ -41,14 +41,13 @@ class ResetPasswordView extends StatelessWidget {
                 ),
                 CustomEleveatedButton(
                   onPress: () {
-                    print('=====${cubit.resetPasswordEmailController.text}');
                     if (cubit.resetPasswordGlobalKey.currentState!.validate()) {
                       cubit.sendPasswordReset();
                     }
                   },
                   child: Text(
                     'Reset Password',
-                    style: FontManger.whiteBoldFont18,
+                    style: FontManger.whiteBoldFont20,
                   ),
                 ),
               ],

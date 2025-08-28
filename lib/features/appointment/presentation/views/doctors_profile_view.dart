@@ -15,10 +15,10 @@ class DoctorsProfileView extends StatelessWidget {
       body: CustomScrollView(
         // spacing: 15.h,
         slivers: [
-          SliverToBoxAdapter(child: CustomSecondaryAppbar()),
-          SliverToBoxAdapter(child: DoctorProfileHeader()),
+          const SliverToBoxAdapter(child: CustomSecondaryAppbar()),
+          const SliverToBoxAdapter(child: DoctorProfileHeader()),
           SliverToBoxAdapter(child: Gap(20.h)),
-          SliverToBoxAdapter(child: DoctorProfileBody()),
+          const SliverToBoxAdapter(child: DoctorProfileBody()),
         ],
       ),
     );

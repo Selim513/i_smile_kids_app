@@ -11,9 +11,9 @@ class HomeAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Spacer(),
+        const Spacer(),
         Text('Home', style: FontManger.blackBoldFont18),
-        Spacer(),
+        const Spacer(),
         Row(
           spacing: 5.w,
           children: [
@@ -22,7 +22,7 @@ class HomeAppBar extends StatelessWidget {
                 // final dataSource = AppointmentRemoteDataSource();
                 // await dataSource.initializeDoctorTimeSlots('doctor_1');
               },
-              child: Icon(FontAwesomeIcons.bell, color: ColorManager.primary),
+              child: const Icon(FontAwesomeIcons.bell, color: ColorManager.primary),
             ),
           ],
         ),
