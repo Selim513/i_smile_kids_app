@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:i_smile_kids_app/core/utils/color_manger.dart';
-import 'package:i_smile_kids_app/features/appointment/presentation/views/doctors_view.dart';
+import 'package:i_smile_kids_app/features/book_appointment/presentation/views/doctors_view.dart';
 import 'package:i_smile_kids_app/features/brushing_timer/presentation/views/brushing_time_view.dart';
 import 'package:i_smile_kids_app/features/reward_points/presentation/views/reward_points_view.dart';
 import 'package:i_smile_kids_app/features/visit_time/presentation/views/visit_timer_view.dart';

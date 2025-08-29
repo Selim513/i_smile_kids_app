@@ -8,7 +8,7 @@ import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_elevated_button.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_primary_container.dart';
-import 'package:i_smile_kids_app/features/appointment/presentation/views/doctors_view.dart';
+import 'package:i_smile_kids_app/features/book_appointment/presentation/views/doctors_view.dart';
 import 'package:i_smile_kids_app/features/visit_time/presentation/manger/fetch_next_visit_details_cubit.dart';
 import 'package:i_smile_kids_app/features/visit_time/presentation/manger/fetch_next_visit_details_state.dart';
 import 'package:intl/intl.dart';
@@ -93,7 +93,7 @@ class _NextVisitTimeViewBodyState extends State<NextVisitTimeViewBody> {
                       Gap(20.h),
                       CustomEleveatedButton(
                         bgColor: ColorManager.error,
-                        onPress: () {
+                        onPress: () async {
                           context
                               .read<FetchNextVisitDetailsCubit>()
                               .cancelAppointment(state.data.id);
@@ -130,7 +130,10 @@ class _NextVisitTimeViewBodyState extends State<NextVisitTimeViewBody> {
                       CustomEleveatedButton(
                         bgColor: ColorManager.primary,
                         onPress: () {
-                          NavigatorHelper.push(context, screen: const DoctorsVeiw());
+                          NavigatorHelper.push(
+                            context,
+                            screen: const DoctorsVeiw(),
+                          );
                         },
                         child: Text(
                           'Book Now',

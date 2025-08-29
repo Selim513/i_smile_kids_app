@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
-import 'package:i_smile_kids_app/features/appointment/data/data_source/appointment_data_source.dart';
-import 'package:i_smile_kids_app/features/appointment/data/repo/appointment_repo_impl.dart';
 import 'package:i_smile_kids_app/features/auth/data/data_source/auth_remote_data_source.dart';
 import 'package:i_smile_kids_app/features/auth/data/repo/auht_repo_impl.dart';
+import 'package:i_smile_kids_app/features/book_appointment/data/data_source/doctors_data_source.dart';
+import 'package:i_smile_kids_app/features/book_appointment/data/repo/doctors_repo/docotrs_repo.dart';
+import 'package:i_smile_kids_app/features/book_appointment/data/repo/doctors_repo/doctors_repo_impl.dart';
 import 'package:i_smile_kids_app/features/profile/data/data_source/profile_data_remote_data_source.dart';
 import 'package:i_smile_kids_app/features/profile/data/repo/profile_repo_impl.dart';
 
@@ -33,11 +34,12 @@ void serviceLocatorSetup() {
   getIt.registerLazySingleton<ProfileRepoImpl>(
     () => ProfileRepoImpl(getIt.get<FetchProfileDataRemoteDataSourceImpl>()),
   );
-  //-Appointment
-  getIt.registerLazySingleton<AppointmentRemoteDataSource>(
-    () => AppointmentRemoteDataSource(),
+
+  //-Fetch User data
+  getIt.registerLazySingleton<DoctorsRemoteDataSource>(
+    () => DoctorsRemoteDataSourceImpl(),
   );
-  getIt.registerLazySingleton<AppointmentRepositoryImpl>(
-    () => AppointmentRepositoryImpl(getIt.get<AppointmentRemoteDataSource>()),
+  getIt.registerLazySingleton<DocotrsDataRepo>(
+    () => DoctorsDataRepoImpl(getIt.get<DoctorsRemoteDataSource>()),
   );
 }
