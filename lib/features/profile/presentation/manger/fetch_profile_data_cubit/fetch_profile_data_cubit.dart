@@ -13,8 +13,8 @@ class FetchProfileDataCubit extends Cubit<FetchProfileDataCubitState> {
   // controllers inside the cubit
   final TextEditingController nameController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
-  final TextEditingController nationalityController = TextEditingController();
-  final TextEditingController emirateController = TextEditingController();
+  // final TextEditingController nationalityController = TextEditingController();
+  // final TextEditingController emirateController = TextEditingController();
 
   UserModel? currentUser;
 
@@ -46,12 +46,13 @@ class FetchProfileDataCubit extends Cubit<FetchProfileDataCubitState> {
             ? nameController.text
             : currentUser!.name,
         email: currentUser!.email,
-        nationality: nationalityController.text.isNotEmpty
-            ? nationalityController.text
-            : currentUser!.nationality,
-        emirateOfResidency: emirateController.text.isNotEmpty
-            ? emirateController.text
-            : currentUser!.emirateOfResidency,
+        totalBrushing: currentUser!.totalBrushing,
+        // nationality: nationalityController.text.isNotEmpty
+        //     ? nationalityController.text
+        //     : currentUser!.nationality,
+        // emirateOfResidency: emirateController.text.isNotEmpty
+        //     ? emirateController.text
+        //     : currentUser!.emirateOfResidency,
         age: ageController.text.isNotEmpty
             ? ageController.text
             : currentUser!.age,
@@ -71,8 +72,8 @@ class FetchProfileDataCubit extends Cubit<FetchProfileDataCubitState> {
   Future<void> close() {
     nameController.dispose();
     ageController.dispose();
-    nationalityController.dispose();
-    emirateController.dispose();
+    // nationalityController.dispose();
+    // emirateController.dispose();
     return super.close();
   }
 }

@@ -93,16 +93,16 @@ class AuthRepositoryImpl implements AuthRepository {
     required String uid,
     required String name,
     required String age,
-    required String nationality,
-    required String emirateOfResidency,
+    // required String nationality,
+    // required String emirateOfResidency,
     // File? photoURL,
   }) async {
     return await remoteDataSource.updateUserData(
       uid: uid,
       name: name,
       age: age,
-      nationality: nationality,
-      emirateOfResidency: emirateOfResidency,
+      // nationality: nationality,
+      // emirateOfResidency: emirateOfResidency,
       // pickedImage: photoURL,
     );
   }

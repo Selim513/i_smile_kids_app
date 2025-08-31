@@ -1,11 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:i_smile_kids_app/core/helper/firebase_helper.dart';
 import 'package:i_smile_kids_app/core/helper/navigator_helper.dart';
+import 'package:i_smile_kids_app/core/services/firebase_point_manger.dart';
+import 'package:i_smile_kids_app/core/services/service_locator.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_logo_container.dart';
+import 'package:i_smile_kids_app/core/widgets/custom_snack_bar.dart';
+import 'package:i_smile_kids_app/features/auth/data/repo/auht_repo_impl.dart';
+import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_cubit.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/auth_view.dart';
+import 'package:i_smile_kids_app/features/auth/presentation/views/complete_auth_view.dart';
 import 'package:i_smile_kids_app/features/main/presentation/views/main_view.dart';
 
 class SplashView extends StatefulWidget {
@@ -30,7 +38,7 @@ class _SplashViewState extends State<SplashView> {
       final data = doc.data() ?? {};
 
       // List the fields you require for a "complete" profile
-      final required = ['age', 'nationality', 'emirateOfResidency'];
+      final required = ['age'];
 
       for (final field in required) {
         final value = data[field];
@@ -58,16 +66,33 @@ class _SplashViewState extends State<SplashView> {
       final complete = await isProfileComplete();
 
       if (context.mounted) {}
-      if (FirebaseAuth.instance.currentUser == null) {
+      if (FirebaseHelper.userAuth.currentUser == null) {
+        print(
+          'aaaaaaaaaaaaaaaaaaaaaaaaaa${FirebaseHelper.userAuth.currentUser?.email}',
+        );
         if (mounted) {
           NavigatorHelper.pushReplaceMent(context, screen: const AuthView());
         }
       } else if (!complete) {
         if (mounted) {
-          NavigatorHelper.pushReplaceMent(context, screen: const AuthView());
+          NavigatorHelper.pushReplaceMent(
+            context,
+            screen: BlocProvider(
+              create: (context) => AuthCubit(getIt.get<AuthRepositoryImpl>()),
+              child: const CompleteAuthView(),
+            ),
+          );
         }
       } else {
         if (mounted) {
+          final reward = await giveDailyReward();
+
+          if (reward) {
+            CustomSnackBar.successSnackBar(
+              'Thanks for logging in! You just received 5 points for your daily login.',
+              context,
+            );
+          }
           NavigatorHelper.pushReplaceMent(context, screen: const MainView());
         }
       }

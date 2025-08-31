@@ -15,13 +15,13 @@ class BrushingScheduleManager {
       final now = DateTime.now();
       final currentHour = now.hour;
 
-      // تحديد الفترة الحالية بناءً على الساعات الجديدة
       bool isMorningPeriod =
-          currentHour >= 6 && currentHour < 13; // من 6 صباحًا إلى 12:59 ظهرًا
+          currentHour >= 6 && currentHour < 13; 
+          // From 6 AM to 12:59 AM
       bool isEveningPeriod =
-          currentHour >= 19 && currentHour < 24; // من 7 مساءً إلى 11:59 مساءً
+          currentHour >= 19 && currentHour < 24;
+           // From 7 PM to 11:59 PM
 
-      // إذا كان الوقت خارج الفترتين المسموح بهما
       if (!isMorningPeriod && !isEveningPeriod) {
         return false;
       }

@@ -14,7 +14,6 @@ import 'package:i_smile_kids_app/features/auth/data/repo/auht_repo_impl.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_cubit.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_state.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/complete_auth_view.dart';
-import 'package:i_smile_kids_app/features/auth/presentation/views/create_account_view.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/login_view.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/custom_redirect_naviagor_message.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/custom_textform_field.dart';
@@ -22,12 +21,11 @@ import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/social
 import 'package:i_smile_kids_app/features/main/presentation/views/main_view.dart';
 
 class CreateAccountFormFieldSection extends StatelessWidget {
-  const CreateAccountFormFieldSection({super.key, required this.cubit});
-
-  final AuthCubit cubit;
+  const CreateAccountFormFieldSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var cubit = context.read<AuthCubit>();
     return Padding(
       padding: EdgeInsetsGeometry.only(bottom: 10.h),
       child: Column(
@@ -94,12 +92,12 @@ class CreateAccountFormFieldSection extends StatelessWidget {
                       prefixIcon: Icons.person,
                     ),
                     ChildAgeDropDownFormField(controller: cubit.agrController),
-                    CustomNationalityTextFormField(
-                      controller: cubit.nationalityController,
-                    ),
-                    CustomEmirateOfResidencyDropDownTextFormField(
-                      controller: cubit.emirateOfResidencyController,
-                    ),
+                    // CustomNationalityTextFormField(
+                    //   controller: cubit.nationalityController,
+                    // ),
+                    // CustomEmirateOfResidencyDropDownTextFormField(
+                    //   controller: cubit.emirateOfResidencyController,
+                    // ),
                     CustomTextFormField(
                       title: 'Email Address',
                       controller: cubit.createAccountEmailController,
@@ -128,14 +126,13 @@ class CreateAccountFormFieldSection extends StatelessWidget {
                     Gap(20.h),
                     CustomEleveatedButton(
                       onPress: () {
-                        cubit.createAccount();
                         if (cubit.createAccountGlobalKey.currentState!
-                                .validate() &&
-                            state is AuthCubitCreateAccountSuccess) {
-                          NavigatorHelper.push(
-                            context,
-                            screen: const CreateAccountView(),
-                          );
+                            .validate()) {
+                          cubit.createAccount();
+                          // NavigatorHelper.push(
+                          //   context,
+                          //   screen: const CreateAccountView(),
+                          // );
                         }
                       },
                       child: state is AuthCubitCreateAccountLoading

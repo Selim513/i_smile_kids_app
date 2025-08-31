@@ -42,8 +42,9 @@ class DoctorsGridViewContainer extends StatelessWidget {
                 fit: BoxFit.cover,
 
                 height: 75.h,
-                progressIndicatorBuilder: (context, url, progress) =>
-                    Center(child: CircularProgressIndicator()),
+                progressIndicatorBuilder: (context, url, progress) => Center(
+                  child: CircularProgressIndicator(color: ColorManager.primary),
+                ),
               ),
             ),
 

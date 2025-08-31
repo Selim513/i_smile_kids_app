@@ -18,9 +18,9 @@ class AuthCubit extends Cubit<AuthCubitState> {
       TextEditingController();
   final TextEditingController agrController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController nationalityController = TextEditingController();
-  final TextEditingController emirateOfResidencyController =
-      TextEditingController();
+  // final TextEditingController nationalityController = TextEditingController();
+  // final TextEditingController emirateOfResidencyController =
+  //     TextEditingController();
   final TextEditingController createAccountEmailController =
       TextEditingController();
   final TextEditingController loginPasswordController = TextEditingController();
@@ -55,15 +55,17 @@ class AuthCubit extends Cubit<AuthCubitState> {
         email: createAccountEmailController.text,
         password: createAccountPasswordController.text,
         confirmPassword: createAccountConfirmPasswordController.text,
-        nationality: nationalityController.text,
-        emirateOfResidency: emirateOfResidencyController.text,
+        // nationality: nationalityController.text,
+        // emirateOfResidency: emirateOfResidencyController.text,
       ),
     );
     result.fold(
       (failure) =>
           emit(AuthCubitCreateAccountFailure(errMessage: failure.message)),
       (success) => emit(
-        AuthCubitCreateAccountSuccess(succMessage: 'Account has been create !'),
+        AuthCubitCreateAccountSuccess(
+          succMessage: 'Success! Your account has been created',
+        ),
       ),
     );
   }
@@ -74,7 +76,8 @@ class AuthCubit extends Cubit<AuthCubitState> {
     result.fold(
       (failure) =>
           emit(AuthCubitGoogleSigninFailure(errMessage: failure.message)),
-      (success) => emit(AuthCubitGoogleSigninSuccess(succMessage: 'Welcome Back')),
+      (success) =>
+          emit(AuthCubitGoogleSigninSuccess(succMessage: 'Welcome Back')),
     );
   }
 
@@ -112,8 +115,8 @@ class AuthCubit extends Cubit<AuthCubitState> {
         uid: FirebaseAuth.instance.currentUser!.uid,
         name: nameController.text,
         age: agrController.text,
-        nationality: nationalityController.text,
-        emirateOfResidency: emirateOfResidencyController.text,
+        // nationality: nationalityController.text,
+        // emirateOfResidency: emirateOfResidencyController.text,
         // photoURL: pickedImage,
       );
       emit(
@@ -125,8 +128,6 @@ class AuthCubit extends Cubit<AuthCubitState> {
       emit(AuthCubitUpdateUserFailure(errMessage: e.toString()));
     }
   }
-
- 
 
   Future<bool> isProfileComplete() async {
     try {

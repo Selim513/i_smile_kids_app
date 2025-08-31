@@ -51,12 +51,12 @@ class CompleteAuthView extends StatelessWidget {
                       ChildAgeDropDownFormField(
                         controller: cubit.agrController,
                       ),
-                      CustomNationalityTextFormField(
-                        controller: cubit.nationalityController,
-                      ),
-                      CustomEmirateOfResidencyDropDownTextFormField(
-                        controller: cubit.emirateOfResidencyController,
-                      ),
+                      // CustomNationalityTextFormField(
+                      //   controller: cubit.nationalityController,
+                      // ),
+                      // CustomEmirateOfResidencyDropDownTextFormField(
+                      //   controller: cubit.emirateOfResidencyController,
+                      // ),
                       Gap(10.h),
                       CustomEleveatedButton(
                         onPress: () {

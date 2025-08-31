@@ -14,8 +14,8 @@ abstract class AuthRemoteDataSource {
     required String uid,
     required String name,
     required String age,
-    required String nationality,
-    required String emirateOfResidency,
+    // required String nationality,
+    // required String emirateOfResidency,
     // File? pickedImage,
   });
 
@@ -74,8 +74,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         uid: user.uid,
         name: account.name,
         email: account.email,
-        nationality: account.nationality,
-        emirateOfResidency: account.emirateOfResidency,
+        // nationality: account.nationality,
+        // emirateOfResidency: account.emirateOfResidency,
         point: 0,
         
       );
@@ -128,8 +128,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           uid: user.uid,
           name: user.displayName ?? '',
           email: user.email ?? '',
-          nationality: '',
-          emirateOfResidency: '',
+          // nationality: '',
+          // emirateOfResidency: '',
           photoURL: user.photoURL,
           signinMethod: 'google',
         );
@@ -174,8 +174,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String uid,
     required String name,
     required String age,
-    required String nationality,
-    required String emirateOfResidency,
+    // required String nationality,
+    // required String emirateOfResidency,
   }) async {
     try {
       final user = firebaseAuth.currentUser;
@@ -196,8 +196,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       await updateUserDetails(
         uid: uid,
         age: age,
-        nationality: nationality,
-        emirateOfResidency: emirateOfResidency,
+        // nationality: nationality,
+        // emirateOfResidency: emirateOfResidency,
       );
 
       await user.reload();

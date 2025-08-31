@@ -4,19 +4,21 @@ class UserModel {
   final String uid;
   final String name;
   final String email;
-  final String nationality;
-  final String emirateOfResidency;
+  final int totalBrushing;
+  // final String nationality;
+  // final String emirateOfResidency;
   final String age;
   final String? photoURL;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
   UserModel({
+    required this.totalBrushing,
     required this.uid,
     required this.name,
     required this.email,
-    required this.nationality,
-    required this.emirateOfResidency,
+    // required this.nationality,
+    // required this.emirateOfResidency,
     required this.age,
     this.photoURL,
     this.createdAt,
@@ -28,8 +30,9 @@ class UserModel {
       uid: map['uid'] ?? '',
       name: map['name'] ?? '',
       email: map['email'] ?? '',
-      nationality: map['nationality'] ?? '',
-      emirateOfResidency: map['emirateOfResidency'] ?? '',
+      totalBrushing: map['brushing_data']['total_sessions'],
+      // nationality: map['nationality'] ?? '',
+      // emirateOfResidency: map['emirateOfResidency'] ?? '',
       age: map['age'] ?? '',
       photoURL: map['photoURL'],
       createdAt: map['createdAt'] != null
@@ -46,8 +49,9 @@ class UserModel {
       'uid': uid,
       'name': name,
       'email': email,
-      'nationality': nationality,
-      'emirateOfResidency': emirateOfResidency,
+      'total_sessions': totalBrushing,
+      // 'nationality': nationality,
+      // 'emirateOfResidency': emirateOfResidency,
       'age': age,
       'photoURL': photoURL,
       'createdAt': createdAt,

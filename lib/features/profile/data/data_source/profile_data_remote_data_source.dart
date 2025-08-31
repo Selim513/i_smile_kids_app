@@ -44,8 +44,8 @@ class FetchProfileDataRemoteDataSourceImpl extends ProfileDataRemoteDataSource {
         name: user.name,
         photoURL: user.photoURL,
         age: user.age,
-        emirateOfResidency: user.emirateOfResidency,
-        nationality: user.nationality,
+        // emirateOfResidency: user.emirateOfResidency,
+        // nationality: user.nationality,
       );
 
       // 🟢 كمان ممكن تحدث الـ displayName / photoURL في FirebaseAuth نفسه

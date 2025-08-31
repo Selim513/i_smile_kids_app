@@ -18,6 +18,7 @@ class ProfileUserPersonalDetailsSection extends StatelessWidget {
         if (state is FetchProfileDataSuccess) {
           var userData = state.userData;
           return Column(
+            
             spacing: 10.h,
             children: [
               CustomPrimaryContainer(
@@ -27,17 +28,17 @@ class ProfileUserPersonalDetailsSection extends StatelessWidget {
                   children: [
                     Text('Personal Details', style: FontManger.blackBoldFont18),
                     CustomProfilePersonalDetailsRow(
-                      title: 'Nationality',
-                      value: userData.nationality,
-                    ),
-                    CustomProfilePersonalDetailsRow(
                       title: 'Age',
                       value: userData.age,
                     ),
                     CustomProfilePersonalDetailsRow(
-                      title: 'Emirates Residency',
-                      value: userData.emirateOfResidency,
+                      title: 'Total Brushing Sessions',
+                      value: userData.totalBrushing.toString(),
                     ),
+                    // CustomProfilePersonalDetailsRow(
+                    //   title: 'Emirates Residency',
+                    //   value: "s",
+                    // ),
                   ],
                 ),
               ),

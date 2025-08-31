@@ -100,7 +100,7 @@ class _NextVisitTimeViewBodyState extends State<NextVisitTimeViewBody> {
                           setState(() {});
                         },
                         child: Text(
-                          'Canncle',
+                          'cancel',
                           style: FontManger.whiteBoldFont20,
                         ),
                       ),

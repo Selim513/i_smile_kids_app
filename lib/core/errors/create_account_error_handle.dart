@@ -42,13 +42,13 @@ AuthFailure? validateCreateAccountRequest(CreateAccountModel request) {
     return const InvalidCredentialsFailure('Passwords do not match.');
   }
 
-  if (request.nationality.isEmpty) {
-    return const InvalidCredentialsFailure('Nationality is required.');
-  }
+  // if (request.nationality.isEmpty) {
+  //   return const InvalidCredentialsFailure('Nationality is required.');
+  // }
 
-  if (request.emirateOfResidency.isEmpty) {
-    return const InvalidCredentialsFailure('Emirate of residency is required.');
-  }
+  // if (request.emirateOfResidency.isEmpty) {
+  //   return const InvalidCredentialsFailure('Emirate of residency is required.');
+  // }
   // if (request.profileImage == null) {
   //   return const InvalidCredentialsFailure('Profile image is required.');
   // }

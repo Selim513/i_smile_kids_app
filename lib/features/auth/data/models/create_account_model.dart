@@ -7,8 +7,8 @@ class CreateAccountModel {
   final String email;
   final String password;
   final String confirmPassword;
-  final String nationality;
-  final String emirateOfResidency;
+  // final String nationality;
+  // final String emirateOfResidency;
 
   const CreateAccountModel({
     required this.age,
@@ -17,7 +17,7 @@ class CreateAccountModel {
     required this.email,
     required this.password,
     required this.confirmPassword,
-    required this.nationality,
-    required this.emirateOfResidency,
+    // required this.nationality,
+    // required this.emirateOfResidency,
   });
 }

@@ -3,6 +3,7 @@ import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/features/dental_care_tips/presentation/views/dental_care_tips_view.dart';
 import 'package:i_smile_kids_app/features/home/presentation/views/home_view.dart';
 import 'package:i_smile_kids_app/features/profile/presentation/views/profile_views.dart';
+import 'package:i_smile_kids_app/features/scan_qr_code/presentation/views/scan_qr_code.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 class MainView extends StatefulWidget {
@@ -13,9 +14,7 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-  late PersistentTabController _controller = PersistentTabController(
-    
-  );
+  late PersistentTabController _controller = PersistentTabController();
 
   @override
   void initState() {
@@ -30,7 +29,12 @@ class _MainViewState extends State<MainView> {
   }
 
   List<Widget> _buildScreens() {
-    return [const HomeView(), const DentalCareTipsView(), const ProfileViews()];
+    return [
+      const HomeView(),
+      const DentalCareTipsView(),
+      ScanQrCodeView(),
+      const ProfileViews(),
+    ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -45,6 +49,12 @@ class _MainViewState extends State<MainView> {
         icon: const Icon(Icons.tips_and_updates),
         title: ("Dental Tips"),
         activeColorPrimary: ColorManager.warning,
+        inactiveColorPrimary: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.qr_code_scanner),
+        title: ("Scan Qr"),
+        activeColorPrimary: ColorManager.secondary,
         inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
@@ -68,7 +78,6 @@ class _MainViewState extends State<MainView> {
       decoration: NavBarDecoration(
         borderRadius: BorderRadius.circular(10.0),
         colorBehindNavBar: Colors.white,
-      
       ),
       // popAllScreensOnTapOfSelectedTab: true,
       // popActionScreens: PopActionScreensType.all,
