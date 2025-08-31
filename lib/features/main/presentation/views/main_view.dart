@@ -3,7 +3,7 @@ import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/features/dental_care_tips/presentation/views/dental_care_tips_view.dart';
 import 'package:i_smile_kids_app/features/home/presentation/views/home_view.dart';
 import 'package:i_smile_kids_app/features/profile/presentation/views/profile_views.dart';
-import 'package:i_smile_kids_app/features/scan_qr_code/presentation/views/scan_qr_code.dart';
+import 'package:i_smile_kids_app/features/confrim_visit/presentation/views/confrim_your_visit_view.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 class MainView extends StatefulWidget {
@@ -32,7 +32,8 @@ class _MainViewState extends State<MainView> {
     return [
       const HomeView(),
       const DentalCareTipsView(),
-      ScanQrCodeView(),
+      // ScanQrCodeView(),
+      ConfirmYourVisitView(),
       const ProfileViews(),
     ];
   }
@@ -74,6 +75,7 @@ class _MainViewState extends State<MainView> {
       screens: _buildScreens(),
       items: _navBarsItems(),
       resizeToAvoidBottomInset: true,
+      stateManagement: true,
       // hideNavigationBarWhenKeyboardShows: true,
       decoration: NavBarDecoration(
         borderRadius: BorderRadius.circular(10.0),
