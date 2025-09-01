@@ -13,7 +13,10 @@ class ConfirmYourVisitView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomPrimaryAppbar(title: 'Confrim your visit'),
+      appBar: CustomPrimaryAppbar(
+        title: 'Confrim your visit',
+        leading: SizedBox(),
+      ),
       body: Padding(
         padding: EdgeInsetsGeometry.all(20.r),
         child: Column(

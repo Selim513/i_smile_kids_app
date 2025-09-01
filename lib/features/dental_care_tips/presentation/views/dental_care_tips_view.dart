@@ -13,7 +13,10 @@ class DentalCareTipsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomPrimaryAppbar(title: 'Dental Care Tips'),
+      appBar: const CustomPrimaryAppbar(
+        title: 'Dental Care Tips',
+        leading: SizedBox(),
+      ),
       body: Column(
         children: [
           Expanded(
