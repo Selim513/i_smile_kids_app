@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:i_smile_kids_app/core/utils/color_manger.dart';
+import 'package:i_smile_kids_app/features/confrim_visit/presentation/views/confrim_your_visit_view.dart';
 import 'package:i_smile_kids_app/features/dental_care_tips/presentation/views/dental_care_tips_view.dart';
 import 'package:i_smile_kids_app/features/home/presentation/views/home_view.dart';
-import 'package:i_smile_kids_app/features/profile/presentation/views/profile_views.dart';
-import 'package:i_smile_kids_app/features/confrim_visit/presentation/views/confrim_your_visit_view.dart';
+import 'package:i_smile_kids_app/features/profile/presentation/views/profile_view.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 class MainView extends StatefulWidget {
@@ -34,7 +34,7 @@ class _MainViewState extends State<MainView> {
       const DentalCareTipsView(),
       // ScanQrCodeView(),
       ConfirmYourVisitView(),
-      const ProfileViews(),
+      const ProfileView(),
     ];
   }
 

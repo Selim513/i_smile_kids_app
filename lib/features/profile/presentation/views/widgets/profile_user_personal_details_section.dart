@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:i_smile_kids_app/core/models/user_models.dart';
 import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_primary_container.dart';
@@ -16,9 +17,8 @@ class ProfileUserPersonalDetailsSection extends StatelessWidget {
     return BlocBuilder<FetchProfileDataCubit, FetchProfileDataCubitState>(
       builder: (context, state) {
         if (state is FetchProfileDataSuccess) {
-          var userData = state.userData;
+          UserModel? userData = state.userData;
           return Column(
-            
             spacing: 10.h,
             children: [
               CustomPrimaryContainer(

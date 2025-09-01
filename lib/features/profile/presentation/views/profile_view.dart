@@ -8,8 +8,8 @@ import 'package:i_smile_kids_app/features/profile/presentation/manger/fetch_prof
 import 'package:i_smile_kids_app/features/profile/presentation/manger/upload_image_cubit/upload_profile_image_cubit.dart';
 import 'package:i_smile_kids_app/features/profile/presentation/views/widgets/profile_view_body.dart';
 
-class ProfileViews extends StatelessWidget {
-  const ProfileViews({super.key});
+class ProfileView extends StatelessWidget {
+  const ProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {

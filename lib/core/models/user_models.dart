@@ -4,7 +4,7 @@ class UserModel {
   final String uid;
   final String name;
   final String email;
-  final int totalBrushing;
+  final int? totalBrushing;
   // final String nationality;
   // final String emirateOfResidency;
   final String age;
@@ -30,7 +30,9 @@ class UserModel {
       uid: map['uid'] ?? '',
       name: map['name'] ?? '',
       email: map['email'] ?? '',
-      totalBrushing: map['brushing_data']['total_sessions'],
+      totalBrushing: (map['brushing_data'] != null)
+          ? (map['brushing_data']['total_sessions'] ?? 0)
+          : 0,
       // nationality: map['nationality'] ?? '',
       // emirateOfResidency: map['emirateOfResidency'] ?? '',
       age: map['age'] ?? '',
