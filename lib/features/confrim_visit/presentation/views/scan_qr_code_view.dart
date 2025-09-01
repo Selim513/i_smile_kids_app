@@ -345,7 +345,7 @@ class _ScanQrCodeViewState extends State<ScanQrCodeView>
                   final qrData = barcode.rawValue ?? "";
 
                   if (qrData.isEmpty) return;
-                  if (qrData == lastQr) return; // تجاهل لو نفس الكود
+                  if (qrData == lastQr) return; // تجاهل لو نفس الكود“
                   lastQr = qrData;
 
                   setState(() {
@@ -354,6 +354,7 @@ class _ScanQrCodeViewState extends State<ScanQrCodeView>
 
                   controller.stop(); // وقف الكاميرا فوراً
                   handleQRScan(qrData);
+                  Navigator.pop(context);
                 }
               },
             ),
