@@ -354,6 +354,7 @@ class _ScanQrCodeViewState extends State<ScanQrCodeView>
 
                   controller.stop(); // وقف الكاميرا فوراً
                   handleQRScan(qrData);
+                 
                 }
               },
             ),
