@@ -17,7 +17,7 @@ abstract class CustomSnackBar {
     );
   }
 
-  static void completedBrushingTime(String message, context) {
+  static void warningSnackBar(String message, context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,

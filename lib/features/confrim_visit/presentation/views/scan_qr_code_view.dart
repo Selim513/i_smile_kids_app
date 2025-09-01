@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:i_smile_kids_app/core/widgets/custom_snack_bar.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class ScanQrCodeView extends StatefulWidget {
@@ -81,14 +82,14 @@ class _ScanQrCodeViewState extends State<ScanQrCodeView>
               lastVisitDate.day,
             );
 
-            // لو زار النهارده خلاص، ميقدرش ياخد نقاط تاني
+            // patinet can scan one time per day
             if (lastDay == today) {
               canGetPoints = false;
             }
           }
 
           if (canGetPoints) {
-            // إضافة النقاط وحفظ تاريخ آخر زيارة
+            // add points and save the date of the visit
             await FirebaseFirestore.instance.runTransaction((
               transaction,
             ) async {
@@ -104,40 +105,29 @@ class _ScanQrCodeViewState extends State<ScanQrCodeView>
             });
 
             if (mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('🎉 تم إضافة 50 نقطة لزيارة الطبيب!'),
-                  backgroundColor: Colors.green,
-                ),
+              CustomSnackBar.successSnackBar(
+                '🎉 50 points have been added for your doctor\'s visit!',
+                context,
               );
             }
           } else {
             if (mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('لقد حصلت على نقاط الزيارة اليوم بالفعل!'),
-                  backgroundColor: Colors.orange,
-                ),
+              CustomSnackBar.warningSnackBar(
+                'You\'ve already received your points for the day\'s visit.',
+                context,
               );
             }
           }
         }
       } else {
-        // QR Code غير صحيح
+        // invaild QR Code
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('QR Code غير صحيح!'),
-              backgroundColor: Colors.red,
-            ),
-          );
+          CustomSnackBar.errorSnackBar('Invalid QR Code!', context);
         }
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('حدث خطأ: $e'), backgroundColor: Colors.red),
-        );
+        CustomSnackBar.errorSnackBar('An error occurred: $e', context);
       }
     } finally {
       setState(() {
@@ -166,7 +156,7 @@ class _ScanQrCodeViewState extends State<ScanQrCodeView>
                     result = qrData;
                   });
 
-                  // معالجة QR Code
+                  // handling QR Code
                   if (qrData.isNotEmpty && !isProcessing) {
                     handleQRScan(qrData);
                   }
@@ -189,7 +179,7 @@ class _ScanQrCodeViewState extends State<ScanQrCodeView>
                         textAlign: TextAlign.center,
                       )
                     : const Text(
-                        'لتأكيد زيارتك، امسح QR Code الخاص بالطبيب',
+                        'Please scan the doctor\'s QR code to confirm your visit.',
                         style: TextStyle(fontSize: 18),
                         textAlign: TextAlign.center,
                       ),

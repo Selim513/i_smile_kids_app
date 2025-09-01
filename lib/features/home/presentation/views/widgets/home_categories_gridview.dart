@@ -20,7 +20,7 @@ class _HomeCategoriesGridViewState extends State<HomeCategoriesGridView> {
     if (!canAccess) {
       final message = await BrushingScheduleManager.getAccessMessage();
       if (mounted) {
-        CustomSnackBar.completedBrushingTime(message, context);
+        CustomSnackBar.warningSnackBar(message, context);
       }
 
       return;
