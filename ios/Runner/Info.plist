@@ -45,5 +45,30 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	
+	<!-- Camera and QR Scanner Permissions -->
+	<key>NSCameraUsageDescription</key>
+	<string>يحتاج التطبيق للوصول للكاميرا لمسح رموز QR للتأكيد على زيارة الطبيب وكسب النقاط</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>يحتاج التطبيق للوصول للميكروفون لتشغيل الكاميرا بشكل صحيح</string>
+	
+	<!-- Optional: Background camera access (if needed) -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>camera</string>
+	</array>
+	
+	<!-- iOS 14+ Privacy Manifest (Optional but recommended) -->
+	<key>NSPrivacyAccessedAPITypes</key>
+	<array>
+		<dict>
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategoryCamera</string>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<string>QR Code scanning for doctor visit confirmation</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
