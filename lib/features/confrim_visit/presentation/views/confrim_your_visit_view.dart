@@ -31,6 +31,7 @@ class ConfirmYourVisitView extends StatelessWidget {
                 PersistentNavBarNavigator.pushNewScreen(
                   context,
                   screen: ScanQrCodeView(),
+                  pageTransitionAnimation: PageTransitionAnimation.slideUp,
                   withNavBar: false,
                 );
               },
