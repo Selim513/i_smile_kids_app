@@ -29,7 +29,6 @@ class _HomeViewBodyState extends State<HomeViewBody> {
         key: _refreshKey,
         onRefresh: () async {
           setState(() {});
-          print('Refresh');
         },
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),

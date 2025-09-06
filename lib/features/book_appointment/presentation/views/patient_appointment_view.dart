@@ -60,7 +60,7 @@ class _PatientAppointmentViewState extends State<PatientAppointmentView> {
   void onDateChanged(DateTime newDate) {
     setState(() {
       selectedDate = newDate;
-      selectedTime = null; 
+      selectedTime = null;
     });
   }
 
@@ -113,7 +113,6 @@ class _PatientAppointmentViewState extends State<PatientAppointmentView> {
                   CustomSnackBar.errorSnackBar(state.errorMessage, context);
                   print(state.errorMessage);
                 }
-               
               },
               builder: (context, state) {
                 if (state is FetchDoctorTestAvailabilitySuccess) {

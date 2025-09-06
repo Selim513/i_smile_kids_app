@@ -77,7 +77,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         // nationality: account.nationality,
         // emirateOfResidency: account.emirateOfResidency,
         point: 0,
-        
       );
 
       // Reload user to get updated data

@@ -1,4 +1,3 @@
-
 class WorkShiftModel {
   final String? start;
   final String? end;

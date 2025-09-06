@@ -46,9 +46,7 @@ class DoctorsViewBody extends StatelessWidget {
           } else if (state is FetchDoctorsDataFailure) {
             return Center(child: Text(state.errMessage));
           } else {
-            return const Center(child: CircularProgressIndicator(
-              
-            ));
+            return const Center(child: CircularProgressIndicator());
           }
         },
       ),

@@ -63,7 +63,10 @@ class _LoyaltyPointsViewState extends State<LoyaltyPointsView> {
                       ),
                     ),
                     // Text('🎉', style: TextStyle(fontSize: 30.sp)),
-                    const Icon(FontAwesomeIcons.gift, color: ColorManager.warning),
+                    const Icon(
+                      FontAwesomeIcons.gift,
+                      color: ColorManager.warning,
+                    ),
                     Gap(10.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

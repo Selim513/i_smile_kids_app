@@ -10,10 +10,12 @@ class CustomTextFormField extends StatefulWidget {
     this.controller,
     this.keyboardType,
     this.obscureText = false,
-     this.hintText,
+    this.hintText,
     this.prefixIcon,
-     this.title,
-    this.maxLines, this.readOnly, this.onChanged,
+    this.title,
+    this.maxLines,
+    this.readOnly,
+    this.onChanged,
   });
 
   final String? Function(String? value)? validator;
@@ -43,7 +45,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onChanged:widget. onChanged,
+      onChanged: widget.onChanged,
       readOnly: widget.readOnly ?? false,
       maxLines: widget.maxLines ?? 1,
       cursorColor: ColorManager.textDark,

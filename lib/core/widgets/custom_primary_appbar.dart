@@ -14,10 +14,12 @@ class CustomPrimaryAppbar extends StatelessWidget
       backgroundColor: Colors.white,
       centerTitle: true,
       title: Text(title ?? "", style: FontManger.blackBoldFont18),
-      leading:leading?? IconButton(
-        onPressed: () => Navigator.pop(context),
-        icon: const Icon(Icons.arrow_back_ios),
-      ),
+      leading:
+          leading ??
+          IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.arrow_back_ios),
+          ),
     );
   }
 

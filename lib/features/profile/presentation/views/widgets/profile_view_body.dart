@@ -18,21 +18,15 @@ class ProfileViewBody extends StatefulWidget {
 }
 
 class _ProfileViewBodyState extends State<ProfileViewBody> {
-  String? imareUrl;
-  String? name;
-  String? email;
-  // late UserModel userData;
   @override
   void initState() {
     super.initState();
     context.read<FetchProfileDataCubit>().fetchProfileData();
-    imareUrl = FirebaseHelper.user!.photoURL;
-    name = FirebaseHelper.user!.displayName;
-    email = FirebaseHelper.user!.email;
   }
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseHelper.userAuth.currentUser;
     return Padding(
       padding: EdgeInsetsGeometry.all(15.w),
       child: SingleChildScrollView(
@@ -40,24 +34,36 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
           spacing: 20.h,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ProfileHeaderSection(imareUrl: imareUrl, name: name, email: email),
+            ProfileHeaderSection(
+              imareUrl: user?.photoURL,
+              //  imareUrl
+              name: user?.displayName,
+              //  name
+              email: user?.email,
+              // email
+            ),
             const ProfileUserPersonalDetailsSection(),
             CustomEleveatedButton(
               bgColor: ColorManager.error,
               onPress: () async {
-                FirebaseHelper.userAuth.signOut().then((value) {
-                  if (context.mounted) {
-                    Navigator.of(
-                      context,
-                      rootNavigator: true,
-                    ).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                        builder: (context) => const SplashView(),
-                      ),
-                      (Route<dynamic> route) => false,
-                    );
-                  }
-                });
+                FirebaseHelper.userAuth.signOut();
+                if (mounted) {
+                  Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => const SplashView()),
+                    (Route<dynamic> route) => false,
+                  );
+                }
+                // if (context.mounted) {
+                //   // Navigator.of(
+                //   context,
+                //   rootNavigator: true,
+                // ).pushAndRemoveUntil(
+                //   MaterialPageRoute(
+                //     builder: (context) => const SplashView(),
+                //   ),
+                //   (Route<dynamic> route) => false,
+                // );
+                // }
               },
               child: Text(
                 'Logout',

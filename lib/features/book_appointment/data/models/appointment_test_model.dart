@@ -13,7 +13,7 @@ class BookAppointmentModel {
 
   BookAppointmentModel({
     this.id,
-     required this.doctorId,
+    required this.doctorId,
     required this.doctorName,
     required this.date,
     required this.time,
@@ -26,7 +26,7 @@ class BookAppointmentModel {
     final data = doc.data() as Map<String, dynamic>;
     return BookAppointmentModel(
       id: doc.id,
-        doctorId: data['doctorId'] ?? '',
+      doctorId: data['doctorId'] ?? '',
       doctorName: data['doctorName'] ?? '',
       date: data['date'] ?? '',
       time: data['time'] ?? '',
@@ -74,6 +74,7 @@ class AppointmentPatientDetailsModel {
     return {'name': name, 'age': age, 'problem': problem};
   }
 }
+
 class AppointmentDoctorAvailabilityModel {
   final String doctorName;
   final Map<String, DaySchedule> schedule; // Map اليوم -> التوقيتات
@@ -132,8 +133,5 @@ class DaySchedule {
   final String startTime;
   final String endTime;
 
-  DaySchedule({
-    required this.startTime,
-    required this.endTime,
-  });
+  DaySchedule({required this.startTime, required this.endTime});
 }

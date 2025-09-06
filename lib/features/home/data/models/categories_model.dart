@@ -32,7 +32,7 @@ List<CategoriesModel> categorieList = [
     icon: FontAwesomeIcons.alarmClock,
     title: 'Burshing Time',
     bgColor: ColorManager.primary,
-    view: const BrushingTimerView(),
+    view: const BrushingTimeView(),
   ),
   CategoriesModel(
     icon: FontAwesomeIcons.trophy,

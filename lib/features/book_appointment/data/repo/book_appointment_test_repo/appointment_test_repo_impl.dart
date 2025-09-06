@@ -12,9 +12,7 @@ class BookAppointmentRepositoryImpl implements BookAppointmentRepository {
     required String docId,
   }) async {
     try {
-      return await remoteDataSource.getDoctorAvailableTime(
-        docId: docId,
-      );
+      return await remoteDataSource.getDoctorAvailableTime(docId: docId);
     } catch (e) {
       throw Exception('Repository availableTime Error: ${e.toString()}');
     }

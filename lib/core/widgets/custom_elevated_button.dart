@@ -13,7 +13,7 @@ class CustomEleveatedButton extends StatelessWidget {
     this.padding,
     this.fontsize,
     this.bgColor,
-     this.child,
+    this.child,
     this.borderColor,
   });
   final String? title;

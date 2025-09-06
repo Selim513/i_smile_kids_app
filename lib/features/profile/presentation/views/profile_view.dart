@@ -37,10 +37,10 @@ class ProfileView extends StatelessWidget {
   }
 }
 
-      //  BlocProvider(
-      //   create: (context) =>
-      //       FetchProfileDataCubit(getIt.get<ProfileRepoImpl>())
-      //         ..fetchProfileData(),
+//  BlocProvider(
+//   create: (context) =>
+//       FetchProfileDataCubit(getIt.get<ProfileRepoImpl>())
+//         ..fetchProfileData(),
 
-      //   child: ProfileViewBody(),
-      // ),
+//   child: ProfileViewBody(),
+// ),

@@ -93,4 +93,3 @@ Future<UserModel?> fetchUserDataFromFirestore(String uid) async {
     throw Exception('Failed to fetch user data: ${e.toString()}');
   }
 }
-

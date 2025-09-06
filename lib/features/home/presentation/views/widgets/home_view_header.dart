@@ -6,26 +6,12 @@ import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_primary_container.dart';
 import 'package:i_smile_kids_app/features/home/presentation/views/widgets/home_image_profile.dart';
 
-class HomeViewHeader extends StatefulWidget {
+class HomeViewHeader extends StatelessWidget {
   const HomeViewHeader({super.key});
 
   @override
-  State<HomeViewHeader> createState() => _HomeViewHeaderState();
-}
-
-class _HomeViewHeaderState extends State<HomeViewHeader> {
-  String? name;
-  String? imageUrl;
-  @override
-  @override
-  void initState() {
-    super.initState();
-    name = FirebaseHelper.user!.displayName;
-    imageUrl = FirebaseHelper.user!.photoURL;
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final user = FirebaseHelper.user;
     return CustomPrimaryContainer(
       borderColor: Colors.transparent,
       boxShadow: [
@@ -40,8 +26,15 @@ class _HomeViewHeaderState extends State<HomeViewHeader> {
         spacing: 10.h,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          HomeImageProfileView(imageUrl: imageUrl),
-          Text(name ?? '', style: FontManger.primaryFontColorRoboto25),
+          HomeImageProfileView(
+            imageUrl: user?.photoURL,
+            //  imageUrl
+          ),
+          Text(
+            // name
+            user?.displayName ?? '',
+            style: FontManger.primaryFontColorRoboto25,
+          ),
           Text(
             'We care about your little smile',
             style: FontManger.textFomrHintFont14.copyWith(

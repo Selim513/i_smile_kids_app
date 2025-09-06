@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -15,12 +14,10 @@ class BrushingScheduleManager {
       final now = DateTime.now();
       final currentHour = now.hour;
 
-      bool isMorningPeriod =
-          currentHour >= 6 && currentHour < 13; 
-          // From 6 AM to 12:59 AM
-      bool isEveningPeriod =
-          currentHour >= 19 && currentHour < 24;
-           // From 7 PM to 11:59 PM
+      bool isMorningPeriod = currentHour >= 6 && currentHour < 13;
+      // From 6 AM to 12:59 AM
+      bool isEveningPeriod = currentHour >= 19 && currentHour < 24;
+      // From 7 PM to 11:59 PM
 
       if (!isMorningPeriod && !isEveningPeriod) {
         return false;

@@ -4,6 +4,7 @@ import 'package:i_smile_kids_app/features/confrim_visit/presentation/views/confr
 import 'package:i_smile_kids_app/features/dental_care_tips/presentation/views/dental_care_tips_view.dart';
 import 'package:i_smile_kids_app/features/home/presentation/views/home_view.dart';
 import 'package:i_smile_kids_app/features/profile/presentation/views/profile_view.dart';
+import 'package:i_smile_kids_app/features/video_tips/presentation/views/videos_tips_view.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 class MainView extends StatefulWidget {
@@ -32,6 +33,7 @@ class _MainViewState extends State<MainView> {
     return [
       const HomeView(),
       const DentalCareTipsView(),
+      const VideosTipsView(),
       // ScanQrCodeView(),
       ConfirmYourVisitView(),
       const ProfileView(),
@@ -50,6 +52,12 @@ class _MainViewState extends State<MainView> {
         icon: const Icon(Icons.tips_and_updates),
         title: ("Dental Tips"),
         activeColorPrimary: ColorManager.warning,
+        inactiveColorPrimary: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.ondemand_video_rounded),
+        title: ("Videos Tips"),
+        activeColorPrimary: ColorManager.textDark,
         inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(

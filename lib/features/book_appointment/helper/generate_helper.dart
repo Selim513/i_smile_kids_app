@@ -9,7 +9,7 @@ abstract class GenerateHelper {
     List<String> slots = [];
 
     if (!schedule.containsKey(dayName)) {
-      return slots; 
+      return slots;
     }
 
     final daySchedule = schedule[dayName]!;

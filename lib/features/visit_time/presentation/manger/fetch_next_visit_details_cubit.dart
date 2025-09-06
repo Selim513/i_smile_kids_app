@@ -17,7 +17,7 @@ class FetchNextVisitDetailsCubit
       final todayString = DateFormat('yyyy-MM-dd').format(today);
 
       final snapshot = await FirebaseFirestore.instance
-          .collection('patient_appointments') 
+          .collection('patient_appointments')
           .where(
             'patientDetails.name',
             isEqualTo: await _getCurrentUserName(),
@@ -160,7 +160,7 @@ class FetchNextVisitDetailsCubit
         transaction.delete(appointmentRef);
       });
 
-      emit(AppointmentCanncle()); 
+      emit(AppointmentCanncle());
       return true;
     } catch (e) {
       emit(FetchNextVisitDetailsFailure(errMessage: e.toString()));

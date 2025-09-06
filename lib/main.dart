@@ -36,4 +36,3 @@ class IsmileKids extends StatelessWidget {
     );
   }
 }
-
