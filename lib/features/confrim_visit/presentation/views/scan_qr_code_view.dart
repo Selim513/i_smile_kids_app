@@ -22,7 +22,7 @@ class _ScanQrCodeViewState extends State<ScanQrCodeView>
   String? result;
   bool isProcessing = false;
   String? lastQr; // لتجنب تكرار نفس الكود
-
+//-
   // دالة إضافة النقاط
   Future<void> addPoints(int points) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
