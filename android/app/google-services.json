@@ -7,20 +7,48 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:69735136717:android:90315f39eec97b66271884",
+        "mobilesdk_app_id": "1:69735136717:android:8457d9533fd3e9ae271884",
         "android_client_info": {
           "package_name": "com.example.i_smile_kids_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "69735136717-pak3o49r3dcsuq137ibkb09hv455rcr5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.i_smile_kids_app",
-            "certificate_hash": "09b2f368b9b01bb68b99058e7ceb8aa94a42f076"
-          }
-        },
+          "client_id": "69735136717-hqpib3aedst13af06kpsq5aapgvgfe6q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjw5KEwuA_WNXXKm18DNTPURbpkdp7E9Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "69735136717-hqpib3aedst13af06kpsq5aapgvgfe6q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "69735136717-kj9q9d500rtth6nskcpbftgdai7e89gr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.iSmileKidsApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:69735136717:android:aa56b46b49e8ca97271884",
+        "android_client_info": {
+          "package_name": "com.ismilekids.ismile"
+        }
+      },
+      "oauth_client": [
         {
           "client_id": "69735136717-hqpib3aedst13af06kpsq5aapgvgfe6q.apps.googleusercontent.com",
           "client_type": 3

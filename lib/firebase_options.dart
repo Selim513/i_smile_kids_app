@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCjw5KEwuA_WNXXKm18DNTPURbpkdp7E9Y',
-    appId: '1:69735136717:android:90315f39eec97b66271884',
+    appId: '1:69735136717:android:aa56b46b49e8ca97271884',
     messagingSenderId: '69735136717',
     projectId: 'i-smile-kids25-rwp86f',
     storageBucket: 'i-smile-kids25-rwp86f.firebasestorage.app',
@@ -59,10 +59,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBrwixujXMDX4vm-BlGpeDzgnm_7S9nqDM',
-    appId: '1:69735136717:ios:9d59f8a0fe766b25271884',
+    appId: '1:69735136717:ios:1d6c77b75a833b23271884',
     messagingSenderId: '69735136717',
     projectId: 'i-smile-kids25-rwp86f',
     storageBucket: 'i-smile-kids25-rwp86f.firebasestorage.app',
-    iosBundleId: 'com.example.iSmileKidsApp',
+    androidClientId: '69735136717-pak3o49r3dcsuq137ibkb09hv455rcr5.apps.googleusercontent.com',
+    iosClientId: '69735136717-n5946pvc25kgm0gcsso2atklcs4mlrlo.apps.googleusercontent.com',
+    iosBundleId: 'com.ismilekids.ismile',
   );
+
 }

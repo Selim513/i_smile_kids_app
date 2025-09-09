@@ -1,4 +1,4 @@
-package com.example.i_smile_kids_app
+package com.ismilekids.ismile
 
 import io.flutter.embedding.android.FlutterActivity
 
