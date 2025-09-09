@@ -1,9 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_snack_bar.dart';
+import 'package:i_smile_kids_app/features/confrim_visit/data/data_source/handle_qr_scan_remote_data_source.dart';
+import 'package:i_smile_kids_app/features/confrim_visit/data/repo/hanlde_qr_scan_repo_impl.dart';
+import 'package:i_smile_kids_app/features/confrim_visit/presentation/manger/scan_qr_cubit/scan_qr_cubit.dart';
+import 'package:i_smile_kids_app/features/confrim_visit/presentation/manger/scan_qr_cubit/scan_qr_state.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 class ScanQrCodeView extends StatefulWidget {
   const ScanQrCodeView({super.key});
@@ -19,145 +21,7 @@ class _ScanQrCodeViewState extends State<ScanQrCodeView>
     detectionSpeed: DetectionSpeed.noDuplicates,
   );
 
-  String? result;
-  bool isProcessing = false;
-  String? lastQr; // لتجنب تكرار نفس الكود
-//-
-  // دالة إضافة النقاط
-  Future<void> addPoints(int points) async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) return;
-
-    final userRef = FirebaseFirestore.instance.collection('users').doc(uid);
-
-    await FirebaseFirestore.instance.runTransaction((transaction) async {
-      final snapshot = await transaction.get(userRef);
-
-      if (!snapshot.exists) return;
-
-      int currentPoints = snapshot['points'] ?? 0;
-      transaction.update(userRef, {
-        'points': currentPoints + points,
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
-    });
-  }
-
-  // التحقق من QR Code
-  Future<void> handleQRScan(String qrData) async {
-    if (isProcessing) return;
-
-    if (mounted) {
-      setState(() {
-        isProcessing = true;
-      });
-    }
-
-    try {
-      if (qrData == "DOCTOR_VISIT_50_POINTS") {
-        final uid = FirebaseAuth.instance.currentUser?.uid;
-        if (uid == null) return;
-
-        final userRef = FirebaseFirestore.instance.collection('users').doc(uid);
-        final snapshot = await userRef.get();
-
-        if (snapshot.exists) {
-          final data = snapshot.data() as Map<String, dynamic>;
-          Timestamp? lastVisit = data['lastDoctorVisit'];
-
-          final now = DateTime.now();
-          final today = DateTime(now.year, now.month, now.day);
-
-          bool canGetPoints = true;
-
-          if (lastVisit != null) {
-            final lastVisitDate = lastVisit.toDate();
-            final lastDay = DateTime(
-              lastVisitDate.year,
-              lastVisitDate.month,
-              lastVisitDate.day,
-            );
-            if (lastDay == today) {
-              canGetPoints = false;
-            }
-          }
-
-          if (canGetPoints) {
-            await FirebaseFirestore.instance.runTransaction((
-              transaction,
-            ) async {
-              final snapshot = await transaction.get(userRef);
-              if (!snapshot.exists) return;
-
-              int currentPoints = snapshot['points'] ?? 0;
-              transaction.update(userRef, {
-                'points': currentPoints + 50,
-                'lastDoctorVisit': Timestamp.fromDate(today),
-                'updatedAt': FieldValue.serverTimestamp(),
-              });
-            });
-
-            if (mounted) {
-              // أعرض الرسالة الأول
-              CustomSnackBar.successSnackBar(
-                '🎉 50 points have been added for your doctor\'s visit!',
-                context,
-              );
-
-              // انتظر شوية قبل ما ترجع
-              await Future.delayed(const Duration(seconds: 3));
-
-              // ارجع للصفحة السابقة بدون Hero animation
-              if (mounted) {
-                PersistentNavBarNavigator.pop(
-                  context,
-                ); // true يعني العملية نجحت
-              }
-            }
-          } else {
-            if (mounted) {
-              CustomSnackBar.warningSnackBar(
-                'You\'ve already received your points for the day\'s visit.',
-                context,
-              );
-
-              await Future.delayed(const Duration(seconds: 3));
-
-              if (mounted) {
-                PersistentNavBarNavigator.pop(context);
-              }
-            }
-          }
-        }
-      } else {
-        if (mounted) {
-          CustomSnackBar.errorSnackBar('Invalid QR Code!', context);
-
-          await Future.delayed(const Duration(seconds: 3));
-
-          if (mounted) {
-            PersistentNavBarNavigator.pop(context);
-          }
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        CustomSnackBar.errorSnackBar('An error occurred: $e', context);
-
-        await Future.delayed(const Duration(seconds: 3));
-
-        if (mounted) {
-          PersistentNavBarNavigator.pop(context);
-        }
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          isProcessing = false;
-        });
-      }
-    }
-  }
+  String? lastQr;
 
   @override
   void dispose() {
@@ -168,69 +32,83 @@ class _ScanQrCodeViewState extends State<ScanQrCodeView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('QR Code Scanner'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
+    return BlocProvider(
+      create: (context) =>
+          QrScanCubit(HanldeQrScanRepoImpl(HandleQrScanRemoteDataSourceImpl())),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('QR Code Scanner'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
         ),
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 4,
-            child: MobileScanner(
-              key: GlobalKey(),
-              controller: controller,
-              onDetect: (capture) async {
-                if (isProcessing) return;
+        body: BlocConsumer<QrScanCubit, QrScanState>(
+          listener: (context, state) async {
+            if (state is QrScanInSuccess || state is QrScanFailure) {
+              controller.stop();
 
-                final List<Barcode> barcodes = capture.barcodes;
-                for (final barcode in barcodes) {
-                  final qrData = barcode.rawValue ?? "";
+              if (state is QrScanInSuccess) {
+                CustomSnackBar.successSnackBar(state.succMessage, context);
+              } else if (state is QrScanFailure) {
+                CustomSnackBar.errorSnackBar(state.errMessage, context);
+              }
 
-                  if (qrData.isEmpty) return;
-                  if (qrData == lastQr) return;
-                  lastQr = qrData;
+              await Future.delayed(const Duration(seconds: 3));
 
-                  if (mounted) {
-                    setState(() {
-                      result = qrData;
-                    });
-                  }
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
+            }
+          },
+          builder: (context, state) {
+            final isProcessing = state is QrScanInLoading;
 
-                  controller.stop(); // وقف الكاميرا فوراً
-                  handleQRScan(qrData);
-                  await Future.delayed(const Duration(seconds: 3));
+            return Column(
+              children: <Widget>[
+                Expanded(
+                  flex: 4,
+                  child: MobileScanner(
+                    key: GlobalKey(),
+                    controller: controller,
+                    onDetect: (capture) {
+                      if (isProcessing) return;
 
-                  Navigator.of(context).pop(true);
-                }
-              },
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Center(
-                child: isProcessing
-                    ? const CircularProgressIndicator()
-                    : (result != null)
-                    ? const SizedBox()
-                    : const Text(
-                        'Please scan the doctor\'s QR code to confirm your visit.',
-                        style: TextStyle(fontSize: 18),
-                        textAlign: TextAlign.center,
-                      ),
-              ),
-            ),
-          ),
-        ],
+                      final barcode = capture.barcodes.firstOrNull;
+                      final qrData = barcode?.rawValue;
+
+                      if (qrData == null || qrData.isEmpty) return;
+
+                      if (qrData == lastQr) return;
+                      lastQr = qrData;
+
+                      context.read<QrScanCubit>().handleQrScan(qrData: qrData);
+                    },
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Center(
+                      child: isProcessing
+                          ? const CircularProgressIndicator()
+                          : const Text(
+                              'Please scan the doctor\'s QR code to confirm your visit.',
+                              style: TextStyle(fontSize: 18),
+                              textAlign: TextAlign.center,
+                            ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
 
   @override
-  bool get wantKeepAlive => false;
+  bool get wantKeepAlive => true;
 }

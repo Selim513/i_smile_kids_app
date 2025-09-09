@@ -57,7 +57,7 @@ class _MainViewState extends State<MainView> {
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.ondemand_video_rounded),
         title: ("Videos Tips"),
-        activeColorPrimary: ColorManager.textDark,
+        activeColorPrimary: Colors.red,
         inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(

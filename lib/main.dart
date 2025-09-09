@@ -23,7 +23,6 @@ class IsmileKids extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ///---------------------------cubit errrorrr auth
     return ScreenUtilInit(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

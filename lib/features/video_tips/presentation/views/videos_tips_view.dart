@@ -5,8 +5,8 @@ import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_primary_appbar.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_primary_container.dart';
 import 'package:i_smile_kids_app/features/video_tips/data/models/video_tips_model.dart';
+import 'package:i_smile_kids_app/features/video_tips/presentation/views/video_tips_preview.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-import 'package:vimeo_video_player/vimeo_video_player.dart';
 
 class VideosTipsView extends StatelessWidget {
   const VideosTipsView({super.key});
@@ -68,25 +68,6 @@ class VideosTipsView extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-}
-
-class VideoTipsPreview extends StatelessWidget {
-  const VideoTipsPreview({super.key, required this.videoId});
-  final String videoId;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Icon(Icons.arrow_back_ios, color: Colors.white),
-        ),
-      ),
-      body: VimeoVideoPlayer(videoId: videoId),
     );
   }
 }
