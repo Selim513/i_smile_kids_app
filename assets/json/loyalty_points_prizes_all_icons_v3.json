@@ -1,0 +1,132 @@
+[
+  {
+    "id": "prize1",
+    "name_en": "Free dental sticker or toy from clinic",
+    "name_ar": "ملصق أسنان مجاني أو لعبة من العيادة",
+    "points": 50,
+    "desc_en": "Kids can choose a fun dental-themed sticker or a small toy after their visit.",
+    "desc_ar": "الطفل يختار ملصق أسنان ممتع أو لعبة صغيرة بعد الزيارة.",
+    "icon": "🎁",
+    "category": "reward"
+  },
+  {
+    "id": "prize2",
+    "name_en": "Dental-themed coloring book",
+    "name_ar": "كتاب تلوين بأسلوب الأسنان",
+    "points": 50,
+    "desc_en": "A creative coloring book with tooth-friendly characters and fun activities.",
+    "desc_ar": "كتاب تلوين يحتوي على شخصيات مرحة وأنشطة تعليمية عن الأسنان.",
+    "icon": "📖",
+    "category": "reward"
+  },
+  {
+    "id": "prize3",
+    "name_en": "Custom digital badge in app",
+    "name_ar": "شعار رقمي مخصص في التطبيق",
+    "points": 60,
+    "desc_en": "Earn a special badge that appears on your profile to celebrate your good brushing habits.",
+    "desc_ar": "يحصل الطفل على شارة خاصة تظهر في ملفه الشخصي احتفالاً بعاداته الصحية.",
+    "icon": "🏅",
+    "category": "reward"
+  },
+  {
+    "id": "prize4",
+    "name_en": "Ice cream voucher (Dyana business development)",
+    "name_ar": "قسيمة آيس كريم (تطوير أعمال ديانا)",
+    "points": 120,
+    "desc_en": "Redeem this voucher for a delicious ice cream treat at Dyana partner shops.",
+    "desc_ar": "استبدل القسيمة بآيس كريم لذيذ في متاجر شريكة لديانا.",
+    "icon": "🍦",
+    "category": "reward"
+  },
+  {
+    "id": "prize5",
+    "name_en": "“Tooth Hero” certificate & clinic wall feature",
+    "name_ar": "شهادة «بطل الأسنان» وتعليق الاسم على حائط العيادة",
+    "points": 200,
+    "desc_en": "Earn a framed 'Tooth Hero' certificate and get your name featured on the clinic wall of fame.",
+    "desc_ar": "احصل على شهادة «بطل الأسنان» مؤطرة ويُعلّق اسمك على حائط الشرف بالعيادة.",
+    "icon": "📜",
+    "category": "reward"
+  },
+  {
+    "id": "prize6",
+    "name_en": "Personalized toothbrush kit",
+    "name_ar": "عدة فرشاة أسنان مخصّصة باسم الطفل",
+    "points": 250,
+    "desc_en": "A custom toothbrush kit labeled with your name, including a brush, holder, and travel case.",
+    "desc_ar": "عدة فرشاة مخصّصة باسمك تشمل فرشاة، وحامل، وعلبة سفر.",
+    "icon": "🪥",
+    "category": "reward"
+  },
+  {
+    "id": "prize7",
+    "name_en": "Discount on next dental visit or cleaning",
+    "name_ar": "خصم على الزيارة أو جلسة التنظيف القادمة",
+    "points": 300,
+    "desc_en": "Save on your next check-up or professional cleaning at the clinic.",
+    "desc_ar": "وفّر في زيارتك القادمة أو جلسة التنظيف الاحترافية داخل العيادة.",
+    "icon": "💸",
+    "category": "reward"
+  },
+  {
+    "id": "prize8",
+    "name_en": "Day pass at Kids Planet (Dyana business development)",
+    "name_ar": "تصريح يوم كامل في Kids Planet (تطوير أعمال ديانا)",
+    "points": 400,
+    "desc_en": "Enjoy a full day of fun at Kids Planet through our Dyana business development partner.",
+    "desc_ar": "استمتع بيوم كامل من المرح في Kids Planet عبر شريك تطوير الأعمال ديانا.",
+    "icon": "🎠",
+    "category": "reward"
+  },
+  {
+    "id": "prize9",
+    "name_en": "20% off any event at Kaya Events",
+    "name_ar": "خصم 20٪ على أي فعالية لدى Kaya Events",
+    "points": 500,
+    "desc_en": "Get 20% off tickets or activities at Kaya Events—perfect for family fun days.",
+    "desc_ar": "احصل على خصم 20٪ على التذاكر أو الأنشطة لدى Kaya Events — مثالي لأيام العائلة.",
+    "icon": "🎫",
+    "category": "reward"
+  },
+  {
+    "id": "prize10",
+    "name_en": "Family movie night voucher",
+    "name_ar": "قسيمة ليلة سينما عائلية",
+    "points": 750,
+    "desc_en": "Enjoy a cozy family movie night with this special voucher.",
+    "desc_ar": "استمتعوا بليلة سينمائية عائلية مميزة بهذه القسيمة.",
+    "icon": "🎬",
+    "category": "reward"
+  },
+  {
+    "id": "prize11",
+    "name_en": "Bluetooth kids toothbrush",
+    "name_ar": "فرشاة أسنان للأطفال بتقنية البلوتوث",
+    "points": 900,
+    "desc_en": "A smart kids toothbrush with fun tracking and brushing guidance.",
+    "desc_ar": "فرشاة ذكية للأطفال مع تتبع ممتع وإرشادات للغسيل.",
+    "icon": "📶",
+    "category": "reward"
+  },
+  {
+    "id": "prize12",
+    "name_en": "Toy store voucher",
+    "name_ar": "قسيمة متجر الألعاب",
+    "points": 1000,
+    "desc_en": "Redeem at toy stores for the perfect reward.",
+    "desc_ar": "استبدل القسيمة في متاجر الألعاب للحصول على مكافأة مثالية.",
+    "icon": "🧸",
+    "category": "reward"
+  },
+  {
+    "id": "prize13",
+    "name_en": "Month Pass at Kids Planet",
+    "name_ar": "تصريح شهر في Kids Planet",
+    "points": 1000,
+    "desc_en": "A whole month of play at Kids Planet.",
+    "desc_ar": "شهر كامل من اللعب في Kids Planet.",
+    "icon": "🗓️",
+    "category": "reward"
+  }
+]

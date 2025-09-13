@@ -15,6 +15,11 @@ abstract class FontManger {
     fontWeight: FontWeight.bold,
     color: ColorManager.textDark,
   );
+  static TextStyle blackBoldFont20 = TextStyle(
+    fontSize: 20.sp,
+    fontWeight: FontWeight.bold,
+    color: ColorManager.textDark,
+  );
   static TextStyle whiteBoldFont20 = TextStyle(
     fontSize: 20.sp,
     fontWeight: FontWeight.bold,

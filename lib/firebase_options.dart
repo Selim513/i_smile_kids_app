@@ -63,9 +63,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '69735136717',
     projectId: 'i-smile-kids25-rwp86f',
     storageBucket: 'i-smile-kids25-rwp86f.firebasestorage.app',
-    androidClientId: '69735136717-pak3o49r3dcsuq137ibkb09hv455rcr5.apps.googleusercontent.com',
-    iosClientId: '69735136717-n5946pvc25kgm0gcsso2atklcs4mlrlo.apps.googleusercontent.com',
+    androidClientId:
+        '69735136717-pak3o49r3dcsuq137ibkb09hv455rcr5.apps.googleusercontent.com',
+    iosClientId:
+        '69735136717-n5946pvc25kgm0gcsso2atklcs4mlrlo.apps.googleusercontent.com',
     iosBundleId: 'com.ismilekids.ismile',
   );
-
 }

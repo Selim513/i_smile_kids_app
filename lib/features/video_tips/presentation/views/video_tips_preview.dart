@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:vimeo_video_player/vimeo_video_player.dart';
 

@@ -67,7 +67,6 @@ class _SplashViewState extends State<SplashView> {
 
       if (context.mounted) {}
       if (FirebaseHelper.userAuth.currentUser == null) {
-       
         if (mounted) {
           NavigatorHelper.pushReplaceMent(context, screen: const AuthView());
         }

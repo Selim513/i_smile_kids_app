@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/features/book_appointment/presentation/views/doctors_view.dart';
@@ -29,7 +28,7 @@ List<CategoriesModel> categorieList = [
     view: const DoctorsVeiw(),
   ),
   CategoriesModel(
-    icon: FontAwesomeIcons.alarmClock,
+    icon: Icons.alarm,
     title: 'Burshing Time',
     bgColor: ColorManager.primary,
     view: const BrushingTimeView(),

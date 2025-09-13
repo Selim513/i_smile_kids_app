@@ -6,7 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:i_smile_kids_app/core/observer/cubit_observer.dart';
 import 'package:i_smile_kids_app/core/services/service_locator.dart';
-import 'package:i_smile_kids_app/features/splash/presentation/splash_view.dart';
+import 'package:i_smile_kids_app/features/dashboard/data/repo/dashboard_repo.dart';
+import 'package:i_smile_kids_app/features/dashboard/presentation/manger/appointment_cubit.dart';
+import 'package:i_smile_kids_app/features/dashboard/presentation/manger/dashboard_cubit.dart';
+import 'package:i_smile_kids_app/features/dashboard/presentation/views/dashboard_view.dart';
 import 'package:i_smile_kids_app/firebase_options.dart';
 
 void main() async {
@@ -15,15 +18,13 @@ void main() async {
   serviceLocatorSetup();
 
   Bloc.observer = SimpleBlocObserver();
-    SystemChrome.setPreferredOrientations([
+  SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then((_) {
-  runApp(const IsmileKids());
+    runApp(const IsmileKids());
     // runApp(MyApp());
   });
-
-
 }
 
 class IsmileKids extends StatelessWidget {
@@ -31,14 +32,25 @@ class IsmileKids extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          fontFamily: GoogleFonts.inter().fontFamily,
-          scaffoldBackgroundColor: Colors.white,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => DashboardCubit(DashboardRepository()),
         ),
-        home: SplashView(),
+        BlocProvider(
+          create: (context) => AppointmentsListCubit(DashboardRepository()),
+        ),
+      ],
+
+      child: ScreenUtilInit(
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily: GoogleFonts.inter().fontFamily,
+            scaffoldBackgroundColor: Colors.white,
+          ),
+          home: DashboardView(),
+        ),
       ),
     );
   }

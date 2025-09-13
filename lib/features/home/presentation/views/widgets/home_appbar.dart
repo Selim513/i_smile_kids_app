@@ -22,7 +22,8 @@ class HomeAppBar extends StatelessWidget {
                 // final dataSource = AppointmentRemoteDataSource();
                 // await dataSource.initializeDoctorTimeSlots('doctor_1');
               },
-              child: const Icon(
+              child:
+               const Icon(
                 FontAwesomeIcons.bell,
                 color: ColorManager.primary,
               ),
