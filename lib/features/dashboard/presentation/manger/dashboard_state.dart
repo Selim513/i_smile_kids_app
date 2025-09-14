@@ -13,10 +13,12 @@ class DashboardLoading extends DashboardState {}
 
 class DashboardLoaded extends DashboardState {
   final List<DashboardAppointment> todayAppointments;
+  final List<DashboardAppointment> allAppointment;
   final PatientStatistics statistics;
   final DoctorUser? currentUser;
 
   DashboardLoaded({
+    required this.allAppointment,
     required this.todayAppointments,
     required this.statistics,
     this.currentUser,

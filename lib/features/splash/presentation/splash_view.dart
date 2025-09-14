@@ -14,6 +14,7 @@ import 'package:i_smile_kids_app/features/auth/data/repo/auht_repo_impl.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_cubit.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/auth_view.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/complete_auth_view.dart';
+import 'package:i_smile_kids_app/features/dashboard/presentation/views/dashboard_view.dart';
 import 'package:i_smile_kids_app/features/main/presentation/views/main_view.dart';
 
 class SplashView extends StatefulWidget {
@@ -70,6 +71,11 @@ class _SplashViewState extends State<SplashView> {
         if (mounted) {
           NavigatorHelper.pushReplaceMent(context, screen: const AuthView());
         }
+      } else if (FirebaseHelper.user?.uid == '2LDxPhHoEKQPUE4G2DxECQNw4sF3') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => DashboardView()),
+        );
       } else if (!complete) {
         if (mounted) {
           NavigatorHelper.pushReplaceMent(

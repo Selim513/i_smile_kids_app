@@ -7,7 +7,8 @@ import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_primary_container.dart';
 
 class DashboardHeader extends StatelessWidget {
-  const DashboardHeader({super.key});
+  const DashboardHeader({super.key, required this.appointmentCount});
+  final int appointmentCount;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class DashboardHeader extends StatelessWidget {
                   'Today\'s Appointments',
                   style: FontManger.textFomrHintFont14,
                 ),
-                Text('8', style: FontManger.blackBoldFont18),
+                Text('$appointmentCount', style: FontManger.blackBoldFont18),
               ],
             ),
           ),

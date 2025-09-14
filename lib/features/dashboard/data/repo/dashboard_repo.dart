@@ -53,7 +53,7 @@ class DashboardRepository {
 
       final snapshot = await _firestore
           .collection('patient_appointments')
-          .where('date', isEqualTo: today)
+          .where('date', isGreaterThanOrEqualTo: today)
           .orderBy('time')
           .get();
 
@@ -66,6 +66,7 @@ class DashboardRepository {
   }
 
   // الحصول على جميع المواعيد
+
   Future<List<DashboardAppointment>> getAllAppointments({
     String? status,
     String? startDate,
@@ -74,10 +75,12 @@ class DashboardRepository {
     try {
       Query query = _firestore.collection('patient_appointments');
 
+      // فلترة بالـ status
       if (status != null && status.isNotEmpty) {
         query = query.where('status', isEqualTo: status);
       }
 
+      // فلترة بالتاريخ اللي المستخدم بيدخله
       if (startDate != null) {
         query = query.where('date', isGreaterThanOrEqualTo: startDate);
       }
@@ -86,6 +89,13 @@ class DashboardRepository {
         query = query.where('date', isLessThanOrEqualTo: endDate);
       }
 
+      // أهم خطوة: نجيب المواعيد اللي لسه جاية بعد دلوقتي
+      query = query.where(
+        'date',
+        isGreaterThanOrEqualTo: DateTime.now().toIso8601String(),
+      );
+
+      // ترتيب حسب تاريخ الإنشاء
       query = query.orderBy('createdAt', descending: true);
 
       final snapshot = await query.get();
@@ -94,9 +104,41 @@ class DashboardRepository {
           .map((doc) => DashboardAppointment.fromFirestore(doc))
           .toList();
     } catch (e) {
-      throw Exception('Failed to get appointments: ${e.toString()}');
+      throw Exception('Failed to get upcoming appointments: ${e.toString()}');
     }
   }
+
+  // Future<List<DashboardAppointment>> getAllAppointments({
+  //   String? status,
+  //   String? startDate,
+  //   String? endDate,
+  // }) async {
+  //   try {
+  //     Query query = _firestore.collection('patient_appointments');
+
+  //     if (status != null && status.isNotEmpty) {
+  //       query = query.where('status', isEqualTo: status);
+  //     }
+
+  //     if (startDate != null) {
+  //       query = query.where('date', isGreaterThanOrEqualTo: startDate);
+  //     }
+
+  //     if (endDate != null) {
+  //       query = query.where('date', isLessThanOrEqualTo: endDate);
+  //     }
+
+  //     query = query.orderBy('createdAt', descending: true);
+
+  //     final snapshot = await query.get();
+
+  //     return snapshot.docs
+  //         .map((doc) => DashboardAppointment.fromFirestore(doc))
+  //         .toList();
+  //   } catch (e) {
+  //     throw Exception('Failed to get appointments: ${e.toString()}');
+  //   }
+  // }
 
   // تحديث حالة الموعد
   Future<void> updateAppointmentStatus({

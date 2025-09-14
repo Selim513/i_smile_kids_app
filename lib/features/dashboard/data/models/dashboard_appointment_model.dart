@@ -54,11 +54,13 @@ class PatientDetails {
   final String name;
   final String patientId;
   final String age;
+  // final String profileImage;
   final String? nationality;
   final String? emirateOfResidency;
 
   PatientDetails({
     required this.name,
+    //  required   this.profileImage,
     required this.patientId,
     required this.age,
     this.nationality,
@@ -68,6 +70,7 @@ class PatientDetails {
   factory PatientDetails.fromMap(Map<String, dynamic> data) {
     return PatientDetails(
       name: data['name'] ?? '',
+      // profileImage: data[],
       patientId: data['patientId'] ?? '',
       age: data['age'] ?? '',
       nationality: data['nationality'],

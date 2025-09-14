@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:i_smile_kids_app/core/helper/auth_validator.dart';
+import 'package:i_smile_kids_app/core/helper/firebase_helper.dart';
 import 'package:i_smile_kids_app/features/auth/data/models/create_account_model.dart';
 import 'package:i_smile_kids_app/features/auth/data/repo/auht_repo_impl.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_state.dart';
@@ -42,7 +43,15 @@ class AuthCubit extends Cubit<AuthCubitState> {
     );
     result.fold(
       (left) => emit(AuthCubitLoginFailure(errMessage: left.toString())),
-      (right) => emit(AuthCubitLoginSuccess(succMessage: 'Welcome Back')),
+      (right) {
+        final user = FirebaseHelper.user;
+
+        if (user != null && user.uid == '2LDxPhHoEKQPUE4G2DxECQNw4sF3') {
+          emit(AuthCubitAdminLoginSuccess(succMessage: 'Welcome Doctor Afaf'));
+        } else {
+          emit(AuthCubitLoginSuccess(succMessage: 'Welcome Back'));
+        }
+      },
     );
   }
 

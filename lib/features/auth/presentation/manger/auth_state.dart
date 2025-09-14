@@ -11,6 +11,11 @@ class AuthCubitLoginSuccess extends AuthCubitState {
 
   AuthCubitLoginSuccess({required this.succMessage});
 }
+class AuthCubitAdminLoginSuccess extends AuthCubitState {
+  final String succMessage;
+
+  AuthCubitAdminLoginSuccess({required this.succMessage});
+}
 
 class AuthCubitLoginFailure extends AuthCubitState {
   final String errMessage;

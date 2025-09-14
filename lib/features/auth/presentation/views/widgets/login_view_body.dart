@@ -18,6 +18,7 @@ import 'package:i_smile_kids_app/features/auth/presentation/views/create_account
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/custom_redirect_naviagor_message.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/custom_textform_field.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/social_auth_button.dart';
+import 'package:i_smile_kids_app/features/dashboard/presentation/views/dashboard_view.dart';
 import 'package:i_smile_kids_app/features/main/presentation/views/main_view.dart';
 
 class LoginViewBody extends StatelessWidget {
@@ -49,6 +50,13 @@ class LoginViewBody extends StatelessWidget {
                       NavigatorHelper.pushReplaceMent(
                         context,
                         screen: const MainView(),
+                      );
+                    } else if (state is AuthCubitAdminLoginSuccess) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DashboardView(),
+                        ),
                       );
                     } else if (state is AuthCubitGoogleSigninSuccess) {
                       // show toast then check profile completeness and navigate accordingly
@@ -107,15 +115,13 @@ class LoginViewBody extends StatelessWidget {
                           Gap(30.h),
                           CustomEleveatedButton(
                             onPress: () {
-                              cubit.login();
-
                               if (cubit.loginGlobalKey.currentState!
-                                      .validate() &&
-                                  state is AuthCubitLoginSuccess) {
-                                NavigatorHelper.push(
-                                  context,
-                                  screen: const CreateAccountView(),
-                                );
+                                  .validate()) {
+                                cubit.login();
+                                // NavigatorHelper.push(
+                                //   context,
+                                //   screen: const CreateAccountView(),
+                                // );
                               }
                             },
                             // child: state is AuthCubiLoading

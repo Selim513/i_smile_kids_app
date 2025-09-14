@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:i_smile_kids_app/core/helper/firebase_helper.dart';
 import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/features/dashboard/presentation/views/qr_code_view.dart';
 import 'package:i_smile_kids_app/features/dashboard/presentation/views/widgets/custom_dashboard_drawer_header.dart';
+import 'package:i_smile_kids_app/features/splash/presentation/splash_view.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -69,8 +71,19 @@ class CustomDrawer extends StatelessWidget {
                     icon: Icons.logout,
                     title: 'Logout',
                     onTap: () {
-                      Navigator.pop(context);
-                      // Handle logout
+                      // FirebaseHelper.userAuth.signOut();
+                      FirebaseHelper.userAuth.signOut();
+                      if (context.mounted) {
+                        Navigator.of(
+                          context,
+                          rootNavigator: true,
+                        ).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => const SplashView(),
+                          ),
+                          (Route<dynamic> route) => false,
+                        );
+                      }
                     },
                     isLogout: true,
                   ),

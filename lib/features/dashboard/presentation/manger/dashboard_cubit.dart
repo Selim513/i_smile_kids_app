@@ -16,14 +16,18 @@ class DashboardCubit extends Cubit<DashboardState> {
 
       // تحميل البيانات
       final todayAppointments = await _repository.getTodayAppointments();
+      final allAppointment = await _repository.getAllAppointments();
       final statistics = await _repository.getPatientStatistics();
       final currentUser = await _repository.getCurrentDoctorUser();
 
-      emit(DashboardLoaded(
-        todayAppointments: todayAppointments,
-        statistics: statistics,
-        currentUser: currentUser,
-      ));
+      emit(
+        DashboardLoaded(
+          allAppointment: allAppointment,
+          todayAppointments: todayAppointments,
+          statistics: statistics,
+          currentUser: currentUser,
+        ),
+      );
     } catch (e) {
       emit(DashboardError(e.toString()));
     }
@@ -43,7 +47,7 @@ class DashboardCubit extends Cubit<DashboardState> {
       );
 
       emit(AppointmentUpdated('تم إكمال الزيارة بنجاح'));
-      
+
       // إعادة تحميل البيانات
       loadDashboard();
     } catch (e) {
@@ -70,7 +74,7 @@ class DashboardCubit extends Cubit<DashboardState> {
       );
 
       emit(AppointmentUpdated('تم إلغاء الموعد بنجاح'));
-      
+
       // إعادة تحميل البيانات
       loadDashboard();
     } catch (e) {
@@ -88,7 +92,7 @@ class DashboardCubit extends Cubit<DashboardState> {
       );
 
       emit(AppointmentUpdated('تم تحديث حالة الموعد إلى فائت'));
-      
+
       // إعادة تحميل البيانات
       loadDashboard();
     } catch (e) {

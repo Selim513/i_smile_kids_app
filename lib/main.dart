@@ -9,7 +9,7 @@ import 'package:i_smile_kids_app/core/services/service_locator.dart';
 import 'package:i_smile_kids_app/features/dashboard/data/repo/dashboard_repo.dart';
 import 'package:i_smile_kids_app/features/dashboard/presentation/manger/appointment_cubit.dart';
 import 'package:i_smile_kids_app/features/dashboard/presentation/manger/dashboard_cubit.dart';
-import 'package:i_smile_kids_app/features/dashboard/presentation/views/dashboard_view.dart';
+import 'package:i_smile_kids_app/features/splash/presentation/splash_view.dart';
 import 'package:i_smile_kids_app/firebase_options.dart';
 
 void main() async {
@@ -49,7 +49,7 @@ class IsmileKids extends StatelessWidget {
             fontFamily: GoogleFonts.inter().fontFamily,
             scaffoldBackgroundColor: Colors.white,
           ),
-          home: DashboardView(),
+          home: SplashView(),
         ),
       ),
     );
