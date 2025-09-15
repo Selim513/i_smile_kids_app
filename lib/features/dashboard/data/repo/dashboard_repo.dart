@@ -53,7 +53,7 @@ class DashboardRepository {
 
       final snapshot = await _firestore
           .collection('patient_appointments')
-          .where('date', isGreaterThanOrEqualTo: today)
+          .where('date', isEqualTo: today)
           .orderBy('time')
           .get();
 
@@ -89,14 +89,16 @@ class DashboardRepository {
         query = query.where('date', isLessThanOrEqualTo: endDate);
       }
 
-      // أهم خطوة: نجيب المواعيد اللي لسه جاية بعد دلوقتي
-      query = query.where(
-        'date',
-        isGreaterThanOrEqualTo: DateTime.now().toIso8601String(),
-      );
+      // -- الحل هنا --
+      // احصل على تاريخ اليوم ولكن مع ضبط الوقت على بداية اليوم (00:00:00)
+      final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+      // أهم خطوة: نجيب المواعيد اللي لسه جاية بعد بداية اليوم
+      query = query.where('date', isGreaterThanOrEqualTo: today);
 
       // ترتيب حسب تاريخ الإنشاء
-      query = query.orderBy('createdAt', descending: true);
+      query = query.orderBy('date', descending: false);
+      query = query.orderBy('time', descending: false);
 
       final snapshot = await query.get();
 
