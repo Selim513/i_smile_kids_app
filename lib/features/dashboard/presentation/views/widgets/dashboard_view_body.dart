@@ -39,105 +39,112 @@ class _DashboardViewBodyState extends State<DashboardViewBody> {
           if (state is DashboardLoading) {
             return Center(child: CircularProgressIndicator());
           }
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              DashboardHeader(appointmentCount: todayAppointmentCount ?? 0),
-              Gap(10.h),
-              Divider(color: ColorManager.lightGreyColor),
-              Gap(15.h),
+          return RefreshIndicator(
+            onRefresh: () async {
+              setState(() {
+                context.read<DashboardCubit>().loadDashboard();
+              });
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DashboardHeader(appointmentCount: todayAppointmentCount ?? 0),
+                Gap(10.h),
+                Divider(color: ColorManager.lightGreyColor),
+                Gap(15.h),
 
-              Text(
-                'Appointments Requests',
-                style: FontManger.blackBoldFont20.copyWith(
-                  color: ColorManager.success,
+                Text(
+                  'Appointments Requests',
+                  style: FontManger.blackBoldFont20.copyWith(
+                    color: ColorManager.success,
+                  ),
                 ),
-              ),
-              Gap(5.h),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: appointmentCount ?? 0,
-                  itemBuilder: (context, index) {
-                    var data = userData?[index];
-                    return Padding(
-                      padding: EdgeInsetsGeometry.symmetric(vertical: 5.h),
-                      child: CustomPrimaryContainer(
-                        padding: EdgeInsets.all(10.r),
-                        widgets: Column(
-                          spacing: 10.h,
-                          children: [
-                            DashboardPatientAppointmentContainer(
-                              name: data!.patientName,
-                              age: data.patientDetails.age,
-                              // profileImage: data.patientDetails.age,
-                            ),
+                Gap(5.h),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: appointmentCount ?? 0,
+                    itemBuilder: (context, index) {
+                      var data = userData?[index];
+                      return Padding(
+                        padding: EdgeInsetsGeometry.symmetric(vertical: 5.h),
+                        child: CustomPrimaryContainer(
+                          padding: EdgeInsets.all(10.r),
+                          widgets: Column(
+                            spacing: 10.h,
+                            children: [
+                              DashboardPatientAppointmentContainer(
+                                name: data!.patientName,
+                                age: data.patientDetails.age,
+                                // profileImage: data.patientDetails.age,
+                              ),
 
-                            Row(
-                              spacing: 10.w,
-                              children: [
-                                Icon(
-                                  Icons.date_range_rounded,
-                                  color: ColorManager.primary,
-                                ),
-                                Text(
-                                  data.date,
+                              Row(
+                                spacing: 10.w,
+                                children: [
+                                  Icon(
+                                    Icons.date_range_rounded,
+                                    color: ColorManager.primary,
+                                  ),
+                                  Text(
+                                    data.date,
 
-                                  // 'Tomorrow, 10:30 AM',
-                                  style: FontManger.regularFontBlack12,
-                                ),
-                                Gap(30.w),
-                                Icon(
-                                  Icons.access_time_rounded,
-                                  color: ColorManager.primary,
-                                ),
-                                Text(
-                                  data.time,
+                                    // 'Tomorrow, 10:30 AM',
+                                    style: FontManger.regularFontBlack12,
+                                  ),
+                                  Gap(30.w),
+                                  Icon(
+                                    Icons.access_time_rounded,
+                                    color: ColorManager.primary,
+                                  ),
+                                  Text(
+                                    data.time,
 
-                                  // 'Tomorrow, 10:30 AM',
-                                  style: FontManger.regularFontBlack12,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: CustomEleveatedButton(
-                                    height: 30.h,
+                                    // 'Tomorrow, 10:30 AM',
+                                    style: FontManger.regularFontBlack12,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: CustomEleveatedButton(
+                                      height: 30.h,
 
-                                    onPress: () {},
-                                    bgColor: ColorManager.success,
-                                    child: Text(
-                                      'Complete',
-                                      style: FontManger.whiteBoldFont20
-                                          .copyWith(fontSize: 15.sp),
+                                      onPress: () {},
+                                      bgColor: ColorManager.success,
+                                      child: Text(
+                                        'Complete',
+                                        style: FontManger.whiteBoldFont20
+                                            .copyWith(fontSize: 15.sp),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Gap(10.w),
+                                  Gap(10.w),
 
-                                Expanded(
-                                  child: CustomEleveatedButton(
-                                    height: 30.h,
+                                  Expanded(
+                                    child: CustomEleveatedButton(
+                                      height: 30.h,
 
-                                    onPress: () {},
-                                    bgColor: ColorManager.error,
-                                    child: Text(
-                                      'No Show',
-                                      style: FontManger.whiteBoldFont20
-                                          .copyWith(fontSize: 15.sp),
+                                      onPress: () {},
+                                      bgColor: ColorManager.error,
+                                      child: Text(
+                                        'No Show',
+                                        style: FontManger.whiteBoldFont20
+                                            .copyWith(fontSize: 15.sp),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),
