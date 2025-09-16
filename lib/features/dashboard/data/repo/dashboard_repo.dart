@@ -95,6 +95,7 @@ class DashboardRepository {
 
       // أهم خطوة: نجيب المواعيد اللي لسه جاية بعد بداية اليوم
       query = query.where('date', isGreaterThanOrEqualTo: today);
+      query = query.where('time', isGreaterThanOrEqualTo: today);
 
       // ترتيب حسب تاريخ الإنشاء
       query = query.orderBy('date', descending: false);

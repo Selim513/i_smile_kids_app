@@ -63,8 +63,10 @@ class _DashboardViewBodyState extends State<DashboardViewBody> {
                 Expanded(
                   child: ListView.builder(
                     itemCount: appointmentCount ?? 0,
+
                     itemBuilder: (context, index) {
                       var data = userData?[index];
+                      // data.time
                       return Padding(
                         padding: EdgeInsetsGeometry.symmetric(vertical: 5.h),
                         child: CustomPrimaryContainer(
@@ -75,6 +77,7 @@ class _DashboardViewBodyState extends State<DashboardViewBody> {
                               DashboardPatientAppointmentContainer(
                                 name: data!.patientName,
                                 age: data.patientDetails.age,
+                                status: data.status,
                                 // profileImage: data.patientDetails.age,
                               ),
 
@@ -110,7 +113,15 @@ class _DashboardViewBodyState extends State<DashboardViewBody> {
                                     child: CustomEleveatedButton(
                                       height: 30.h,
 
-                                      onPress: () {},
+                                      onPress: () {
+                                        context
+                                            .read<DashboardCubit>()
+                                            .markAppointmentCompleted(
+                                              appointmentId: data.id,
+                                              notes: '',
+                                            );
+                                        print('Doneeeeeeee');
+                                      },
                                       bgColor: ColorManager.success,
                                       child: Text(
                                         'Complete',
@@ -119,21 +130,21 @@ class _DashboardViewBodyState extends State<DashboardViewBody> {
                                       ),
                                     ),
                                   ),
-                                  Gap(10.w),
+                                  // Gap(10.w),
 
-                                  Expanded(
-                                    child: CustomEleveatedButton(
-                                      height: 30.h,
+                                  // Expanded(
+                                  //   child: CustomEleveatedButton(
+                                  //     height: 30.h,
 
-                                      onPress: () {},
-                                      bgColor: ColorManager.error,
-                                      child: Text(
-                                        'No Show',
-                                        style: FontManger.whiteBoldFont20
-                                            .copyWith(fontSize: 15.sp),
-                                      ),
-                                    ),
-                                  ),
+                                  //     onPress: () {},
+                                  //     bgColor: ColorManager.error,
+                                  //     child: Text(
+                                  //       'Remove',
+                                  //       style: FontManger.whiteBoldFont20
+                                  //           .copyWith(fontSize: 15.sp),
+                                  //     ),
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ],
