@@ -8,7 +8,7 @@ class DashboardRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // التحقق من صلاحيات المستخدم (طبيبة أو ممرضة)
-  Future<DoctorUser?> getCurrentDoctorUser() async {
+  Future<DoctorUser?> getCurrentDoctorUser() async {  
     try {
       final uid = FirebaseHelper.user?.uid;
       if (uid == null) return null;

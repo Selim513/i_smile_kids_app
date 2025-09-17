@@ -19,7 +19,11 @@ class FetchProfileDataRemoteDataSourceImpl extends ProfileDataRemoteDataSource {
   @override
   Future<UserModel?> fetchUserData() async {
     debugPrint('----------user uid: ${user.uid}');
-    return await fetchUserDataFromFirestore(user.uid);
+    try {
+      return await fetchUserDataFromFirestore(user.uid);
+    } on Exception catch (e) {
+      throw Exception('❌ Error Fetch User Data: $e');
+    }
   }
 
   @override
