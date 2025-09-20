@@ -4,9 +4,10 @@ import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 
 class CustomPrimaryAppbar extends StatelessWidget
     implements PreferredSizeWidget {
-  const CustomPrimaryAppbar({super.key, this.title, this.leading});
+  const CustomPrimaryAppbar({super.key, this.title, this.leading, this.action});
   final String? title;
   final Widget? leading;
+  final Widget? action;
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +15,7 @@ class CustomPrimaryAppbar extends StatelessWidget
       backgroundColor: Colors.white,
       centerTitle: true,
       title: Text(title ?? "", style: FontManger.blackBoldFont18),
+      actions: [action ?? SizedBox()],
       leading:
           leading ??
           IconButton(
