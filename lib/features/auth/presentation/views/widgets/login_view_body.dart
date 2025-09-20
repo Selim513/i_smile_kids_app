@@ -69,11 +69,7 @@ class LoginViewBody extends StatelessWidget {
                           } else {
                             NavigatorHelper.pushReplaceMent(
                               context,
-                              screen: BlocProvider(
-                                create: (context) =>
-                                    AuthCubit(getIt.get<AuthRepositoryImpl>()),
-                                child: const CompleteAuthView(),
-                              ),
+                              screen: const CompleteAuthView(),
                             );
                           }
                         }

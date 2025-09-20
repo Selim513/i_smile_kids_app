@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:i_smile_kids_app/core/services/firebase_brushing_time_manger.dart';
 import 'package:i_smile_kids_app/features/home/presentation/views/widgets/home_appbar.dart';
 import 'package:i_smile_kids_app/features/home/presentation/views/widgets/home_categories_gridview.dart';
 import 'package:i_smile_kids_app/features/home/presentation/views/widgets/home_view_header.dart';
+import 'package:i_smile_kids_app/features/profile/presentation/manger/fetch_profile_data_cubit/fetch_profile_data_cubit.dart';
 
 class HomeViewBody extends StatefulWidget {
   const HomeViewBody({super.key});
@@ -28,7 +30,9 @@ class _HomeViewBodyState extends State<HomeViewBody> {
       child: RefreshIndicator(
         key: _refreshKey,
         onRefresh: () async {
-          setState(() {});
+          setState(() {
+            context.read<FetchProfileDataCubit>().fetchProfileData();
+          });
         },
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),

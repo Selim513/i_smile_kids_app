@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +12,7 @@ import 'package:i_smile_kids_app/features/auth/data/repo/auht_repo_impl.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_cubit.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/auth_view.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/complete_auth_view.dart';
+import 'package:i_smile_kids_app/features/dashboard/presentation/views/dashboard_view.dart';
 import 'package:i_smile_kids_app/features/main/presentation/views/main_view.dart';
 
 class SplashView extends StatefulWidget {
@@ -24,77 +23,104 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
-  Future<bool> isProfileComplete() async {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user == null) return false;
 
-      final doc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .get();
-      if (!doc.exists) return false;
 
-      final data = doc.data() ?? {};
+  void _checkUserStatus() {
+    // We wrap this in a BlocProvider to have access to the AuthCubit
+    final authCubit = AuthCubit(getIt.get<AuthRepositoryImpl>());
 
-      // List the fields you require for a "complete" profile
-      final required = ['age'];
-
-      for (final field in required) {
-        final value = data[field];
-        if (value == null) return false;
-        if (value is String && value.trim().isEmpty) return false;
-      }
-
-      // optional: require photoURL too
-      // if ((data['photoURL'] ?? '').toString().trim().isEmpty) return false;
-
-      return true;
-    } catch (e) {
-      // on error assume not complete (or you can rethrow / handle)
-      debugPrint('isProfileComplete error: $e');
-      return false;
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(seconds: 2)).then((value) async {
+    Future.delayed(const Duration(seconds: 2)).then((_) async {
       if (!mounted) return;
 
-      final complete = await isProfileComplete();
+      final currentUser = FirebaseHelper.userAuth.currentUser;
 
-      if (context.mounted) {}
-      if (FirebaseHelper.userAuth.currentUser == null) {
-       
-        if (mounted) {
-          NavigatorHelper.pushReplaceMent(context, screen: const AuthView());
-        }
-      } else if (!complete) {
-        if (mounted) {
+      if (currentUser == null) {
+        // No user logged in, go to Auth screen
+        NavigatorHelper.pushReplaceMent(context, screen: const AuthView());
+      } else {
+        // User is logged in
+
+        // <<< SOLUTION FOR PROBLEM 2 >>>
+        // Check if the user is the Admin
+        if (currentUser.uid == '2LDxPhHoEKQPUE4G2DxECQNw4sF3') {
+          // Navigate to Dashboard
+          // Note: Create a DashboardView() widget for this to work
           NavigatorHelper.pushReplaceMent(
             context,
-            screen: BlocProvider(
-              create: (context) => AuthCubit(getIt.get<AuthRepositoryImpl>()),
-              child: const CompleteAuthView(),
-            ),
+            screen: const DashboardView(),
           );
+          return; // Stop further execution
         }
-      } else {
-        if (mounted) {
-          final reward = await giveDailyReward();
 
-          if (reward) {
+        // <<< SOLUTION FOR PROBLEM 1 >>>
+        // Check profile completeness using the CUBIT
+        final isComplete = await authCubit.isProfileComplete();
+
+        if (!mounted) return;
+
+        if (isComplete) {
+          // Profile is complete, go to MainView
+          final reward = await giveDailyReward();
+          if (mounted && reward) {
             CustomSnackBar.successSnackBar(
               'Thanks for logging in! You just received 5 points for your daily login.',
               context,
             );
           }
           NavigatorHelper.pushReplaceMent(context, screen: const MainView());
+        } else {
+          // Profile is not complete, go to CompleteAuthView
+          NavigatorHelper.pushReplaceMent(
+            context,
+            screen: BlocProvider.value(
+              value: authCubit, // Pass the existing cubit instance
+              child: const CompleteAuthView(),
+            ),
+          );
         }
       }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkUserStatus();
+    // Future.delayed(const Duration(seconds: 2)).then((value) async {
+    //   if (!mounted) return;
+
+    //   final complete = await isProfileComplete();
+
+    //   if (context.mounted) {}
+    //   if (FirebaseHelper.userAuth.currentUser == null) {
+
+    //     if (mounted) {
+    //       NavigatorHelper.pushReplaceMent(context, screen: const AuthView());
+    //     }
+    //   } else if (!complete) {
+    //     if (mounted) {
+    //       NavigatorHelper.pushReplaceMent(
+    //         context,
+    //         screen: BlocProvider(
+    //           create: (context) => AuthCubit(getIt.get<AuthRepositoryImpl>()),
+    //           child: const CompleteAuthView(),
+    //         ),
+    //       );
+    //     }
+    //   } else {
+    //     if (mounted) {
+    //       final reward = await giveDailyReward();
+
+    //       if (reward) {
+    //         CustomSnackBar.successSnackBar(
+    //           'Thanks for logging in! You just received 5 points for your daily login.',
+    //           context,
+    //         );
+    //       }
+    //       NavigatorHelper.pushReplaceMent(context, screen: const MainView());
+    //     }
+    //   }
+    // });
   }
 
   @override

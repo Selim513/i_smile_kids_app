@@ -4,13 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:i_smile_kids_app/core/helper/auth_validator.dart';
 import 'package:i_smile_kids_app/core/helper/navigator_helper.dart';
-import 'package:i_smile_kids_app/core/services/service_locator.dart';
 import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_drop_down_field.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_elevated_button.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_snack_bar.dart';
-import 'package:i_smile_kids_app/features/auth/data/repo/auht_repo_impl.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_cubit.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_state.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/complete_auth_view.dart';
@@ -65,11 +63,7 @@ class CreateAccountFormFieldSection extends StatelessWidget {
                     if (context.mounted) {
                       NavigatorHelper.pushReplaceMent(
                         context,
-                        screen: BlocProvider(
-                          create: (context) =>
-                              AuthCubit(getIt.get<AuthRepositoryImpl>()),
-                          child: const CompleteAuthView(),
-                        ),
+                        screen: const CompleteAuthView(),
                       );
                     }
                   }

@@ -19,17 +19,18 @@ class ProfileView extends StatelessWidget {
         centerTitle: true,
         title: Text('Profile', style: FontManger.whiteBoldFont20),
       ),
-      body: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) =>
-                FetchProfileDataCubit(getIt.get<ProfileRepoImpl>()),
-          ),
-          BlocProvider(
+      body: BlocProvider(
+        
+        
+         
             create: (context) =>
                 UploadPickedProfileImageCubit(getIt.get<ProfileRepoImpl>()),
-          ),
-        ],
+        
+
+
+
+        
+        
 
         child: const ProfileViewBody(),
       ),

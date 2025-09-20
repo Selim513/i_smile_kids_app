@@ -48,6 +48,15 @@ class AuthCubitGoogleSigninFailure extends AuthCubitState {
   AuthCubitGoogleSigninFailure({required this.errMessage});
 }
 
+// Logout
+class AuthCubitLogoutLoading extends AuthCubitState {}
+
+class AuthCubitLogoutFailure extends AuthCubitState {
+  final String errMessage;
+
+  AuthCubitLogoutFailure({required this.errMessage});
+}
+
 //-Update user states
 class AuthCubitUpdateUserFailure extends AuthCubitState {
   final String errMessage;

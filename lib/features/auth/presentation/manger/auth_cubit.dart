@@ -81,6 +81,21 @@ class AuthCubit extends Cubit<AuthCubitState> {
     );
   }
 
+  Future<void> logout() async {
+    emit(
+      AuthCubitLogoutLoading(),
+    ); // You can create a specific LogoutLoading state if you want
+    try {
+      await authRepo.logout();
+      emit(AuthCubitInitial()); // Reset to initial state after logout
+    } catch (e) {
+      // Handle potential logout errors if necessary
+      emit(
+        AuthCubitLogoutFailure(errMessage: 'Logout failed: ${e.toString()}'),
+      );
+    }
+  }
+
   Future<void> sendPasswordReset() async {
     // optional: basic local validation
     if (resetPasswordEmailController.text.trim().isEmpty) {
@@ -143,7 +158,7 @@ class AuthCubit extends Cubit<AuthCubitState> {
       final data = doc.data() ?? {};
 
       // List the fields you require for a "complete" profile
-      final required = ['age', 'nationality', 'emirateOfResidency'];
+      final required = ['age'];
 
       for (final field in required) {
         final value = data[field];

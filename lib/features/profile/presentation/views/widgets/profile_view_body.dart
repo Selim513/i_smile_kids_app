@@ -5,6 +5,7 @@ import 'package:i_smile_kids_app/core/helper/firebase_helper.dart';
 import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_elevated_button.dart';
+import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_cubit.dart';
 import 'package:i_smile_kids_app/features/profile/presentation/manger/fetch_profile_data_cubit/fetch_profile_data_cubit.dart';
 import 'package:i_smile_kids_app/features/profile/presentation/views/widgets/profile_header_section.dart';
 import 'package:i_smile_kids_app/features/profile/presentation/views/widgets/profile_user_personal_details_section.dart';
@@ -46,24 +47,17 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
             CustomEleveatedButton(
               bgColor: ColorManager.error,
               onPress: () async {
-                FirebaseHelper.userAuth.signOut();
+                // <<< MODIFIED PART >>>
+                // Call the cubit's logout method
+                await context.read<AuthCubit>().logout();
+
                 if (mounted) {
+                  // This navigation is correct for resetting the app
                   Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => const SplashView()),
                     (Route<dynamic> route) => false,
                   );
                 }
-                // if (context.mounted) {
-                //   // Navigator.of(
-                //   context,
-                //   rootNavigator: true,
-                // ).pushAndRemoveUntil(
-                //   MaterialPageRoute(
-                //     builder: (context) => const SplashView(),
-                //   ),
-                //   (Route<dynamic> route) => false,
-                // );
-                // }
               },
               child: Text(
                 'Logout',
