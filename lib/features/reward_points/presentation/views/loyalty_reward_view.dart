@@ -330,8 +330,9 @@ import 'package:i_smile_kids_app/core/widgets/custom_primary_appbar.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_snack_bar.dart';
 import 'package:i_smile_kids_app/features/reward_points/data/model/prize_model.dart';
 import 'package:i_smile_kids_app/features/reward_points/data/repo/prize_repo.dart';
-import 'package:i_smile_kids_app/features/reward_points/presentation/manger/prize_cubit.dart';
-import 'package:i_smile_kids_app/features/reward_points/presentation/manger/prize_state.dart';
+import 'package:i_smile_kids_app/features/reward_points/presentation/manger/prize-cubit/prize_cubit.dart';
+import 'package:i_smile_kids_app/features/reward_points/presentation/manger/prize-cubit/prize_state.dart';
+import 'package:i_smile_kids_app/features/reward_points/presentation/views/my_reward.dart';
 import 'package:i_smile_kids_app/features/reward_points/presentation/views/widgets/custom_loyalty_Reward_filter_button.dart';
 
 class PrizesScreen extends StatelessWidget {
@@ -345,7 +346,12 @@ class PrizesScreen extends StatelessWidget {
         appBar: CustomPrimaryAppbar(
           title: 'Loyalty Reward',
           action: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyPrizeView()),
+              );
+            },
             icon: Text(
               'My Reward 🎁',
               style: FontManger.regularFontBlack12.copyWith(

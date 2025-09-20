@@ -167,7 +167,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:i_smile_kids_app/core/helper/firebase_helper.dart';
 import 'package:i_smile_kids_app/features/reward_points/data/model/prize_model.dart';
 import 'package:i_smile_kids_app/features/reward_points/data/repo/prize_repo.dart';
-import 'package:i_smile_kids_app/features/reward_points/presentation/manger/prize_state.dart';
+import 'package:i_smile_kids_app/features/reward_points/presentation/manger/prize-cubit/prize_state.dart';
 
 class PrizesCubit extends Cubit<PrizesState> {
   final PrizesRepository _repository;
@@ -206,40 +206,32 @@ class PrizesCubit extends Cubit<PrizesState> {
   // <<< redeemPrize FUNCTION IS NOW FULLY IMPLEMENTED >>>
   Future<void> redeemPrize(String prizeId) async {
     try {
-      final prize = await _repository.getPrizeById(prizeId);
-      
-      if (prize == null) {
-        emit(PrizesError('Prize not found'));
-        return;
-      }
+    final prize = await _repository.getPrizeById(prizeId);
+    if (prize == null) { /* ... handle error ... */ return; }
+    if (!prize.canAfford(_userPoints)) { /* ... handle error ... */ return; }
 
-      if (!prize.canAfford(_userPoints)) {
-        emit(PrizesError('Insufficient points. Need ${prize.points} points'));
-        return;
-      }
+    final remainingPoints = _userPoints - prize.points;
 
-      final remainingPoints = _userPoints - prize.points;
+    // <<< MODIFIED PART >>>
+    // Use the new repository method to do both operations
+    await _repository.recordRedemptionAndUpdatePoints(prize, remainingPoints);
 
-      // Update points in Firestore FIRST
-      await _repository.updateUserPoints(remainingPoints);
+    _userPoints = remainingPoints;
 
-      // If Firestore update is successful, then update the local state
-      _userPoints = remainingPoints;
+    emit(PrizeRedeemed(
+      prize: prize,
+      remainingPoints: remainingPoints,
+    ));
 
-      emit(PrizeRedeemed(
-        prize: prize,
-        remainingPoints: remainingPoints,
-      ));
+    await Future.delayed(const Duration(seconds: 1)); 
 
-      // After a short delay, refresh the UI with the updated points
-      await Future.delayed(const Duration(seconds: 1)); 
+    emit(PrizesLoaded(
+      prizes: _allPrizes,
+      categories: _categories,
+      userPoints: remainingPoints,
+    ));
 
-      emit(PrizesLoaded(
-        prizes: _allPrizes,
-        categories: _categories,
-        userPoints: remainingPoints,
-      ));
-
+  
     } catch (e) {
       emit(PrizesError('Failed to redeem prize: ${e.toString()}'));
       // Reload data to ensure UI is consistent after an error

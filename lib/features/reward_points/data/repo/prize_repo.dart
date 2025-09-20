@@ -67,6 +67,7 @@
 // prize_repo.dart
 
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:i_smile_kids_app/core/helper/firebase_helper.dart'; // <<< ADDED
 import 'package:i_smile_kids_app/features/reward_points/data/model/prize_model.dart';
@@ -130,4 +131,32 @@ class PrizesRepository {
       throw Exception('Failed to update points in Firestore: ${e.toString()}');
     }
   }
+  // save the prize 
+  Future<void> recordRedemptionAndUpdatePoints(Prize prize, int newPoints) async {
+  final user = FirebaseHelper.user;
+  if (user == null) {
+    throw Exception('User not logged in');
+  }
+
+  final userRef = FirebaseHelper.firebaseFirestore.collection('users').doc(user.uid);
+  final redeemedPrizeRef = FirebaseHelper.firebaseFirestore.collection('redeemed_prizes').doc();
+
+  // Firestore transaction to ensure both operations succeed or fail together
+  await FirebaseHelper.firebaseFirestore.runTransaction((transaction) async {
+    // 1. Update user's points
+    transaction.update(userRef, {'points': newPoints});
+
+    // 2. Create a new document in redeemed_prizes
+    transaction.set(redeemedPrizeRef, {
+      'userId': user.uid,
+      'prizeId': prize.id,
+      'prizeName': prize.getName(false), // Assuming false gets English name
+      'prizeDescription': prize.getDescription(false),
+      'prizeIcon': prize.icon,
+      'pointsSpent': prize.points,
+      'redeemedAt': FieldValue.serverTimestamp(),
+      'status': 'pending_claim',
+    });
+  });
+}
 }
