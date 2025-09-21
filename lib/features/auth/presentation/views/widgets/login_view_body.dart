@@ -5,12 +5,10 @@ import 'package:gap/gap.dart';
 import 'package:i_smile_kids_app/core/helper/asset_helper.dart';
 import 'package:i_smile_kids_app/core/helper/auth_validator.dart';
 import 'package:i_smile_kids_app/core/helper/navigator_helper.dart';
-import 'package:i_smile_kids_app/core/services/service_locator.dart';
 import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_elevated_button.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_snack_bar.dart';
-import 'package:i_smile_kids_app/features/auth/data/repo/auht_repo_impl.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_cubit.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_state.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/complete_auth_view.dart';
@@ -18,7 +16,9 @@ import 'package:i_smile_kids_app/features/auth/presentation/views/create_account
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/custom_redirect_naviagor_message.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/custom_textform_field.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/views/widgets/social_auth_button.dart';
+import 'package:i_smile_kids_app/features/dashboard/presentation/views/dashboard_view.dart';
 import 'package:i_smile_kids_app/features/main/presentation/views/main_view.dart';
+import 'package:i_smile_kids_app/features/profile/presentation/manger/fetch_profile_data_cubit/fetch_profile_data_cubit.dart';
 
 class LoginViewBody extends StatelessWidget {
   const LoginViewBody({super.key});
@@ -40,15 +40,25 @@ class LoginViewBody extends StatelessWidget {
                   children: [AssetHelper.imageAsset(name: 'logo')],
                 ),
                 BlocConsumer<AuthCubit, AuthCubitState>(
-                  listener: (context, state) {
+                  listener: (context, state) async {
                     if (state is AuthCubitLoginSuccess) {
                       CustomSnackBar.successSnackBar(
                         state.succMessage,
                         context,
                       );
+                      await context
+                          .read<FetchProfileDataCubit>()
+                          .fetchProfileData(userId: state.user.uid);
                       NavigatorHelper.pushReplaceMent(
                         context,
                         screen: const MainView(),
+                      );
+                    } else if (state is AuthCubitAdminLoginSuccess) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DashboardView(),
+                        ),
                       );
                     } else if (state is AuthCubitGoogleSigninSuccess) {
                       // show toast then check profile completeness and navigate accordingly
@@ -102,16 +112,10 @@ class LoginViewBody extends StatelessWidget {
                           ForgetPassword(cubit: cubit),
                           Gap(30.h),
                           CustomEleveatedButton(
-                            onPress: () {
-                              cubit.login();
-
+                            onPress: () async {
                               if (cubit.loginGlobalKey.currentState!
-                                      .validate() &&
-                                  state is AuthCubitLoginSuccess) {
-                                NavigatorHelper.push(
-                                  context,
-                                  screen: const CreateAccountView(),
-                                );
+                                  .validate()) {
+                                await cubit.login();
                               }
                             },
                             // child: state is AuthCubiLoading

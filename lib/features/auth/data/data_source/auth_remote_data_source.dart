@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:i_smile_kids_app/core/services/firebase_firestore_data_helper.dart';
-import 'package:i_smile_kids_app/core/services/service_locator.dart';
 import 'package:i_smile_kids_app/features/auth/data/models/create_account_model.dart';
 
 abstract class AuthRemoteDataSource {
@@ -25,7 +25,7 @@ abstract class AuthRemoteDataSource {
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  FirebaseAuth firebaseAuth = getIt.get<FirebaseAuth>();
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   @override
   Future<User> login({required String email, required String password}) async {
@@ -41,6 +41,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           message: 'User not found',
         );
       }
+      await credential.user?.reload();
 
       return credential.user!;
     } catch (e) {
@@ -139,12 +140,28 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
   }
 
+  // Signout
   @override
   Future<void> logout() async {
     try {
+      await GoogleSignIn.instance.signOut();
+
       await firebaseAuth.signOut();
+     await _clearUserCache();
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<void> _clearUserCache() async {
+    try {
+      // Clear any local storage or cached data
+      // You can add SharedPreferences clearing here if you use it
+
+      // Force reload current user (should be null after signOut)
+      await firebaseAuth.currentUser?.reload();
+    } catch (e) {
+      debugPrint('Error clearing user cache: $e');
     }
   }
 

@@ -4,22 +4,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:i_smile_kids_app/core/models/user_models.dart';
 import 'package:i_smile_kids_app/core/services/firebase_firestore_data_helper.dart';
-import 'package:i_smile_kids_app/core/services/service_locator.dart';
 import 'package:i_smile_kids_app/core/services/upload_image_helper.dart';
 
 abstract class ProfileDataRemoteDataSource {
-  Future<UserModel?> fetchUserData();
+  Future<UserModel?> fetchUserData({required String userId});
   Future<void> uploadUserProfileImage({required File imageFile});
   Future<void> profileSaveChanges({required UserModel user});
 }
 
 class FetchProfileDataRemoteDataSourceImpl extends ProfileDataRemoteDataSource {
-  final User user = getIt.get<User>();
+  User user = FirebaseAuth.instance.currentUser!;
 
   @override
-  Future<UserModel?> fetchUserData() async {
-    debugPrint('----------user uid: ${user.uid}');
-    return await fetchUserDataFromFirestore(user.uid);
+  Future<UserModel?> fetchUserData({required String userId}) async {
+    return await fetchUserDataFromFirestore(userId);
   }
 
   @override

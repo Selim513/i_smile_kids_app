@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:i_smile_kids_app/core/helper/firebase_helper.dart';
 import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
+import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_cubit.dart';
+import 'package:i_smile_kids_app/features/dashboard/presentation/views/all_patient_view.dart';
+import 'package:i_smile_kids_app/features/dashboard/presentation/views/complete_visit_view.dart';
 import 'package:i_smile_kids_app/features/dashboard/presentation/views/qr_code_view.dart';
 import 'package:i_smile_kids_app/features/dashboard/presentation/views/widgets/custom_dashboard_drawer_header.dart';
 import 'package:i_smile_kids_app/features/splash/presentation/splash_view.dart';
@@ -32,7 +35,12 @@ class CustomDrawer extends StatelessWidget {
                     icon: Icons.check_circle_outline,
                     title: 'Complete Visit',
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CompleteVisitView(),
+                        ),
+                      );
                       // Navigate to complete visit page
                     },
                   ),
@@ -44,7 +52,12 @@ class CustomDrawer extends StatelessWidget {
                     icon: Icons.people_outline,
                     title: 'Total Patients',
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TotalPatientView(),
+                        ),
+                      );
                       // Navigate to total patients page
                     },
                   ),
@@ -70,9 +83,9 @@ class CustomDrawer extends StatelessWidget {
                   _buildDrawerItem(
                     icon: Icons.logout,
                     title: 'Logout',
-                    onTap: () {
+                    onTap: () async {
                       // FirebaseHelper.userAuth.signOut();
-                      FirebaseHelper.userAuth.signOut();
+                      await context.read<AuthCubit>().logout();
                       if (context.mounted) {
                         Navigator.of(
                           context,

@@ -10,8 +10,8 @@ class ProfileRepoImpl implements ProfileRepo {
   ProfileRepoImpl(this.profileRemoteDataSource);
 
   @override
-  Future<UserModel?> fetchUserData() async {
-    return await profileRemoteDataSource.fetchUserData();
+  Future<UserModel?> fetchUserData({required String userId}) async {
+    return await profileRemoteDataSource.fetchUserData(userId: userId);
   }
 
   @override

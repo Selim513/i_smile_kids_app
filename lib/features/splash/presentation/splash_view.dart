@@ -1,7 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:i_smile_kids_app/core/helper/firebase_helper.dart';
 import 'package:i_smile_kids_app/core/helper/navigator_helper.dart';
 import 'package:i_smile_kids_app/core/services/firebase_point_manger.dart';
 import 'package:i_smile_kids_app/core/services/service_locator.dart';
@@ -23,8 +23,6 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
-
-
   void _checkUserStatus() {
     // We wrap this in a BlocProvider to have access to the AuthCubit
     final authCubit = AuthCubit(getIt.get<AuthRepositoryImpl>());
@@ -32,7 +30,7 @@ class _SplashViewState extends State<SplashView> {
     Future.delayed(const Duration(seconds: 2)).then((_) async {
       if (!mounted) return;
 
-      final currentUser = FirebaseHelper.userAuth.currentUser;
+      final currentUser = FirebaseAuth.instance.currentUser;
 
       if (currentUser == null) {
         // No user logged in, go to Auth screen
@@ -86,41 +84,6 @@ class _SplashViewState extends State<SplashView> {
   void initState() {
     super.initState();
     _checkUserStatus();
-    // Future.delayed(const Duration(seconds: 2)).then((value) async {
-    //   if (!mounted) return;
-
-    //   final complete = await isProfileComplete();
-
-    //   if (context.mounted) {}
-    //   if (FirebaseHelper.userAuth.currentUser == null) {
-
-    //     if (mounted) {
-    //       NavigatorHelper.pushReplaceMent(context, screen: const AuthView());
-    //     }
-    //   } else if (!complete) {
-    //     if (mounted) {
-    //       NavigatorHelper.pushReplaceMent(
-    //         context,
-    //         screen: BlocProvider(
-    //           create: (context) => AuthCubit(getIt.get<AuthRepositoryImpl>()),
-    //           child: const CompleteAuthView(),
-    //         ),
-    //       );
-    //     }
-    //   } else {
-    //     if (mounted) {
-    //       final reward = await giveDailyReward();
-
-    //       if (reward) {
-    //         CustomSnackBar.successSnackBar(
-    //           'Thanks for logging in! You just received 5 points for your daily login.',
-    //           context,
-    //         );
-    //       }
-    //       NavigatorHelper.pushReplaceMent(context, screen: const MainView());
-    //     }
-    //   }
-    // });
   }
 
   @override

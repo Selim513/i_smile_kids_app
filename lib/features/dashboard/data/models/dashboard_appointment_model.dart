@@ -49,32 +49,30 @@ class DashboardAppointment {
     };
   }
 }
-
 class PatientDetails {
   final String name;
   final String patientId;
   final String age;
-  // final String profileImage;
-  final String? nationality;
-  final String? emirateOfResidency;
+  final String problem;
+  final String? profileImage;
 
   PatientDetails({
     required this.name,
-    //  required   this.profileImage,
+    required this.profileImage,
     required this.patientId,
     required this.age,
-    this.nationality,
-    this.emirateOfResidency,
+    required this.problem,
   });
 
+  // <<< تم تعديل هذه الدالة لتكون آمنة >>>
   factory PatientDetails.fromMap(Map<String, dynamic> data) {
     return PatientDetails(
-      name: data['name'] ?? '',
-      // profileImage: data[],
-      patientId: data['patientId'] ?? '',
-      age: data['age'] ?? '',
-      nationality: data['nationality'],
-      emirateOfResidency: data['emirateOfResidency'],
+      name: data['name'] ?? 'لا يوجد اسم',
+      patientId: data['patientId'] ?? '', // الـ ID هيتم إضافته من الـ Repository
+      age: data['age'] ?? 'غير محدد',
+      profileImage: data['photoUrl'], // photoUrl يمكن أن يكون null
+      // هنا بنضيف قيمة افتراضية لو حقل 'problem' مش موجود
+      problem: data['problem'] ?? 'لا توجد مشكلة مسجلة',
     );
   }
 }
@@ -95,4 +93,26 @@ class PatientStatistics {
     required this.missedAppointments,
     required this.ageGroups,
   });
+}
+class AllUsersModel {
+  final String name;
+  final String uid;
+  final String? photoURL;
+  final String age;
+
+  AllUsersModel({
+    required this.name,
+    required this.uid,
+    this.photoURL,
+    required this.age,
+  });
+
+  factory AllUsersModel.fromMap(Map<String, dynamic> data) {
+    return AllUsersModel(
+      uid: data['uid'] ?? '',
+      name: data['name'] ?? 'name',
+      age: data['age'] ?? '0',
+      photoURL: data['photoURL']??'',
+    );
+  }
 }

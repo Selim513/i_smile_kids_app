@@ -18,11 +18,19 @@ class FetchProfileDataCubit extends Cubit<FetchProfileDataCubitState> {
 
   UserModel? currentUser;
 
-  Future<void> fetchProfileData() async {
+  Future<void> fetchProfileData({required String userId}) async {
     emit(FetchProfileDataLoading());
     try {
-      final UserModel? user = await repo.fetchUserData();
+      currentUser = null;
+      _clearControllers();
+
+      final UserModel? user = await repo.fetchUserData(userId: userId);
       if (user != null) {
+        currentUser = user;
+        // Populate controllers with new data
+        nameController.text = user.name;
+        ageController.text = user.age;
+
         emit(FetchProfileDataSuccess(userData: user));
       } else {
         emit(FetchProfileDataFailure(errMessage: "User not found"));
@@ -61,19 +69,29 @@ class FetchProfileDataCubit extends Cubit<FetchProfileDataCubitState> {
       );
 
       await repo.profileSaveChanges(user: updatedUser);
-      await fetchProfileData();
+      await fetchProfileData(userId:currentUser!.uid );
       emit(UpdateProfileSuccess(userData: updatedUser));
     } catch (e) {
       emit(UpdateProfileFailure(errMessage: e.toString()));
     }
   }
 
+  void _clearControllers() {
+    nameController.clear();
+    ageController.clear();
+  }
+
+  // Add method to reset cubit state
+  void resetState() {
+    currentUser = null;
+    _clearControllers();
+    emit(FetchProfileDataInitial());
+  }
+
   @override
   Future<void> close() {
     nameController.dispose();
     ageController.dispose();
-    // nationalityController.dispose();
-    // emirateController.dispose();
     return super.close();
   }
 }

@@ -21,7 +21,9 @@ class _DashboardHeaderState extends State<DashboardHeader> {
     var users = await FirebaseHelper.firebaseFirestore
         .collection('users')
         .get();
-    userCount = users.size - 1;
+    setState(() {
+      userCount = users.size;
+    });
   }
 
   @override

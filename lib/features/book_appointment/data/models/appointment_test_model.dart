@@ -55,23 +55,25 @@ class AppointmentPatientDetailsModel {
   final String name;
   final String age;
   final String problem;
-
+  final String photoUrl;
   AppointmentPatientDetailsModel({
     required this.name,
     required this.age,
     required this.problem,
+    required this.photoUrl
   });
 
   factory AppointmentPatientDetailsModel.fromMap(Map<String, dynamic> map) {
     return AppointmentPatientDetailsModel(
       name: map['name'] ?? '',
       age: map['age'] ?? '',
+      photoUrl: map['photoUrl']??'',
       problem: map['problem'] ?? '',
     );
   }
 
   Map<String, dynamic> toMap() {
-    return {'name': name, 'age': age, 'problem': problem};
+    return {'name': name, 'age': age, 'problem': problem,'photoUrl':photoUrl};
   }
 }
 

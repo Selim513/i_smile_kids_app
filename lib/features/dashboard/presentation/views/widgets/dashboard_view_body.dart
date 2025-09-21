@@ -23,6 +23,8 @@ class _DashboardViewBodyState extends State<DashboardViewBody> {
   int? todayAppointmentCount;
   int? appointmentCount;
   List<DashboardAppointment>? userData;
+  late String doctorId;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -30,9 +32,12 @@ class _DashboardViewBodyState extends State<DashboardViewBody> {
       child: BlocConsumer<DashboardCubit, DashboardState>(
         listener: (context, state) {
           if (state is DashboardLoaded) {
-            userData = state.allAppointment;
-            appointmentCount = state.allAppointment.length;
-            todayAppointmentCount = state.todayAppointments.length;
+            setState(() {
+              doctorId = '0EXfftpQWGLTr3rokL4R';
+              userData = state.allAppointment;
+              appointmentCount = state.allAppointment.length;
+              todayAppointmentCount = state.todayAppointments.length;
+            });
           }
         },
         builder: (context, state) {
@@ -73,15 +78,18 @@ class _DashboardViewBodyState extends State<DashboardViewBody> {
                         child: CustomPrimaryContainer(
                           padding: EdgeInsets.all(10.r),
                           widgets: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             spacing: 10.h,
                             children: [
                               DashboardPatientAppointmentContainer(
                                 name: data!.patientName,
                                 age: data.patientDetails.age,
                                 status: data.status,
-                                // profileImage: data.patientDetails.age,
+                                profileImage: data.patientDetails.profileImage??'',
                               ),
+                              Text(data.patientDetails.problem,style: FontManger.subTitleTextBold14,),
 
+                              //.....Time
                               Row(
                                 spacing: 10.w,
                                 children: [
@@ -108,7 +116,9 @@ class _DashboardViewBodyState extends State<DashboardViewBody> {
                                   ),
                                 ],
                               ),
+                              //....Buttons
                               Row(
+                                spacing: 5.w,
                                 children: [
                                   Expanded(
                                     child: CustomEleveatedButton(
@@ -126,6 +136,30 @@ class _DashboardViewBodyState extends State<DashboardViewBody> {
                                       bgColor: ColorManager.success,
                                       child: Text(
                                         'Complete',
+                                        style: FontManger.whiteBoldFont20
+                                            .copyWith(fontSize: 15.sp),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: CustomEleveatedButton(
+                                      height: 30.h,
+
+                                      onPress: () {
+                                        context
+                                            .read<DashboardCubit>()
+                                            .cancelAppointment(
+                                              appointmentId: data.id,
+                                              reason: 'Missed',
+                                              date: DateTime.now().toString(),
+                                              doctorId: doctorId,
+                                              time: DateTime.now().hour
+                                                  .toString(),
+                                            );
+                                      },
+                                      bgColor: ColorManager.error,
+                                      child: Text(
+                                        'cancel',
                                         style: FontManger.whiteBoldFont20
                                             .copyWith(fontSize: 15.sp),
                                       ),

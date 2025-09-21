@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:i_smile_kids_app/core/helper/auth_validator.dart';
+import 'package:i_smile_kids_app/core/services/service_locator.dart';
 import 'package:i_smile_kids_app/features/auth/data/models/create_account_model.dart';
 import 'package:i_smile_kids_app/features/auth/data/repo/auht_repo_impl.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_state.dart';
@@ -33,7 +34,7 @@ class AuthCubit extends Cubit<AuthCubitState> {
   final GlobalKey<FormState> createAccountGlobalKey = GlobalKey<FormState>();
   final GlobalKey<FormState> resetPasswordGlobalKey = GlobalKey<FormState>();
   //-Login method
-  void login() async {
+  Future<void> login() async {
     emit(AuthCubitLoginLoading());
 
     final result = await authRepo.login(
@@ -41,8 +42,16 @@ class AuthCubit extends Cubit<AuthCubitState> {
       password: loginPasswordController.text,
     );
     result.fold(
-      (left) => emit(AuthCubitLoginFailure(errMessage: left.toString())),
-      (right) => emit(AuthCubitLoginSuccess(succMessage: 'Welcome Back')),
+      (left) {
+        emit(AuthCubitLoginFailure(errMessage: left.toString()));
+      },
+      (right) {
+        if (right.uid == '2LDxPhHoEKQPUE4G2DxECQNw4sF3') {
+          emit(AuthCubitAdminLoginSuccess(succMessage: 'Hello Doctor !'));
+        } else {
+          emit(AuthCubitLoginSuccess(user: right, succMessage: 'Welcome Back'));
+        }
+      },
     );
   }
 
@@ -86,8 +95,13 @@ class AuthCubit extends Cubit<AuthCubitState> {
       AuthCubitLogoutLoading(),
     ); // You can create a specific LogoutLoading state if you want
     try {
+      // Clear all controllers
+      _clearAllControllers();
+
+      // Clear cached data from repositories
       await authRepo.logout();
-      emit(AuthCubitInitial()); // Reset to initial state after logout
+      await resetDependencies();
+      emit(AuthCubitLogoutSuccess()); // Reset to initial state after logout
     } catch (e) {
       // Handle potential logout errors if necessary
       emit(
@@ -175,5 +189,33 @@ class AuthCubit extends Cubit<AuthCubitState> {
       debugPrint('isProfileComplete error: $e');
       return false;
     }
+  }
+
+  void _clearAllControllers() {
+    // Clear all text controllers
+    loginEmailController.clear();
+
+    resetPasswordEmailController.clear();
+    agrController.clear();
+    nameController.clear();
+    createAccountEmailController.clear();
+    loginPasswordController.clear();
+    createAccountPasswordController.clear();
+    createAccountConfirmPasswordController.clear();
+  }
+
+  @override
+  Future<void> close() {
+    // Dispose controllers when cubit is closed
+    loginEmailController.dispose();
+    resetPasswordEmailController.dispose();
+    agrController.dispose();
+
+    nameController.dispose();
+    createAccountEmailController.dispose();
+    loginPasswordController.dispose();
+    createAccountPasswordController.dispose();
+    createAccountConfirmPasswordController.dispose();
+    return super.close();
   }
 }

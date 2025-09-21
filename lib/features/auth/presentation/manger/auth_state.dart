@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 abstract class AuthCubitState {}
 
 class AuthCubitInitial extends AuthCubitState {}
@@ -8,8 +10,9 @@ class AuthCubitLoginLoading extends AuthCubitState {}
 
 class AuthCubitLoginSuccess extends AuthCubitState {
   final String succMessage;
+  final User user;
 
-  AuthCubitLoginSuccess({required this.succMessage});
+  AuthCubitLoginSuccess({required this.user, required this.succMessage});
 }
 
 class AuthCubitLoginFailure extends AuthCubitState {
@@ -51,10 +54,19 @@ class AuthCubitGoogleSigninFailure extends AuthCubitState {
 // Logout
 class AuthCubitLogoutLoading extends AuthCubitState {}
 
+class AuthCubitLogoutSuccess extends AuthCubitState {}
+
 class AuthCubitLogoutFailure extends AuthCubitState {
   final String errMessage;
 
   AuthCubitLogoutFailure({required this.errMessage});
+}
+
+// Admin Login
+class AuthCubitAdminLoginSuccess extends AuthCubitState {
+  final String succMessage;
+
+  AuthCubitAdminLoginSuccess({required this.succMessage});
 }
 
 //-Update user states

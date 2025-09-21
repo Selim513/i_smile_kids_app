@@ -1,7 +1,6 @@
-
 // import 'package:flutter_bloc/flutter_bloc.dart';
 // // 1. ADD THIS IMPORT
-// import 'package:i_smile_kids_app/core/helper/firebase_helper.dart'; 
+// import 'package:i_smile_kids_app/core/helper/firebase_helper.dart';
 // import 'package:i_smile_kids_app/features/reward_points/data/model/prize_model.dart';
 // import 'package:i_smile_kids_app/features/reward_points/data/repo/prize_repo.dart';
 // import 'package:i_smile_kids_app/features/reward_points/presentation/manger/prize_state.dart';
@@ -17,7 +16,7 @@
 //   // 2. MODIFIED: The function no longer accepts userPoints
 //   Future<void> loadPrizes() async {
 //     emit(PrizesLoading());
-    
+
 //     try {
 //       // 3. ADDED: Logic to fetch user points from Firestore directly
 //       final user = FirebaseHelper.user;
@@ -33,7 +32,7 @@
 //       // Existing logic continues here
 //       _allPrizes = await _repository.getAllPrizes();
 //       _categories = await _repository.getAllCategories();
-      
+
 //       emit(PrizesLoaded(
 //         prizes: _allPrizes,
 //         categories: _categories,
@@ -47,7 +46,7 @@
 //   // This function is still useful if points can be updated from another source
 //   void updateUserPoints(int points) {
 //     _userPoints = points;
-    
+
 //     final currentState = state;
 //     if (currentState is PrizesLoaded) {
 //       emit(PrizesLoaded(
@@ -65,7 +64,7 @@
 //   }
 
 //   // ... (All other filter and search methods remain exactly the same) ...
-  
+
 //   void filterByCategory(String category) {
 //     if (_allPrizes.isEmpty) return;
 
@@ -100,9 +99,9 @@
 //   void filterByPointRange(int minPoints, int maxPoints) {
 //     if (_allPrizes.isEmpty) return;
 
-//     final filteredPrizes = _allPrizes.where((prize) => 
+//     final filteredPrizes = _allPrizes.where((prize) =>
 //         prize.points >= minPoints && prize.points <= maxPoints).toList();
-    
+
 //     emit(PrizesFiltered(
 //       filteredPrizes: filteredPrizes,
 //       filterType: 'points: $minPoints-$maxPoints',
@@ -123,7 +122,7 @@
 //     final filteredPrizes = _allPrizes.where((prize) {
 //       final name = isArabic ? prize.nameAr : prize.nameEn;
 //       final description = isArabic ? prize.descAr : prize.descEn;
-      
+
 //       return name.toLowerCase().contains(query.toLowerCase()) ||
 //              description.toLowerCase().contains(query.toLowerCase()) ||
 //              prize.category.toLowerCase().contains(query.toLowerCase());
@@ -163,8 +162,9 @@
 //   }
 // }// prize_cubit.dart
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:i_smile_kids_app/core/helper/firebase_helper.dart';
 import 'package:i_smile_kids_app/features/reward_points/data/model/prize_model.dart';
 import 'package:i_smile_kids_app/features/reward_points/data/repo/prize_repo.dart';
 import 'package:i_smile_kids_app/features/reward_points/presentation/manger/prize-cubit/prize_state.dart';
@@ -180,11 +180,11 @@ class PrizesCubit extends Cubit<PrizesState> {
   Future<void> loadPrizes() async {
     emit(PrizesLoading());
     try {
-      final user = FirebaseHelper.user;
+      final user = FirebaseAuth.instance.currentUser;
       if (user == null) {
         throw Exception('User not logged in. Unable to fetch points.');
       }
-      final doc = await FirebaseHelper.firebaseFirestore
+      final doc = await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
           .get();
@@ -192,12 +192,14 @@ class PrizesCubit extends Cubit<PrizesState> {
 
       _allPrizes = await _repository.getAllPrizes();
       _categories = await _repository.getAllCategories();
-      
-      emit(PrizesLoaded(
-        prizes: _allPrizes,
-        categories: _categories,
-        userPoints: _userPoints,
-      ));
+
+      emit(
+        PrizesLoaded(
+          prizes: _allPrizes,
+          categories: _categories,
+          userPoints: _userPoints,
+        ),
+      );
     } catch (e) {
       emit(PrizesError('Failed to load data: ${e.toString()}'));
     }
@@ -206,70 +208,84 @@ class PrizesCubit extends Cubit<PrizesState> {
   // <<< redeemPrize FUNCTION IS NOW FULLY IMPLEMENTED >>>
   Future<void> redeemPrize(String prizeId) async {
     try {
-    final prize = await _repository.getPrizeById(prizeId);
-    if (prize == null) { /* ... handle error ... */ return; }
-    if (!prize.canAfford(_userPoints)) { /* ... handle error ... */ return; }
+      final prize = await _repository.getPrizeById(prizeId);
+      if (prize == null) {
+        /* ... handle error ... */
+        return;
+      }
+      if (!prize.canAfford(_userPoints)) {
+        /* ... handle error ... */
+        return;
+      }
 
-    final remainingPoints = _userPoints - prize.points;
+      final remainingPoints = _userPoints - prize.points;
 
-    // <<< MODIFIED PART >>>
-    // Use the new repository method to do both operations
-    await _repository.recordRedemptionAndUpdatePoints(prize, remainingPoints);
+      // <<< MODIFIED PART >>>
+      // Use the new repository method to do both operations
+      await _repository.recordRedemptionAndUpdatePoints(prize, remainingPoints);
 
-    _userPoints = remainingPoints;
+      _userPoints = remainingPoints;
 
-    emit(PrizeRedeemed(
-      prize: prize,
-      remainingPoints: remainingPoints,
-    ));
+      emit(PrizeRedeemed(prize: prize, remainingPoints: remainingPoints));
 
-    await Future.delayed(const Duration(seconds: 1)); 
+      await Future.delayed(const Duration(seconds: 1));
 
-    emit(PrizesLoaded(
-      prizes: _allPrizes,
-      categories: _categories,
-      userPoints: remainingPoints,
-    ));
-
-  
+      emit(
+        PrizesLoaded(
+          prizes: _allPrizes,
+          categories: _categories,
+          userPoints: remainingPoints,
+        ),
+      );
     } catch (e) {
       emit(PrizesError('Failed to redeem prize: ${e.toString()}'));
       // Reload data to ensure UI is consistent after an error
-      await loadPrizes(); 
+      await loadPrizes();
     }
   }
-  
+
   // ... (All other functions remain the same)
   void filterAffordablePrizes() {
     if (_allPrizes.isEmpty) return;
 
-    final affordablePrizes = _allPrizes.where((prize) => prize.canAfford(_userPoints)).toList();
-    emit(PrizesFiltered(
-      filteredPrizes: affordablePrizes,
-      filterType: 'affordable',
-      userPoints: _userPoints,
-    ));
+    final affordablePrizes = _allPrizes
+        .where((prize) => prize.canAfford(_userPoints))
+        .toList();
+    emit(
+      PrizesFiltered(
+        filteredPrizes: affordablePrizes,
+        filterType: 'affordable',
+        userPoints: _userPoints,
+      ),
+    );
   }
 
   void filterByPointRange(int minPoints, int maxPoints) {
     if (_allPrizes.isEmpty) return;
 
-    final filteredPrizes = _allPrizes.where((prize) => 
-        prize.points >= minPoints && prize.points <= maxPoints).toList();
-    
-    emit(PrizesFiltered(
-      filteredPrizes: filteredPrizes,
-      filterType: 'points: $minPoints-$maxPoints',
-      userPoints: _userPoints,
-    ));
+    final filteredPrizes = _allPrizes
+        .where(
+          (prize) => prize.points >= minPoints && prize.points <= maxPoints,
+        )
+        .toList();
+
+    emit(
+      PrizesFiltered(
+        filteredPrizes: filteredPrizes,
+        filterType: 'points: $minPoints-$maxPoints',
+        userPoints: _userPoints,
+      ),
+    );
   }
-  
+
   void resetFilter() {
-    emit(PrizesLoaded(
-      prizes: _allPrizes,
-      categories: _categories,
-      userPoints: _userPoints,
-    ));
+    emit(
+      PrizesLoaded(
+        prizes: _allPrizes,
+        categories: _categories,
+        userPoints: _userPoints,
+      ),
+    );
   }
 
   void refreshData() {

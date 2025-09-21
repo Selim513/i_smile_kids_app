@@ -9,23 +9,25 @@ class DashboardPatientAppointmentContainer extends StatelessWidget {
     super.key,
     required this.name,
     required this.age,
-    required this.status,
-    //  required this.profileImage,
+    this.status,
+    required this.profileImage,
   });
   final String name;
   final String age;
-  final String status;
-  // final String profileImage;
+  final String? status;
+  final String profileImage;
 
   @override
   Widget build(BuildContext context) {
+    // print('-------$profileImage');
     return Row(
       spacing: 10.w,
       children: [
         CircleAvatar(
           radius: 25.r,
-          backgroundImage: AssetHelper.assetImage(name: 'boy'),
-          // NetworkImage(profileImage),
+          backgroundImage: profileImage.isEmpty
+              ? AssetHelper.assetImage(name: 'boy')
+              : NetworkImage(profileImage),
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,19 +37,23 @@ class DashboardPatientAppointmentContainer extends StatelessWidget {
           ],
         ),
         Spacer(),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.r, vertical: 5.r),
-          decoration: BoxDecoration(
-            color: status == 'missed'
-                ? ColorManager.error
-                : ColorManager.success,
-            borderRadius: BorderRadius.circular(15.r),
-          ),
-          child: Text(
-            status,
-            style: FontManger.whiteBoldFont20.copyWith(fontSize: 12.sp),
-          ),
-        ),
+        status == null
+            ? SizedBox()
+            : Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.r, vertical: 5.r),
+                decoration: BoxDecoration(
+                  color: status == 'missed'
+                      ? ColorManager.error
+                      : status == 'cancelled'
+                      ? ColorManager.warning
+                      : ColorManager.success,
+                  borderRadius: BorderRadius.circular(15.r),
+                ),
+                child: Text(
+                  status!,
+                  style: FontManger.whiteBoldFont20.copyWith(fontSize: 12.sp),
+                ),
+              ),
       ],
     );
   }

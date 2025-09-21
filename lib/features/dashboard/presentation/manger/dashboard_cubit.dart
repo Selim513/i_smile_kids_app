@@ -4,6 +4,7 @@ import 'package:i_smile_kids_app/features/dashboard/presentation/manger/dashboar
 
 class DashboardCubit extends Cubit<DashboardState> {
   final DashboardRepository _repository;
+  
 
   DashboardCubit(this._repository) : super(DashboardInitial());
 
@@ -19,9 +20,11 @@ class DashboardCubit extends Cubit<DashboardState> {
       final allAppointment = await _repository.getAllAppointments();
       final statistics = await _repository.getPatientStatistics();
       final currentUser = await _repository.getCurrentDoctorUser();
+      final allUsers=await _repository.getAllUsers();
 
       emit(
         DashboardLoaded(
+          patients:allUsers ,
           allAppointment: allAppointment,
           todayAppointments: todayAppointments,
           statistics: statistics,

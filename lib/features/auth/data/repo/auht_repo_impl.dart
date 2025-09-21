@@ -65,10 +65,10 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<AuthFailure, Unit>> logout() async {
+  Future<Either<AuthFailure, void>> logout() async {
     try {
       await remoteDataSource.logout();
-      return const Right(unit);
+      return right(null);
     } on FirebaseAuthException catch (e) {
       return Left(handleFirebaseAuthException(e));
     } on Exception catch (e) {

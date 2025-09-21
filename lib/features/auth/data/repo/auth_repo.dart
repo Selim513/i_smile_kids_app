@@ -25,7 +25,7 @@ abstract class AuthRepository {
     required String email,
   });
 
-  Future<Either<AuthFailure, Unit>> logout();
+  Future<Either<AuthFailure, void>> logout();
 
   Future<Either<AuthFailure, User?>> getCurrentUser();
 

@@ -15,21 +15,22 @@ final GetIt getIt = GetIt.instance;
 void serviceLocatorSetup() {
   //-instance from firebaseAuth
   getIt.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
-  getIt.registerLazySingleton<User>(() => FirebaseAuth.instance.currentUser!);
   getIt.registerLazySingleton<FirebaseFirestore>(
     () => FirebaseFirestore.instance,
   );
-  //-current user
-  //-
+
+  // ❌ THE PROBLEM WAS HERE. DO NOT REGISTER A DYNAMIC VALUE LIKE THE USER AS A SINGLETON.
+  // getIt.registerLazySingleton<User>(() => FirebaseAuth.instance.currentUser!);
+
+  //- Auth dependencies
   getIt.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(),
   );
-  //-
   getIt.registerLazySingleton<AuthRepositoryImpl>(
     () => AuthRepositoryImpl(getIt.get<AuthRemoteDataSource>()),
   );
-  //-----Fetch user data
 
+  //-----Fetch user data dependencies
   getIt.registerLazySingleton<FetchProfileDataRemoteDataSourceImpl>(
     () => FetchProfileDataRemoteDataSourceImpl(),
   );
@@ -51,4 +52,11 @@ void serviceLocatorSetup() {
   getIt.registerLazySingleton<DentalCareTipsRepoImpl>(
     () => DentalCareTipsRepoImpl(getIt.get<DentalCareTipsRemoteDataSource>()),
   );
+}
+
+Future<void> resetDependencies() async {
+  // This will clear all registered singletons
+  await getIt.reset();
+  // Re-register them so the app can use them again
+  serviceLocatorSetup();
 }

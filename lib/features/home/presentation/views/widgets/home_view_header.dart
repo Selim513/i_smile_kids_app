@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,7 +20,9 @@ class _HomeViewHeaderState extends State<HomeViewHeader> {
   @override
   void initState() {
     super.initState();
-    context.read<FetchProfileDataCubit>().fetchProfileData();
+    context.read<FetchProfileDataCubit>().fetchProfileData(
+      userId: FirebaseAuth.instance.currentUser!.uid,
+    );
   }
 
   @override

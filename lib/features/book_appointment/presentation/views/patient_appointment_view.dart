@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,15 +33,17 @@ class _PatientAppointmentViewState extends State<PatientAppointmentView> {
   String? selectedTime;
   late String name;
   late String age;
+  late String photoUrl;
   Future<void> _loadUserData() async {
     try {
-      final uid = FirebaseHelper.user!.uid;
+      final uid = FirebaseAuth.instance.currentUser!.uid;
       var userData = await fetchUserDataFromFirestore(uid);
 
       if (userData != null) {
         setState(() {
           name = userData.name;
           age = userData.age;
+          photoUrl = userData.photoURL ?? '';
         });
       }
     } catch (e) {
@@ -107,8 +110,8 @@ class _PatientAppointmentViewState extends State<PatientAppointmentView> {
             child: BlocConsumer<BookAppointmentCubit, BookAppointmentState>(
               listener: (context, state) {
                 if (state is BookAppointmentTestSuccess) {
-                  CustomSnackBar.successSnackBar(state.successMessage, context);
                   Navigator.pop(context);
+                  CustomSnackBar.successSnackBar(state.successMessage, context);
                 } else if (state is BookAppointmentTestFailure) {
                   CustomSnackBar.errorSnackBar(state.errorMessage, context);
                   print(state.errorMessage);
@@ -164,6 +167,8 @@ class _PatientAppointmentViewState extends State<PatientAppointmentView> {
                                 AppointmentPatientDetailsModel(
                                   name: name,
                                   age: age,
+                                  photoUrl: photoUrl,
+
                                   problem: problemController.text,
                                 );
 

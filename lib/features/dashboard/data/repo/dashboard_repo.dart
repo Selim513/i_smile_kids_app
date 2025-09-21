@@ -8,7 +8,7 @@ class DashboardRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // التحقق من صلاحيات المستخدم (طبيبة أو ممرضة)
-  Future<DoctorUser?> getCurrentDoctorUser() async {  
+  Future<DoctorUser?> getCurrentDoctorUser() async {
     try {
       final uid = FirebaseHelper.user?.uid;
       if (uid == null) return null;
@@ -95,7 +95,6 @@ class DashboardRepository {
 
       // أهم خطوة: نجيب المواعيد اللي لسه جاية بعد بداية اليوم
       query = query.where('date', isGreaterThanOrEqualTo: today);
-      query = query.where('time', isGreaterThanOrEqualTo: today);
 
       // ترتيب حسب تاريخ الإنشاء
       query = query.orderBy('date', descending: false);
@@ -110,38 +109,6 @@ class DashboardRepository {
       throw Exception('Failed to get upcoming appointments: ${e.toString()}');
     }
   }
-
-  // Future<List<DashboardAppointment>> getAllAppointments({
-  //   String? status,
-  //   String? startDate,
-  //   String? endDate,
-  // }) async {
-  //   try {
-  //     Query query = _firestore.collection('patient_appointments');
-
-  //     if (status != null && status.isNotEmpty) {
-  //       query = query.where('status', isEqualTo: status);
-  //     }
-
-  //     if (startDate != null) {
-  //       query = query.where('date', isGreaterThanOrEqualTo: startDate);
-  //     }
-
-  //     if (endDate != null) {
-  //       query = query.where('date', isLessThanOrEqualTo: endDate);
-  //     }
-
-  //     query = query.orderBy('createdAt', descending: true);
-
-  //     final snapshot = await query.get();
-
-  //     return snapshot.docs
-  //         .map((doc) => DashboardAppointment.fromFirestore(doc))
-  //         .toList();
-  //   } catch (e) {
-  //     throw Exception('Failed to get appointments: ${e.toString()}');
-  //   }
-  // }
 
   // تحديث حالة الموعد
   Future<void> updateAppointmentStatus({
@@ -324,7 +291,9 @@ class DashboardRepository {
     }
   }
 
-  // البحث عن المرضى
+  // Get All Patient
+
+  // Search For Patients
   Future<List<Map<String, dynamic>>> searchPatients(String searchQuery) async {
     try {
       final snapshot = await _firestore
@@ -348,6 +317,26 @@ class DashboardRepository {
       }).toList();
     } catch (e) {
       throw Exception('Failed to search patients: ${e.toString()}');
+    }
+  }
+
+  // Get all Patient
+  Future<List<AllUsersModel>> getAllUsers() async {
+    try {
+      // 1. جلب كل المستندات من collection 'users'
+      final snapshot = await _firestore.collection('users').get();
+
+      // 2. تحويل كل مستند إلى كائن من نوع AllUsersModel باستخدام .map
+      final usersList = snapshot.docs.map((doc) {
+        // نستخدم دالة fromMap التي أنشأناها في الموديل
+        return AllUsersModel.fromMap(doc.data());
+      }).toList(); // تحويل الناتج إلى قائمة
+
+      return usersList;
+    } catch (e) {
+      // طباعة الخطأ للمساعدة في التصحيح وإرساله للـ Cubit
+      print('Error fetching all users: $e');
+      throw Exception('Failed to fetch users: ${e.toString()}');
     }
   }
 }
