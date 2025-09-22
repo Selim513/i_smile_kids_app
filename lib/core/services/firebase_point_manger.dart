@@ -23,7 +23,7 @@ Future<void> addPoints(int points) async {
 
 //--------------
 Future<int> getUserPoints() async {
-  final user = FirebaseHelper.user;
+  final user = FirebaseAuth.instance.currentUser;
   if (user == null) return 0;
 
   final doc = await FirebaseHelper.firebaseFirestore

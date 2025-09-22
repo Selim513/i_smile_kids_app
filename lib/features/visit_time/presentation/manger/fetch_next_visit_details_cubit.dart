@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:i_smile_kids_app/core/helper/firebase_helper.dart';
 import 'package:i_smile_kids_app/features/visit_time/data/models/patient_next_visit_model.dart';
 import 'package:i_smile_kids_app/features/visit_time/presentation/manger/fetch_next_visit_details_state.dart';
 import 'package:intl/intl.dart';
@@ -107,7 +107,7 @@ class FetchNextVisitDetailsCubit
 
   Future<String> _getCurrentUserName() async {
     try {
-      final uid = FirebaseHelper.user!.uid;
+      final uid = FirebaseAuth.instance.currentUser!.uid;
       final userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(uid)

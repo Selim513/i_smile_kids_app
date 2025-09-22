@@ -5,7 +5,7 @@ import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_primary_appbar.dart';
 import 'package:i_smile_kids_app/core/widgets/custom_primary_container.dart';
-import 'package:i_smile_kids_app/features/reward_points/data/repo/my_prize_model.dart';
+import 'package:i_smile_kids_app/features/reward_points/data/repo/my_prize_repo.dart';
 import 'package:i_smile_kids_app/features/reward_points/presentation/manger/my-prize-cubit/my_prize_cubit.dart';
 import 'package:i_smile_kids_app/features/reward_points/presentation/manger/my-prize-cubit/my_prize_state.dart';
 

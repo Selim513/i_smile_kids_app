@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:i_smile_kids_app/features/reward_points/data/repo/my_prize_model.dart';
+import 'package:i_smile_kids_app/features/reward_points/data/repo/my_prize_repo.dart';
 import 'package:i_smile_kids_app/features/reward_points/presentation/manger/my-prize-cubit/my_prize_state.dart';
 
 class MyPrizesCubit extends Cubit<MyPrizesState> {

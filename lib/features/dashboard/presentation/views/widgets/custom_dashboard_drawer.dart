@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:i_smile_kids_app/core/utils/color_manger.dart';
 import 'package:i_smile_kids_app/core/utils/fonts_manger.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_cubit.dart';
 import 'package:i_smile_kids_app/features/dashboard/presentation/views/all_patient_view.dart';
 import 'package:i_smile_kids_app/features/dashboard/presentation/views/complete_visit_view.dart';
+import 'package:i_smile_kids_app/features/dashboard/presentation/views/patient_reward_view.dart';
 import 'package:i_smile_kids_app/features/dashboard/presentation/views/qr_code_view.dart';
 import 'package:i_smile_kids_app/features/dashboard/presentation/views/widgets/custom_dashboard_drawer_header.dart';
 import 'package:i_smile_kids_app/features/splash/presentation/splash_view.dart';
@@ -72,6 +74,19 @@ class CustomDrawer extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => QrCodeView()),
+                      );
+                      // Navigate to QR scanner page
+                    },
+                  ),
+                  _buildDrawerItem(
+                    icon: FontAwesomeIcons.gift,
+                    title: 'Reward List',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PatientRewardView(),
+                        ),
                       );
                       // Navigate to QR scanner page
                     },

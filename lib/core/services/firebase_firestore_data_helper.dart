@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:i_smile_kids_app/core/helper/firebase_helper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:i_smile_kids_app/core/models/user_models.dart';
 
 Future<void> saveUserDataToFirestore({
@@ -68,7 +68,7 @@ Future<void> updateProileData({
 }) async {
   FirebaseFirestore.instance.collection('users').doc(uid).update({
     'uid': uid,
-    'name': name ?? FirebaseHelper.user!.displayName,
+    'name': name ?? FirebaseAuth.instance.currentUser!.displayName,
     'age': age,
     'nationality': nationality,
     'emirateOfResidency': emirateOfResidency,

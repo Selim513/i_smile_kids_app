@@ -34,6 +34,7 @@ class DashboardCubit extends Cubit<DashboardState> {
     } catch (e) {
       emit(DashboardError(e.toString()));
     }
+    
   }
 
   Future<void> markAppointmentCompleted({
@@ -106,4 +107,26 @@ class DashboardCubit extends Cubit<DashboardState> {
   Future<void> refreshDashboard() async {
     loadDashboard();
   }
+  Future<void> fetchPendingPrizes() async {
+        try {
+          emit(DashboardLoading());
+          final prizes = await _repository.getAllPendingPrizes();
+          emit(DashboardPendingPrizesLoaded(prizes: prizes));
+        } catch (e) {
+          emit(DashboardError(e.toString()));
+        }
+      }
+
+      // <<< دالة تأكيد استلام الجائزة >>>
+      Future<void> claimPrize(String redeemedPrizeId) async {
+        try {
+          // ممكن تعمل حالة Updating هنا لو عايز
+          await _repository.markPrizeAsClaimed(redeemedPrizeId);
+          // بعد ما نحدّث الحالة، بنجيب القائمة من جديد عشان تختفي من الشاشة
+          fetchPendingPrizes();
+        } catch (e) {
+          // ابعت الخطأ للواجهة
+          emit(DashboardError("Failed to claim prize: ${e.toString()}"));
+        }
+      }
 }

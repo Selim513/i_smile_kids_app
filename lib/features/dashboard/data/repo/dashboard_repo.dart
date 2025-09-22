@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:i_smile_kids_app/core/helper/firebase_helper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:i_smile_kids_app/features/dashboard/data/models/dashboard_appointment_model.dart';
 import 'package:i_smile_kids_app/features/dashboard/data/models/docotr_user.dart';
+import 'package:i_smile_kids_app/features/dashboard/data/models/redeemd_prize_model.dart';
 import 'package:intl/intl.dart';
 
 class DashboardRepository {
@@ -10,8 +11,7 @@ class DashboardRepository {
   // التحقق من صلاحيات المستخدم (طبيبة أو ممرضة)
   Future<DoctorUser?> getCurrentDoctorUser() async {
     try {
-      final uid = FirebaseHelper.user?.uid;
-      if (uid == null) return null;
+      final uid = FirebaseAuth.instance.currentUser!.uid;
 
       final doc = await _firestore.collection('doctor_users').doc(uid).get();
 
@@ -31,8 +31,7 @@ class DashboardRepository {
     required String role,
   }) async {
     try {
-      final uid = FirebaseHelper.user?.uid;
-      if (uid == null) throw Exception('User not authenticated');
+      final uid = FirebaseAuth.instance.currentUser!.uid;
 
       await _firestore.collection('doctor_users').doc(uid).set({
         'email': email,
@@ -337,6 +336,57 @@ class DashboardRepository {
       // طباعة الخطأ للمساعدة في التصحيح وإرساله للـ Cubit
       print('Error fetching all users: $e');
       throw Exception('Failed to fetch users: ${e.toString()}');
+    }
+  }
+
+  Future<List<RedeemedPrizeDetails>> getAllPendingPrizes() async {
+    // 1. هنجيب كل الجوائز اللي حالتها 'pending_claim'
+    final prizesSnapshot = await _firestore
+        .collection('redeemed_prizes')
+        .where('status', isEqualTo: 'pending_claim')
+        .orderBy('redeemedAt', descending: true)
+        .get();
+
+    // قائمة فاضية عشان نجمع فيها البيانات المدمجة
+    List<RedeemedPrizeDetails> prizeDetailsList = [];
+
+    // 2. هنلف على كل جائزة جبناها عشان نجيب بيانات صاحبها
+    for (var prizeDoc in prizesSnapshot.docs) {
+      final prizeData = prizeDoc.data();
+      final userId = prizeData['userId'];
+
+      if (userId != null) {
+        // 3. هنجيب بيانات المستخدم من collection 'users' باستخدام الـ userId
+        final userDoc = await _firestore.collection('users').doc(userId).get();
+
+        if (userDoc.exists) {
+          final userData = userDoc.data()!;
+          // 4. هندمج البيانات في الموديل الجديد بتاعنا
+          prizeDetailsList.add(
+            RedeemedPrizeDetails(
+              id: prizeDoc.id, // ID مستند الجائزة نفسه
+              prizeName: prizeData['prizeName'] ?? 'No Name',
+              redeemedAt: (prizeData['redeemedAt'] as Timestamp).toDate(),
+              patientId: userId,
+              patientName: userData['name'] ?? 'Unknown Patient',
+              patientPhotoURL: userData['photoURL'],
+            ),
+          );
+        }
+      }
+    }
+    return prizeDetailsList;
+  }
+
+  // <<< الدالة الثانية: تحديث حالة الجائزة إلى "تم الاستلام" >>>
+  Future<void> markPrizeAsClaimed(String redeemedPrizeId) async {
+    try {
+      await _firestore
+          .collection('redeemed_prizes')
+          .doc(redeemedPrizeId)
+          .update({'status': 'claimed'});
+    } catch (e) {
+      throw Exception('Failed to update prize status: $e');
     }
   }
 }

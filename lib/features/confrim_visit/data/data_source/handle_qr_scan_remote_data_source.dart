@@ -9,7 +9,7 @@ abstract class HandleQrScanRemoteDataSource {
 class HandleQrScanRemoteDataSourceImpl extends HandleQrScanRemoteDataSource {
   FirebaseFirestore firestore = FirebaseHelper.firebaseFirestore;
 
-  final FirebaseAuth auth = FirebaseHelper.userAuth;
+  final FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Future<void> handleQrScan({required String qrData}) async {
     // check if the qr is valid

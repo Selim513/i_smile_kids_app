@@ -1,4 +1,3 @@
-
 // import 'dart:convert';
 
 // import 'package:flutter/services.dart';
@@ -12,16 +11,16 @@
 //     if (_cachedPrizes != null) {
 //       return _cachedPrizes!;
 //     }
- 
+
 //     try {
 //       final String jsonString = await rootBundle.loadString(_jsonPath);
 //       final List<dynamic> jsonList = json.decode(jsonString);
-      
+
 //       _cachedPrizes = jsonList.map((json) => Prize.fromJson(json)).toList();
-      
+
 //       // Sort by points (ascending)
 //       _cachedPrizes!.sort((a, b) => a.points.compareTo(b.points));
-      
+
 //       return _cachedPrizes!;
 //     } catch (e) {
 //       throw Exception('Failed to load prizes: $e');
@@ -49,7 +48,7 @@
 
 //   Future<List<Prize>> getPrizesByPointRange(int minPoints, int maxPoints) async {
 //     final prizes = await getAllPrizes();
-//     return prizes.where((prize) => 
+//     return prizes.where((prize) =>
 //         prize.points >= minPoints && prize.points <= maxPoints).toList();
 //   }
 
@@ -67,9 +66,10 @@
 // prize_repo.dart
 
 import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:i_smile_kids_app/core/helper/firebase_helper.dart'; // <<< ADDED
 import 'package:i_smile_kids_app/features/reward_points/data/model/prize_model.dart';
 
 class PrizesRepository {
@@ -85,10 +85,10 @@ class PrizesRepository {
     try {
       final String jsonString = await rootBundle.loadString(_jsonPath);
       final List<dynamic> jsonList = json.decode(jsonString);
-      
+
       _cachedPrizes = jsonList.map((json) => Prize.fromJson(json)).toList();
       _cachedPrizes!.sort((a, b) => a.points.compareTo(b.points));
-      
+
       return _cachedPrizes!;
     } catch (e) {
       throw Exception('Failed to load prizes: $e');
@@ -109,54 +109,61 @@ class PrizesRepository {
     final categories = prizes.map((prize) => prize.category).toSet().toList();
     return categories;
   }
-  
+
   void clearCache() {
     _cachedPrizes = null;
   }
 
   // <<< FUNCTION ADDED TO UPDATE FIRESTORE >>>
   Future<void> updateUserPoints(int newPoints) async {
-    final user = FirebaseHelper.user;
+    final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       throw Exception('User not logged in, cannot update points.');
     }
 
     try {
-      await FirebaseHelper.firebaseFirestore
-          .collection('users')
-          .doc(user.uid)
-          .update({'points': newPoints});
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).update(
+        {'points': newPoints},
+      );
     } catch (e) {
       // Re-throw the error to be caught by the Cubit
       throw Exception('Failed to update points in Firestore: ${e.toString()}');
     }
   }
-  // save the prize 
-  Future<void> recordRedemptionAndUpdatePoints(Prize prize, int newPoints) async {
-  final user = FirebaseHelper.user;
-  if (user == null) {
-    throw Exception('User not logged in');
-  }
 
-  final userRef = FirebaseHelper.firebaseFirestore.collection('users').doc(user.uid);
-  final redeemedPrizeRef = FirebaseHelper.firebaseFirestore.collection('redeemed_prizes').doc();
+  // save the prize
+  Future<void> recordRedemptionAndUpdatePoints(
+    Prize prize,
+    int newPoints,
+  ) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      throw Exception('User not logged in');
+    }
 
-  // Firestore transaction to ensure both operations succeed or fail together
-  await FirebaseHelper.firebaseFirestore.runTransaction((transaction) async {
-    // 1. Update user's points
-    transaction.update(userRef, {'points': newPoints});
+    final userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid);
+    final redeemedPrizeRef = FirebaseFirestore.instance
+        .collection('redeemed_prizes')
+        .doc();
 
-    // 2. Create a new document in redeemed_prizes
-    transaction.set(redeemedPrizeRef, {
-      'userId': user.uid,
-      'prizeId': prize.id,
-      'prizeName': prize.getName(false), // Assuming false gets English name
-      'prizeDescription': prize.getDescription(false),
-      'prizeIcon': prize.icon,
-      'pointsSpent': prize.points,
-      'redeemedAt': FieldValue.serverTimestamp(),
-      'status': 'pending_claim',
+    // Firestore transaction to ensure both operations succeed or fail together
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      // 1. Update user's points
+      transaction.update(userRef, {'points': newPoints});
+
+      // 2. Create a new document in redeemed_prizes
+      transaction.set(redeemedPrizeRef, {
+        'userId': user.uid,
+        'prizeId': prize.id,
+        'prizeName': prize.getName(false), // Assuming false gets English name
+        'prizeDescription': prize.getDescription(false),
+        'prizeIcon': prize.icon,
+        'pointsSpent': prize.points,
+        'redeemedAt': FieldValue.serverTimestamp(),
+        'status': 'pending_claim',
+      });
     });
-  });
-}
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:i_smile_kids_app/features/dashboard/data/models/dashboard_appointment_model.dart';
 import 'package:i_smile_kids_app/features/dashboard/data/models/docotr_user.dart';
+import 'package:i_smile_kids_app/features/dashboard/data/models/redeemd_prize_model.dart';
 
 abstract class DashboardState extends Equatable {
   @override
@@ -14,12 +15,12 @@ class DashboardLoading extends DashboardState {}
 class DashboardLoaded extends DashboardState {
   final List<DashboardAppointment> todayAppointments;
   final List<DashboardAppointment> allAppointment;
-    final List<AllUsersModel> patients; // قائمة من نوع الموديل اللي اتفقنا عليه
+  final List<AllUsersModel> patients; // قائمة من نوع الموديل اللي اتفقنا عليه
 
   final PatientStatistics statistics;
   final DoctorUser? currentUser;
 
-  DashboardLoaded( {
+  DashboardLoaded({
     required this.patients,
     required this.allAppointment,
     required this.todayAppointments,
@@ -49,4 +50,11 @@ class AppointmentUpdated extends DashboardState {
 
   @override
   List<Object> get props => [message];
+}
+
+// Reedemd prize
+class DashboardPendingPrizesLoaded extends DashboardState {
+  final List<RedeemedPrizeDetails> prizes;
+
+  DashboardPendingPrizesLoaded({required this.prizes});
 }
