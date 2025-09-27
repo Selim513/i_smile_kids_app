@@ -7,21 +7,18 @@ import 'package:i_smile_kids_app/core/services/service_locator.dart';
 import 'package:i_smile_kids_app/features/auth/data/models/create_account_model.dart';
 import 'package:i_smile_kids_app/features/auth/data/repo/auht_repo_impl.dart';
 import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_state.dart';
+import 'package:i_smile_kids_app/features/notifications/data/firebase_messaging_service.dart';
 
 class AuthCubit extends Cubit<AuthCubitState> {
   final AuthRepositoryImpl authRepo;
   AuthCubit(this.authRepo) : super(AuthCubitInitial());
 
-  // File? pickedImage; // هنا الصورة ال متخزنة
-  // final ImagePicker _picker = ImagePicker();
   final TextEditingController loginEmailController = TextEditingController();
   final TextEditingController resetPasswordEmailController =
       TextEditingController();
   final TextEditingController agrController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
-  // final TextEditingController nationalityController = TextEditingController();
-  // final TextEditingController emirateOfResidencyController =
-  //     TextEditingController();
+  
   final TextEditingController createAccountEmailController =
       TextEditingController();
   final TextEditingController loginPasswordController = TextEditingController();
@@ -45,10 +42,14 @@ class AuthCubit extends Cubit<AuthCubitState> {
       (left) {
         emit(AuthCubitLoginFailure(errMessage: left.toString()));
       },
-      (right) {
+      (right) async {
         if (right.uid == '2LDxPhHoEKQPUE4G2DxECQNw4sF3') {
+          await NotificationService.instance.registerAdminDevice(right.uid);
+
           emit(AuthCubitAdminLoginSuccess(succMessage: 'Hello Doctor !'));
         } else {
+          await NotificationService.instance.registerUserDevice();
+
           emit(AuthCubitLoginSuccess(user: right, succMessage: 'Welcome Back'));
         }
       },

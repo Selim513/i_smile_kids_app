@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:i_smile_kids_app/features/book_appointment/data/models/appointment_test_model.dart';
 import 'package:i_smile_kids_app/features/book_appointment/data/repo/book_appointment_test_repo/appointment_test_repo.dart';
 import 'package:i_smile_kids_app/features/book_appointment/presentation/manger/book_appointment_cubit/book_appointment_cubit_state.dart';
+import 'package:i_smile_kids_app/features/notifications/data/firebase_messaging_service.dart';
 
 class BookAppointmentCubit extends Cubit<BookAppointmentState> {
   final BookAppointmentRepository repository;
@@ -49,6 +50,11 @@ class BookAppointmentCubit extends Cubit<BookAppointmentState> {
       final successMessage = await repository.bookAppointment(
         appointment: appointment,
       );
+      await NotificationService.instance.sendBookingNotificationRequest(
+        patientName: patientDetails.name,
+        date: date,
+        time: time,
+    );
       emit(BookAppointmentTestSuccess(successMessage: successMessage));
     } catch (e) {
       emit(BookAppointmentTestFailure(errorMessage: e.toString()));

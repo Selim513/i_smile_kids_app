@@ -11,6 +11,7 @@ import 'package:i_smile_kids_app/features/auth/presentation/manger/auth_cubit.da
 import 'package:i_smile_kids_app/features/dashboard/data/repo/dashboard_repo.dart';
 import 'package:i_smile_kids_app/features/dashboard/presentation/manger/appointment_cubit.dart';
 import 'package:i_smile_kids_app/features/dashboard/presentation/manger/dashboard_cubit.dart';
+import 'package:i_smile_kids_app/features/notifications/data/firebase_messaging_service.dart';
 import 'package:i_smile_kids_app/features/profile/data/repo/profile_repo_impl.dart';
 import 'package:i_smile_kids_app/features/profile/presentation/manger/fetch_profile_data_cubit/fetch_profile_data_cubit.dart';
 import 'package:i_smile_kids_app/features/splash/presentation/splash_view.dart';
@@ -20,6 +21,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   serviceLocatorSetup();
+  await NotificationService.instance.init();
 
   Bloc.observer = SimpleBlocObserver();
   SystemChrome.setPreferredOrientations([
